@@ -24,7 +24,6 @@ public class PlayerMovement : MonoBehaviour
         Vector3.ClampMagnitude(move_input_vector,1.0f);
         if(move_input_vector.magnitude>0)
             Player_CC.Move(move_input_vector*Move_speed);
-        
         look_input_vector.x = Input.GetAxis("Look_Horizontal");
         look_input_vector.z = Input.GetAxis("Look_Vertical");
         if(look_input_vector.magnitude>0.2f)

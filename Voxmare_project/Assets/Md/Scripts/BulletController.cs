@@ -10,7 +10,7 @@ public class BulletController : MonoBehaviour
     public int Damage;
     public float Bullet_speed;
     public bool Reflectable;
-    public bool Harmful;
+    public bool Damage_Player;
     public float Life_span;
     // Start is called before the first frame update
     void Start()
