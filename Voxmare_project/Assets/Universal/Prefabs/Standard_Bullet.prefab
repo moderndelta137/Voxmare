@@ -16,7 +16,7 @@ GameObject:
   m_Layer: 10
   m_Name: Bullet
   m_TagString: Bullet
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fe32e9c02a984fb4e9ed861059bd676e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -113,10 +113,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Damage: 0
-  Bullet_speed: 0.1
+  Bullet_speed: 0.05
   Reflectable: 1
   Damage_Player: 1
-  Life_span: 20
+  Life_span: 5
+  Bullet_render: {fileID: 0}
+  Bullet_materials:
+  - {fileID: 2100000, guid: fe32e9c02a984fb4e9ed861059bd676e, type: 2}
+  - {fileID: 2100000, guid: 3d64f39a4694a924b8f2043fc1df4d18, type: 2}
+  - {fileID: 2100000, guid: b19282d7dfe80a2468af6bd140d7f374, type: 2}
 --- !u!1 &7947023357618394358
 GameObject:
   m_ObjectHideFlags: 0

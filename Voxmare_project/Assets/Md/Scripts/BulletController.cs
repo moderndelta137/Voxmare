@@ -11,11 +11,12 @@ public class BulletController : MonoBehaviour
     public float Bullet_speed;
     public bool Reflectable;
     public bool Damage_Player;
-    public float Life_span;
+    public MeshRenderer Bullet_render;
+    public Material[] Bullet_materials;
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(this.gameObject,Life_span);
+        Bullet_render=this.GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
@@ -24,17 +25,32 @@ public class BulletController : MonoBehaviour
         this.transform.Translate(Vector3.forward*Bullet_speed);
     }
 
-     private void OnTriggerEnter(Collider other)
-     {
+    private void OnTriggerEnter(Collider other)
+    {
         if(other.CompareTag("Player"))
-         {
-            onHit.Invoke(other.transform);
-            Destroy(this.gameObject);
-         }
+        {
+            if(Damage_Player)
+            {
+                onHit.Invoke(other.transform);
+                Destroy(this.gameObject);
+            }
+        }   
         else if(other.CompareTag("Enemy"))
-         {
-            onHit.Invoke(other.transform);
+        {            
+            if(!Damage_Player)
+            {
+                onHit.Invoke(other.transform);
+                Destroy(this.gameObject);
+            }
+        }
+        else if(other.CompareTag("Terrian"))
+        {
             Destroy(this.gameObject);
-         }
-     }
+        }
+    }
+
+    public void ChangeMaterial(int index)
+    {
+        Bullet_render.material=Bullet_materials[index];
+    }
 }
