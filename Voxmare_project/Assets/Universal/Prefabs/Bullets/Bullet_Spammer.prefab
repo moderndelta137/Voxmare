@@ -114,4 +114,4 @@ MonoBehaviour:
   Temporal_divergence: 0.2
   Target: {fileID: 0}
   Lockon: 1
-  Rotate_speed: 0.5
+  Rotate_speed: 5

@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
         move_input_vector.z = Input.GetAxis("Vertical");
         Vector3.ClampMagnitude(move_input_vector,1.0f);
         if(move_input_vector.magnitude>0)
-            Player_CC.Move(move_input_vector*Move_speed);
+            Player_CC.Move(move_input_vector*Move_speed*Time.deltaTime);
 
         //Rotation
         if(Mouse_control)
@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
         look_input_vector.z = Input.GetAxis("Look_Vertical");
         }
         if(look_input_vector.magnitude>0.2f)
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(look_input_vector), Rotate_speed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(look_input_vector), Rotate_speed*Time.deltaTime);
     }
 
     public void InitiateMouseControl()

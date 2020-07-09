@@ -6,13 +6,20 @@ using UnityEngine.Events;
 [System.Serializable] public class CollisionEvent : UnityEvent<Transform> { }
 public class BulletController : MonoBehaviour
 {
-    public CollisionEvent onHit;
+    [Header("Basic")]
     public int Damage;
     public float Bullet_speed;
     public bool Reflectable;
     public bool Damage_Player;
     public MeshRenderer Bullet_render;
     public Material[] Bullet_materials;
+    public CollisionEvent onHit;
+    [Space]
+    [Header("Bonus Effect")]
+    public bool Penetrate;
+    public bool Homing;
+    public bool Reflect;
+    public bool Cluster;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +29,7 @@ public class BulletController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.Translate(Vector3.forward*Bullet_speed);
+        this.transform.Translate(Vector3.forward*Bullet_speed* Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)

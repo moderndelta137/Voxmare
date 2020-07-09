@@ -30,7 +30,7 @@ public class SpammerController : MonoBehaviour
         if(Lockon)
         {
             lockon_vector = Target.transform.position-this.transform.position;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lockon_vector), Rotate_speed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lockon_vector), Rotate_speed*Time.deltaTime);
 
         }
     }

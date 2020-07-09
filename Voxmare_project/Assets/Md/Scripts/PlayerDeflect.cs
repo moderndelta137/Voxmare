@@ -16,6 +16,19 @@ public class PlayerDeflect : MonoBehaviour
     private RaycastHit hit;
     private int shoot_layerMask;
     private Vector3 shoot_vector;
+    [Space]
+    [Header("Deflect Effect")]
+    public bool Velocity_bonus;//Increase bullet velocity after deflection
+    public float Deflect_velocity_scale;
+    public bool Spray_bonus;//Apply penetrate effect on bullet after deflection
+    public int Spray_count;
+    public float Spray_range;
+    private float spray_rotate;
+    private GameObject spray_instance;
+    public bool Penetrate_bonus;//Apply penetrate effect on bullet after deflection TODO
+    public bool Homing_bonus;//Apply homing effect on bullet after deflection TODO
+    public bool Reflect_bonus;//Apply reflect effect on bullet after deflection TODO
+    public bool Cluster_bonus;//Apply cluster effect on bullet after deflection TODO
     // Start is called before the first frame update
     void Start()
     {
@@ -33,10 +46,8 @@ public class PlayerDeflect : MonoBehaviour
             Bullet_list.Clear();
             hits=null;
             hits=Physics.SphereCastAll(this.transform.position,Boundary_radius,Vector3.up,0);
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, shoot_layerMask))
-            {
-                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow,5);
-            }
+            Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, shoot_layerMask);
+
             foreach(RaycastHit bullet in hits)
             {
                 if(bullet.transform.CompareTag("Bullet"))
@@ -46,8 +57,29 @@ public class PlayerDeflect : MonoBehaviour
                     bullet_instance.Damage_Player=false;
                     shoot_vector = hit.point-bullet.transform.position;
                     bullet_instance.transform.rotation = Quaternion.LookRotation(shoot_vector);
-                    //Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(look_input_vector), Rotate_speed);
                     bullet_instance.ChangeMaterial(2);
+
+                    //Apply Deflect Bonus
+                    if(Velocity_bonus)
+                        bullet_instance.Bullet_speed *= Deflect_velocity_scale;
+                    if(Spray_bonus)
+                    {
+                        if(Spray_count>1)
+                        {
+                            //Rotate the first bullet
+                            bullet_instance.transform.Rotate(Vector3.up * - Spray_range / 2.0f, Space.Self);
+                            spray_instance = bullet_instance.gameObject;
+                            for(int i = 1; i < Spray_count; i++)
+                            {
+                                spray_instance = Instantiate(spray_instance, spray_instance.transform.position, spray_instance.gameObject.transform.rotation);
+                                //spray_rotate
+                                spray_instance.transform.Rotate(Vector3.up * Spray_range / (Spray_count - 1), Space.Self);
+
+                            }
+                        }
+
+                    }
+
                 }
             }
 
@@ -58,10 +90,13 @@ public class PlayerDeflect : MonoBehaviour
     private void OnTriggerEnter(Collider other) 
     {
         if(other.CompareTag("Bullet"))
-        {
+        {   
             bullet_instance=other.GetComponent<BulletController>();
+            if(bullet_instance.Damage_Player)
+            {
             bullet_instance.Bullet_speed=bullet_instance.Bullet_speed*Boundry_slowdown_scale;
             bullet_instance.ChangeMaterial(1);
+            }
         }
     }
     private void OnTriggerExit(Collider other) 
@@ -69,9 +104,11 @@ public class PlayerDeflect : MonoBehaviour
         if(other.CompareTag("Bullet"))
         {
             bullet_instance=other.GetComponent<BulletController>();
-            bullet_instance.Bullet_speed=bullet_instance.Bullet_speed/Boundry_slowdown_scale;
             if(bullet_instance.Damage_Player)
+            {
+                bullet_instance.Bullet_speed=bullet_instance.Bullet_speed/Boundry_slowdown_scale;
                 bullet_instance.ChangeMaterial(0);
+            }
         }
     }
     

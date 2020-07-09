@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7947023357074736547}
   - component: {fileID: 7947023357074736546}
   m_Layer: 10
-  m_Name: Bullet
+  m_Name: Standard_Bullet
   m_TagString: Bullet
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -113,10 +113,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Damage: 0
-  Bullet_speed: 0.05
+  Bullet_speed: 35
   Reflectable: 1
   Damage_Player: 1
-  Life_span: 5
   Bullet_render: {fileID: 0}
   Bullet_materials:
   - {fileID: 2100000, guid: fe32e9c02a984fb4e9ed861059bd676e, type: 2}
