@@ -5,13 +5,14 @@ using UnityEngine;
 public class StandardBlock : Block
 {
     // variable
-    [SerializeField] GameObject bulletPrefab;
+    [SerializeField] GameObject bulletPrefab = null;
 
     private float time;
     // Start is called before the first frame update
-    void Start()
+    override protected void Start()
     {
         base.Start();
+        this.blockType = BlockType.STANDARD;
     }
 
     // Update is called once per frame

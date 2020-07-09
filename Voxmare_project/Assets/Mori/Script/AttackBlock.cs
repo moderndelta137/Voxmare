@@ -5,13 +5,14 @@ using UnityEngine;
 public class AttackBlock : Block
 {
     // variable
-    [SerializeField] GameObject bulletPrefab;
+    [SerializeField] GameObject bulletPrefab = null;
 
     private float time;
     // Start is called before the first frame update
-    void Start()
+    override protected void Start()
     {
         base.Start();
+        blockType = BlockType.ATTACK;
     }
 
     // Update is called once per frame
@@ -30,7 +31,7 @@ public class AttackBlock : Block
     void Shoot()
     {
         GameObject bullet = GameObject.Instantiate(bulletPrefab, this.transform.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().velocity = new Vector3(10, 0, 0);
+        bullet.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 10);
         Destroy(bullet, 5.0f);
     }
 }
