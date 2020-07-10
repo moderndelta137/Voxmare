@@ -38,10 +38,7 @@ public class SpammerController : MonoBehaviour
     {
         while (true)
         {
-        // suspend execution for 5 seconds
-        //WaitForSeconds(Interval);
         yield return new WaitForSeconds(Interval+Random.Range(-Temporal_divergence,Temporal_divergence));
-
         bullet_instance=Instantiate(Bullet,this.transform.position,this.transform.rotation);
         bullet_instance.transform.Rotate(Random.Range(-Angular_divergence,Angular_divergence)*Vector3.up,Space.Self);
         yield return null;

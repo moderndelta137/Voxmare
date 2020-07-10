@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b115bcd4253457148933d300b086b51e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mouse_control: 0
+  Mouse_control: 1
   Player_CC: {fileID: 0}
   Main_camera: {fileID: 0}
   Move_speed: 20
@@ -523,6 +523,17 @@ MonoBehaviour:
   Boundary_mesh_scaler: 2
   Boundry_slowdown_scale: 0.6
   Bullet_list: []
+  Velocity_bonus: 0
+  Deflect_velocity_scale: 1.2
+  Spray_bonus: 0
+  Spray_count: 3
+  Spray_range: 30
+  Penetrate_bonus: 0
+  Homing_bonus: 0
+  homing_layerMask: 0
+  homing_cast_radius: 5
+  Reflect_bonus: 0
+  Cluster_bonus: 0
 --- !u!1 &337455002532279124
 GameObject:
   m_ObjectHideFlags: 0
