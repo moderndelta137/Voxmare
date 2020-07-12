@@ -69,4 +69,13 @@ public class PlayerMovement : MonoBehaviour
         Mouse_cursor=Instantiate(Mouse_cursor_prefab,Vector3.zero,Quaternion.identity);
         mouse_plane = new Plane(this.transform.up, this.transform.position);
     }
+
+    public void ApplyDamage(int damage)
+    {
+        HP -= damage;
+        if(HP == 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }

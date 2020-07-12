@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1757824010}
   - component: {fileID: 1757824009}
   - component: {fileID: 1757824008}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Player_GrazeZone
   m_TagString: Untagged
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 337455001441935107}
   - component: {fileID: 337455001441935106}
   - component: {fileID: 337455001441935105}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Indicator_Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,7 +324,7 @@ GameObject:
   - component: {fileID: 337455001513987433}
   - component: {fileID: 337455001513987732}
   - component: {fileID: 337455001513987435}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Player_Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 337455001839405437}
   - component: {fileID: 337455001839405425}
   - component: {fileID: 337455001839405436}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Player_Boundry
   m_TagString: Untagged
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
@@ -543,7 +543,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 337455002532279125}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}

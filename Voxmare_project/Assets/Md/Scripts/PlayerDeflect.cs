@@ -26,13 +26,13 @@ public class PlayerDeflect : MonoBehaviour
     public float Spray_range;
     private float spray_rotate;
     private GameObject spray_instance;
-    public bool Penetrate_bonus;//Apply penetrate effect on bullet after deflection TODO
-    public bool Homing_bonus;//Apply homing effect on bullet after deflection TODO
+    public bool Penetrate_bonus;//Apply penetrate effect on bullet after deflection
+    public bool Homing_bonus;//Apply homing effect on bullet after deflection
     public int homing_layerMask;
     public float homing_cast_radius;
     private RaycastHit homing_hit;
-    public bool Reflect_bonus;//Apply reflect effect on bullet after deflection TODO
-    public bool Cluster_bonus;//Apply cluster effect on bullet after deflection TODO
+    public bool Reflect_bonus;//Apply reflect effect on bullet after deflection
+    public bool Cluster_bonus;//Apply cluster effect on bullet after deflection
     // Start is called before the first frame update
     void Start()
     {
@@ -61,7 +61,7 @@ public class PlayerDeflect : MonoBehaviour
                     if(bullet_instance.Deflectable)
                     {
                         Bullet_list.Add(bullet_instance);
-                        bullet_instance.Damage_Player=false;
+                        bullet_instance.Damage_player=false;
                         bullet_instance.Deflectable=false;
                         shoot_vector = hit.point-bullet.transform.position;
                         bullet_instance.transform.rotation = Quaternion.LookRotation(shoot_vector);
@@ -72,6 +72,12 @@ public class PlayerDeflect : MonoBehaviour
                             bullet_instance.Bullet_speed *= Deflect_velocity_scale;
                         if(Reflect_bonus)
                             bullet_instance.Reflect = true;
+                        if(Penetrate_bonus)
+                            bullet_instance.Penetrate = true;
+                        if(Cluster_bonus)
+                        {
+                            bullet_instance.Cluster = true;
+                        }
                         if(Homing_bonus)
                         {
                             if(Physics.SphereCast(this.transform.position, homing_cast_radius, this.transform.forward, out homing_hit, 100f, homing_layerMask))
@@ -108,7 +114,7 @@ public class PlayerDeflect : MonoBehaviour
         if(other.CompareTag("Bullet"))
         {   
             bullet_instance=other.GetComponent<BulletController>();
-            if(bullet_instance.Damage_Player)
+            if(bullet_instance.Damage_player)
             {
             bullet_instance.Bullet_speed=bullet_instance.Bullet_speed*Boundry_slowdown_scale;
             bullet_instance.ChangeMaterial(1);
@@ -120,7 +126,7 @@ public class PlayerDeflect : MonoBehaviour
         if(other.CompareTag("Bullet"))
         {
             bullet_instance=other.GetComponent<BulletController>();
-            if(bullet_instance.Damage_Player)
+            if(bullet_instance.Damage_player)
             {
                 bullet_instance.Bullet_speed=bullet_instance.Bullet_speed/Boundry_slowdown_scale;
                 bullet_instance.ChangeMaterial(0);

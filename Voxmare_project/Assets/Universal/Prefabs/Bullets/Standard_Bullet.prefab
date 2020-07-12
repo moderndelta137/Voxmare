@@ -109,19 +109,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 283f6a3ed8c3c214fa2ddffe4a8ccfc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 0
+  Damage: 1
   Bullet_speed: 35
   Deflectable: 1
-  Damage_Player: 1
+  Damage_player: 1
   Bullet_render: {fileID: 0}
   Bullet_materials:
   - {fileID: 2100000, guid: fe32e9c02a984fb4e9ed861059bd676e, type: 2}
   - {fileID: 2100000, guid: 3d64f39a4694a924b8f2043fc1df4d18, type: 2}
   - {fileID: 2100000, guid: b19282d7dfe80a2468af6bd140d7f374, type: 2}
-  onHit:
-    m_PersistentCalls:
-      m_Calls: []
   Penetrate: 0
+  Penetrate_lifespan: 0
   Homing: 0
   Homing_target: {fileID: 0}
   Homing_rotation_speed: 0.2
@@ -129,6 +127,8 @@ MonoBehaviour:
   Reflect: 0
   Reflect_lifespan: 3
   Cluster: 0
+  Cluster_prefab: {fileID: 3940093444654790021, guid: 3f47400870a2c5b4c9d90cfb45ec61b7, type: 3}
+  Cluster_color: {r: 1, g: 0.33225688, b: 0, a: 1}
 --- !u!1 &7947023357618394358
 GameObject:
   m_ObjectHideFlags: 0

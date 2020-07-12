@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[System.Serializable] public class CollisionEvent : UnityEvent<Transform> { }
+//[System.Serializable] public class CollisionEvent : UnityEvent<Transform> { }
 public class BulletController : MonoBehaviour
 {
     [Header("Basic")]
     public int Damage;
     public float Bullet_speed;
     public bool Deflectable;
-    public bool Damage_Player;
+    public bool Damage_player;
     public MeshRenderer Bullet_render;
     public Material[] Bullet_materials;//0:Enemy Bullet, 1:Entered Boundry, 2:Deflected Bullet
-    public CollisionEvent onHit;
+    //public CollisionEvent onHit;
     [Space]
     [Header("Bonus Effect")]
     public bool Penetrate;
+    public float Penetrate_lifespan;
     public bool Homing;
     public GameObject Homing_target;
     public float Homing_rotation_speed;
@@ -26,6 +27,9 @@ public class BulletController : MonoBehaviour
     public float Reflect_lifespan;
     private RaycastHit reflect_hit;
     public bool Cluster;
+    public GameObject Cluster_prefab;
+    private ClusterBulletController cluster_controller;
+    private bool shuttingdown;
     // Start is called before the first frame update
     void Start()
     {
@@ -62,29 +66,36 @@ public class BulletController : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            if(Damage_Player)
+            if(Damage_player)
             {
-                onHit.Invoke(other.transform);
+                other.gameObject.SendMessage("ApplyDamage", Damage);
                 Destroy(this.gameObject);
             }
         }   
         else if(other.CompareTag("Enemy"))
         {            
-            if(!Damage_Player)
-            {            
-                if(!Reflect)
+            if(!Damage_player)
+            {      
+                if(Penetrate)//Penetrate effect has higher priority over Reflect effect
                 {
-                    onHit.Invoke(other.transform);
-                    Destroy(this.gameObject);
-                }
+                    other.gameObject.SendMessage("ApplyDamage", Damage);
+                    Destroy(this.gameObject,Penetrate_lifespan);
+                }     
                 else
                 {
-                    Physics.Raycast(this.transform.position-this.transform.forward*0.5f,this.transform.forward,out reflect_hit, 2f);
-                    this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward,reflect_hit.normal));
-                    onHit.Invoke(other.transform);
-                    Destroy(this.gameObject,Reflect_lifespan);
-                }
-                
+                    if(Reflect)
+                    {
+                        Physics.Raycast(this.transform.position-this.transform.forward*0.5f,this.transform.forward,out reflect_hit, 2f);
+                        this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward,reflect_hit.normal));
+                        other.gameObject.SendMessage("ApplyDamage", Damage);
+                        Destroy(this.gameObject,Reflect_lifespan);
+                    }
+                    else
+                    {
+                        other.gameObject.SendMessage("ApplyDamage", Damage);
+                        Destroy(this.gameObject);
+                    }  
+                }      
             }
         }
         else if(other.CompareTag("Terrian"))
@@ -104,8 +115,25 @@ public class BulletController : MonoBehaviour
         }
     }
 
+    void OnApplicationQuit()
+    {
+        this.shuttingdown = true;
+    }
+
+    private void OnDestroy() 
+    {
+        if(!shuttingdown)
+        {
+            if(Cluster)
+            {
+                cluster_controller = Instantiate(Cluster_prefab, this.transform.position, Quaternion.identity).GetComponent<ClusterBulletController>();
+                cluster_controller.Damage_player = Damage_player;
+            }
+        }
+    }
+
     public void ChangeMaterial(int index)
     {
-        Bullet_render.material=Bullet_materials[index];
+        Bullet_render.material = Bullet_materials[index];
     }
 }
