@@ -14,7 +14,7 @@ public class BulletController : MonoBehaviour
     public MeshRenderer Bullet_render;
     public Material[] Bullet_materials;//0:Enemy Bullet, 1:Entered Boundry, 2:Deflected Bullet
     //public CollisionEvent onHit;
-    [Space]
+
     [Header("Bonus Effect")]
     public bool Penetrate;
     public float Penetrate_lifespan;
