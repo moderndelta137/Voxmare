@@ -10,7 +10,6 @@ public class BlockManager : MonoBehaviour
     [Header("Generate")]
     [SerializeField] int generateCount = 2;
 
-    int blockCount = 2;
     List<Block> blocks;
     List<bool> visited;
     Stack<int> searchStack;
@@ -24,10 +23,10 @@ public class BlockManager : MonoBehaviour
         GenerateBlock(generateCount);
 
 
-        visited = new List<bool>(blockCount);
-        for (int i = 0; i < visited.Count; i++)
+        visited = new List<bool>();
+        for (int i = 0; i < blocks.Count; i++)
         {
-            visited[i] = false;
+            visited.Add(false);
         }
 
         searchStack = new Stack<int>();
@@ -42,16 +41,16 @@ public class BlockManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.L))
         {
             Debug.Log("Link block(id:" + blocks[0].id + ") and block(id:" + blocks[1].id + ")");
-            // initialize blocks
             blocks[0].LinkBlockTo(blocks[1]);
+            Debug.Log("Link block(id:" + blocks[1].id + ") and block(id:" + blocks[2].id + ")");
+            blocks[1].LinkBlockTo(blocks[2]);
         }
 
         // Move
         if(Input.GetKeyDown(KeyCode.M))
         {
             Debug.Log("Move");
-            blocks[1].MoveTo(blocks[0]);
-            //MoveAllBlock();
+            MoveAllBlock();
         }
     }
 
@@ -73,32 +72,40 @@ public class BlockManager : MonoBehaviour
                 default:
                     Debug.Log("randomValue is out of range.");
                     return;
-                    break;
             }
 
             block.transform.position = new Vector3((i % 10) * 4, 0, i / 10 * 4); // Line up 10 blocks of each row.
 
-            blocks.Add(block.GetComponent<Block>());
+            blocks.Add(block.GetComponent<Block>());                             // The blocks are ordered by id.
         }
     }
 
-    //void MoveAllBlock()
-    //{
-    //    searchStack.Push(0);
+    void MoveAllBlock()
+    {
+        // Initialization
+        searchStack.Clear();
+        for (int i = 0; i < visited.Count; i++)
+        {
+            visited[i] = false;
+        }
 
-    //    while(searchStack.Count != 0)
-    //    {
-    //        int current = searchStack.Pop();
-    //        visited[current] = true;
+        // Start moving blocks from id 0
+        searchStack.Push(0);
 
-    //        foreach (var nextBlock in blocks[current].pairs)
-    //        {
-    //            if (visited[nextBlock]) return;
+        while (searchStack.Count != 0)
+        {
+            int current = searchStack.Pop();
+            Debug.Log(current);
+            visited[current] = true;
 
-    //            // MoveBlock
+            foreach (var nextBlock in blocks[current].pairs)
+            {
+                if (visited[nextBlock]) continue;
 
-    //            searchStack.Push(nextBlock);
-    //        }
-    //    }
-    //}
+                blocks[nextBlock].MoveTo(blocks[current]);
+
+                searchStack.Push(nextBlock);
+            }
+        }
+    }
 }
