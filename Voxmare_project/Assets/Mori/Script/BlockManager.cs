@@ -42,8 +42,8 @@ public class BlockManager : MonoBehaviour
         {
             Debug.Log("Link block(id:" + blocks[0].id + ") and block(id:" + blocks[1].id + ")");
             blocks[0].LinkBlockTo(blocks[1]);
-            Debug.Log("Link block(id:" + blocks[1].id + ") and block(id:" + blocks[2].id + ")");
-            blocks[1].LinkBlockTo(blocks[2]);
+            //Debug.Log("Link block(id:" + blocks[1].id + ") and block(id:" + blocks[2].id + ")");
+            //blocks[1].LinkBlockTo(blocks[2]);
         }
 
         // Move

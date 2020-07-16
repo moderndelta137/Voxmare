@@ -17,9 +17,10 @@ public abstract class Block : MonoBehaviour
     // Variable
     [SerializeField] public BlockParameter param;
 
-    public int id { get; private set; }       // id is set automatically in Start(). Readonly. (Note: id starts from 0)
-    protected BlockType blockType;          // blockType is set in Child Class's Start().
-    public List<int> pairs;                        // store pairs by block's id
+    public int id { get; private set; }         // id is set automatically in Start(). Readonly. (Note: id starts from 0)
+    protected BlockType blockType;              // blockType is set in Child Class's Start().
+    private int hp;                             // HP
+    public List<int> pairs;                     // store pairs by block's id
 
     // Method
 
@@ -29,18 +30,10 @@ public abstract class Block : MonoBehaviour
     /// <param name="block">target block</param>
     public void LinkBlockTo(Block block)
     {
-        if(!this.CheckLinkable())
-        {
-            Debug.Log("This Block is full. [ID : " + this.id + " ]");
-            return;
-        }
+        // check if this block can be linked to the block
+        if (!this.CheckLinkable(block) || !block.CheckLinkable(this)) return;
 
-        if(!block.CheckLinkable())
-        {
-            Debug.Log("Target Block is full. [ID : " + block.id + " ]");
-            return;
-        }
-
+        // link
         this.pairs.Add(block.id);
         block.pairs.Add(this.id);
     }
@@ -49,9 +42,21 @@ public abstract class Block : MonoBehaviour
     /// Check if this block can link another one.
     /// </summary>
     /// <returns></returns>
-    bool CheckLinkable()
+    bool CheckLinkable(Block block)
     {
-        return pairs.Count < param.maxPairs;
+        if(pairs.Count >= param.maxPairs)
+        {
+            Debug.Log("This Block is full. [ID : " + this.id + " ]");
+            return false;
+        }
+
+        if(!param.linkableBlockType.Contains(block.blockType))
+        {
+            Debug.Log("This Block [Type: " + this.blockType + "] cannot be linked to the block [Type: " + block.blockType + "].");
+            return false;
+        }
+
+        return true;
     }
 
     public void MoveTo(Block block)
@@ -91,8 +96,20 @@ public abstract class Block : MonoBehaviour
         this.id = idCount++;
     }
 
-    void Update()
+    public void Damaged(int point)
     {
-        
+        this.hp -= point;
+
+        if(this.hp <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        // implement later
+        // - delete this block
+        // - if blocks are separated then BlockManager re-connects blocks.
     }
 }

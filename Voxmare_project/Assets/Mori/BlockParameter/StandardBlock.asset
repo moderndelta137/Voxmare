@@ -15,4 +15,4 @@ MonoBehaviour:
   maxPairs: 4
   blockPower: 1
   blockCoolTime: 1
-  linkableBlockType: 00000000
+  linkableBlockType: 0000000001000000
