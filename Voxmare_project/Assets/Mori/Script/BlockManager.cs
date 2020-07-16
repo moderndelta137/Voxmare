@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class BlockManager : MonoBehaviour
 {
-    [SerializeField] Block block01 = null;
-    [SerializeField] Block block02 = null;
+    [SerializeField] GameObject stdBlock = null;
+    [SerializeField] GameObject atkBlock = null;
+
+    [Header("Generate")]
+    [SerializeField] int generateCount = 2;
 
     int blockCount = 2;
     List<Block> blocks;
@@ -17,9 +20,8 @@ public class BlockManager : MonoBehaviour
     {
         blocks = new List<Block>();
 
-        // Generate Blocks (implement later)
-        blocks.Add(block01);
-        blocks.Add(block02);
+        // Generate Blocks
+        GenerateBlock(generateCount);
 
 
         visited = new List<bool>(blockCount);
@@ -39,9 +41,9 @@ public class BlockManager : MonoBehaviour
         // Link
         if(Input.GetKeyDown(KeyCode.L))
         {
-            Debug.Log("Link block(id:" + block01.id + ") and block(id:" + block02.id + ")");
+            Debug.Log("Link block(id:" + blocks[0].id + ") and block(id:" + blocks[1].id + ")");
             // initialize blocks
-            block01.LinkBlockTo(block02);
+            blocks[0].LinkBlockTo(blocks[1]);
         }
 
         // Move
@@ -50,6 +52,33 @@ public class BlockManager : MonoBehaviour
             Debug.Log("Move");
             blocks[1].MoveTo(blocks[0]);
             //MoveAllBlock();
+        }
+    }
+
+    void GenerateBlock(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            int randomValue = Random.Range(0, (int)Block.BlockType.ATTACK + 1);
+            GameObject block;
+
+            switch (randomValue)
+            {
+                case 0:
+                    block = GameObject.Instantiate(stdBlock);
+                    break;
+                case 1:
+                    block = GameObject.Instantiate(atkBlock);
+                    break;
+                default:
+                    Debug.Log("randomValue is out of range.");
+                    return;
+                    break;
+            }
+
+            block.transform.position = new Vector3((i % 10) * 4, 0, i / 10 * 4); // Line up 10 blocks of each row.
+
+            blocks.Add(block.GetComponent<Block>());
         }
     }
 
