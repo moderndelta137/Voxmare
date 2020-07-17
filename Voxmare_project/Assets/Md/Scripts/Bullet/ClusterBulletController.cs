@@ -33,7 +33,7 @@ public class ClusterBulletController : MonoBehaviour
         hits=Physics.SphereCastAll(this.transform.position, Radius, Vector3.up, 0, layerMask);
         foreach(RaycastHit target in hits)
         {
-            target.transform.gameObject.SendMessage("ApplyDamage", Damage);
+            target.transform.gameObject.SendMessage("ApplyDamage", (this.transform.position-target.transform.position).normalized * Damage);
         }
     }
 
