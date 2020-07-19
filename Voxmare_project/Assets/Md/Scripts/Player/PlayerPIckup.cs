@@ -16,6 +16,8 @@ public class PlayerPIckup : MonoBehaviour
         this.transform.localScale = Vector3.one * Pickup_radius * 2.0f;
         deflect_script=this.transform.parent.GetComponentInChildren<PlayerDeflect>();
         movement_script=GetComponentInParent<PlayerMovement>();
+        Powerup_ranks=new int[7];
+        GetPlayerPowerRank();
     }
 
     // Update is called once per frame
@@ -23,6 +25,19 @@ public class PlayerPIckup : MonoBehaviour
     {
         
     }
+
+    
+    private void GetPlayerPowerRank()
+    {
+        Powerup_ranks[0] = deflect_script.Radius_rank;
+        Powerup_ranks[1] = deflect_script.Velocity_rank;
+        Powerup_ranks[2] = deflect_script.Reflect_rank;
+        Powerup_ranks[3] = deflect_script.Penetrate_rank;
+        Powerup_ranks[4] = deflect_script.Cluster_rank;
+        Powerup_ranks[5] = deflect_script.Homing_rank;
+        Powerup_ranks[6] = deflect_script.Spray_rank;
+    }
+    
 
     private void OnTriggerEnter(Collider other) 
     {
@@ -34,12 +49,20 @@ public class PlayerPIckup : MonoBehaviour
                 if(!pickup_script.Pickedup)
                 {
                     pickup_script.Pickedup = true;
+                    pickup_script.Pickup_manager = this;
                     pickup_list.Add(pickup_script);
-                    deflect_script.PowerUp(pickup_script.Type);
+                    Powerup_ranks[pickup_script.Type] += 1;
+                    deflect_script.UpdatePowerRank(pickup_script.Type,Powerup_ranks[pickup_script.Type]);
                     pickup_script.transform.SetParent(this.transform.parent);
                 }
             }
         }
     }
 
+    public void RemovePickup(PickupController pickup)
+    {
+        pickup_list.Remove(pickup);
+        Powerup_ranks[pickup.Type] -= 1;
+        deflect_script.UpdatePowerRank(pickup.Type,Powerup_ranks[pickup.Type]);
+    }
 }

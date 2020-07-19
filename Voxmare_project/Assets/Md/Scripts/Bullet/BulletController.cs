@@ -68,7 +68,15 @@ public class BulletController : MonoBehaviour
         {
             if(Damage_player)
             {
-                other.gameObject.SendMessage("ApplyDamage", Damage);
+                other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                Destroy(this.gameObject);
+            }
+        }   
+        if(other.CompareTag("Pickup"))
+        {
+            if(Damage_player)
+            {
+                other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                 Destroy(this.gameObject);
             }
         }   
@@ -78,7 +86,7 @@ public class BulletController : MonoBehaviour
             {      
                 if(Penetrate)//Penetrate effect has higher priority over Reflect effect
                 {
-                    other.gameObject.SendMessage("ApplyDamage", Damage);
+                    other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                     Destroy(this.gameObject,Penetrate_lifespan);
                 }     
                 else
@@ -87,12 +95,12 @@ public class BulletController : MonoBehaviour
                     {
                         Physics.Raycast(this.transform.position-this.transform.forward*0.5f,this.transform.forward,out reflect_hit, 2f);
                         this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward,reflect_hit.normal));
-                        other.gameObject.SendMessage("ApplyDamage", Damage);
+                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                         Destroy(this.gameObject,Reflect_lifespan);
                     }
                     else
                     {
-                        other.gameObject.SendMessage("ApplyDamage", Damage);
+                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                         Destroy(this.gameObject);
                     }  
                 }      

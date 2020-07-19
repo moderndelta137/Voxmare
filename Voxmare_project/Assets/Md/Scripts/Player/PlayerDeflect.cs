@@ -156,42 +156,42 @@ public class PlayerDeflect : MonoBehaviour
     {
         this.transform.localScale = Vector3.one * Boundary_radius[Radius_rank] * Boundary_mesh_scaler;
     }
-    public void PowerUp(int type)
+    public void UpdatePowerRank(int type, int rank)
     {
         switch(type)
         {
             case 0:
-                Radius_rank = Mathf.Clamp(Radius_rank += 1, 0, Boundary_radius.Length-1);
+                Radius_rank = Mathf.Clamp(Radius_rank = rank, 0, Boundary_radius.Length-1);
                 UpdateBoundryRadius();
             break;
             
             case 1:
-                Velocity_rank = Mathf.Clamp(Velocity_rank += 1, 0, Velocity_bonus_scale.Length-1);
+                Velocity_rank = Mathf.Clamp(Velocity_rank = rank, 0, Velocity_bonus_scale.Length-1);
                 Velocity_bonus = true;
             break;
 
             case 2:
-                Reflect_rank = Mathf.Clamp(Reflect_rank += 1, 0, Reflect_lifespan.Length-1);
+                Reflect_rank = Mathf.Clamp(Reflect_rank = rank, 0, Reflect_lifespan.Length-1);
                 Reflect_bonus = true;
             break;
 
             case 3:
-                Penetrate_rank = Mathf.Clamp(Penetrate_rank += 1, 0, Penetrate_lifespan.Length-1);
+                Penetrate_rank = Mathf.Clamp(Penetrate_rank = rank, 0, Penetrate_lifespan.Length-1);
                 Penetrate_bonus = true;
             break;
 
             case 4:
-                Cluster_rank = Mathf.Clamp(Cluster_rank += 1, 0, Cluster_radius.Length-1);
+                Cluster_rank = Mathf.Clamp(Cluster_rank = rank, 0, Cluster_radius.Length-1);
                 Cluster_bonus = true;
             break;
 
             case 5:
-                Homing_rank = Mathf.Clamp(Homing_rank += 1, 0, Homing_rotation_speed.Length-1);
+                Homing_rank = Mathf.Clamp(Homing_rank = rank, 0, Homing_rotation_speed.Length-1);
                 Homing_bonus = true;
             break;
 
             case 6:
-                Spray_rank = Mathf.Clamp(Spray_rank += 1, 0, Spray_count.Length-1);
+                Spray_rank = Mathf.Clamp(Spray_rank = rank, 0, Spray_count.Length-1);
                 Spray_bonus = true;
             break;
         }

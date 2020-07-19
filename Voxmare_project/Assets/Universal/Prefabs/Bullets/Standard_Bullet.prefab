@@ -128,7 +128,6 @@ MonoBehaviour:
   Reflect_lifespan: 3
   Cluster: 0
   Cluster_prefab: {fileID: 3940093444654790021, guid: 3f47400870a2c5b4c9d90cfb45ec61b7, type: 3}
-  Cluster_color: {r: 1, g: 0.33225688, b: 0, a: 1}
 --- !u!1 &7947023357618394358
 GameObject:
   m_ObjectHideFlags: 0
