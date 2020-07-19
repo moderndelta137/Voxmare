@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4671d28cba7fe4689c7dd118873d5c, type: 3}
   m_Name: StandardBlock
   m_EditorClassIdentifier: 
-  maxPairs: 4
+  maxPairs: 3
   blockPower: 1
   blockCoolTime: 1
   linkableBlockType: 0000000001000000

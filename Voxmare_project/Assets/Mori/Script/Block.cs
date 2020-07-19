@@ -15,6 +15,7 @@ public abstract class Block : MonoBehaviour
 
 
     // Variable
+    [SerializeField] public SpammerController spammer;
     [SerializeField] public BlockParameter param;
 
     public int id { get; private set; }         // id is set automatically in Start(). Readonly. (Note: id starts from 0)

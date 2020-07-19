@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2052504839816471396}
   - component: {fileID: 2052504839816471397}
   - component: {fileID: 2052504839816471393}
+  - component: {fileID: 6748360877959229323}
   m_Layer: 0
   m_Name: Bullet_Spammer
   m_TagString: Enemy
@@ -115,3 +116,19 @@ MonoBehaviour:
   Target: {fileID: 0}
   Lockon: 1
   Rotate_speed: 5
+--- !u!114 &6748360877959229323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052504839816471418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 544a34f5078fc9b49bd6d39a3a37508e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 100
+  Hit_reaction_mat: {fileID: 2100000, guid: 14ff9e6e57d5bee4682ee74e146fccf2, type: 2}
+  DEBUG_hit_reaction_duration: 0.05
+  DEBUG_hit_reaction_knockback: 1

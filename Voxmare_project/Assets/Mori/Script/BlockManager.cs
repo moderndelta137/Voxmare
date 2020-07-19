@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BlockManager : MonoBehaviour
 {
+    [SerializeField] GameObject target = null;
     [SerializeField] GameObject stdBlock = null;
     [SerializeField] GameObject atkBlock = null;
 
@@ -76,6 +77,7 @@ public class BlockManager : MonoBehaviour
                     return;
             }
 
+            block.GetComponent<Block>().spammer.Target = this.target;
             block.transform.position = new Vector3((i % 10) * 4, 0, i / 10 * 4); // Line up 10 blocks of each row.
 
             blocks.Add(block.GetComponent<Block>());                             // The blocks are ordered by id.
