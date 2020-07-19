@@ -27,8 +27,17 @@ public class PlayerMovement : MonoBehaviour
     private Material original_mat;
     private MeshRenderer rend;
     public float DEBUG_hit_reaction_duration;
-    public float DEBUG_hit_reaction_knockback;
+    public float DEBUG_hit_reaction_flinch;
+    private int hit_reacting;
+    private Tween myTween;
     private Vector3 hit_reaction_original_position;
+    public float Knockback_cast_distance;
+    public float DEBUG_knockback_duration;
+    private float knockback_distance;
+    private RaycastHit knockback_hit;
+    private int knockback_layerMask;
+    private Vector3 damage_incoming;
+    private Vector3 temp_position;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
             InitiateMouseControl();
         rend = GetComponentInChildren<MeshRenderer>();
         original_mat = rend.material;
+        knockback_layerMask = (1 << 9) + (1 << 11);//Check Enemy Layer and Terrian Layer for shooting
     }
 
     // Update is called once per frame
@@ -80,16 +90,56 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator ApplyDamage(Vector3 Incoming)
     {
+
         HP -= (int)Incoming.magnitude;
         rend.material = Hit_reaction_mat;
-        hit_reaction_original_position = this.transform.position;
-        this.transform.DOMove(this.transform.position + Incoming.normalized * DEBUG_hit_reaction_knockback, DEBUG_hit_reaction_duration);
-        yield return new WaitForSeconds(DEBUG_hit_reaction_duration);
-        this.transform.DOMove(hit_reaction_original_position, DEBUG_hit_reaction_duration);
+        damage_incoming = Incoming.normalized;
+        damage_incoming.y = 0;
+        if(hit_reacting == 0)
+        {
+            hit_reaction_original_position = this.transform.position;
+        }
+        hit_reacting += 1;
+        myTween = this.transform.DOMove(this.transform.position + damage_incoming * DEBUG_hit_reaction_flinch, DEBUG_hit_reaction_duration);
+        yield return myTween.WaitForCompletion();
+        myTween = this.transform.DOMove(hit_reaction_original_position, DEBUG_hit_reaction_duration);
+        yield return myTween.WaitForCompletion();
+        hit_reacting -= 1;
         rend.material = original_mat;
+        ResetY();
         if(HP == 0)
         {
             Destroy(this.gameObject);
         }
+    }
+
+    public IEnumerator Knockback(Vector3 Incoming)
+    {
+        HP -= (int)Incoming.magnitude;
+        rend.material = Hit_reaction_mat;
+        damage_incoming = Incoming.normalized;
+        damage_incoming.y = 0;
+        if(Physics.CapsuleCast(this.transform.position,this.transform.position,0.5f,damage_incoming, out knockback_hit, Knockback_cast_distance,knockback_layerMask))
+        {
+            myTween = this.transform.DOMove(this.transform.position+damage_incoming*knockback_hit.distance,DEBUG_knockback_duration);
+        }
+        else
+        {
+            myTween = this.transform.DOMove(this.transform.position+damage_incoming*Knockback_cast_distance,DEBUG_knockback_duration);
+        }
+        yield return myTween.WaitForCompletion();
+        rend.material = original_mat;
+        ResetY();
+        if(HP == 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    public void ResetY()
+    {
+        temp_position = this.transform.position;
+        temp_position.y = 0;
+        this.transform.position = temp_position;
     }
 }

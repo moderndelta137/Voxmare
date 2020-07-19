@@ -48,12 +48,13 @@ public class PlayerPIckup : MonoBehaviour
             {
                 if(!pickup_script.Pickedup)
                 {
+                    //Pick up pickup ;)
                     pickup_script.Pickedup = true;
                     pickup_script.Pickup_manager = this;
+                    pickup_script.Nav_target = this.transform.parent;
                     pickup_list.Add(pickup_script);
                     Powerup_ranks[pickup_script.Type] += 1;
                     deflect_script.UpdatePowerRank(pickup_script.Type,Powerup_ranks[pickup_script.Type]);
-                    pickup_script.transform.SetParent(this.transform.parent);
                 }
             }
         }
@@ -61,8 +62,11 @@ public class PlayerPIckup : MonoBehaviour
 
     public void RemovePickup(PickupController pickup)
     {
+        //Remove Pickup
         pickup_list.Remove(pickup);
         Powerup_ranks[pickup.Type] -= 1;
         deflect_script.UpdatePowerRank(pickup.Type,Powerup_ranks[pickup.Type]);
+        pickup.Pickedup = false;
+        //pickup.Can_move=true;
     }
 }
