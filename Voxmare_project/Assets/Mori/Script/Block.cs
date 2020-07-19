@@ -36,13 +36,14 @@ public abstract class Block : MonoBehaviour
         // link
         this.pairs.Add(block.id);
         block.pairs.Add(this.id);
+        Debug.Log($"Block[id:{this.id}] is linked to block[id:{block.id}].");
     }
 
     /// <summary>
     /// Check if this block can link another one.
     /// </summary>
     /// <returns></returns>
-    bool CheckLinkable(Block block)
+    public bool CheckLinkable(Block block)
     {
         if(pairs.Count >= param.maxPairs)
         {

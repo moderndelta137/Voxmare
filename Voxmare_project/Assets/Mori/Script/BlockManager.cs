@@ -40,9 +40,11 @@ public class BlockManager : MonoBehaviour
         // Link
         if(Input.GetKeyDown(KeyCode.L))
         {
-            Debug.Log("Link block(id:" + blocks[0].id + ") and block(id:" + blocks[1].id + ")");
-            blocks[0].LinkBlockTo(blocks[1]);
-            //Debug.Log("Link block(id:" + blocks[1].id + ") and block(id:" + blocks[2].id + ")");
+            LinkAllBlock();
+            //Debug.Log("Link block(id:" + blocks[0].id + ") and block(id:" + blocks[1].id + ")");
+            //blocks[0].LinkBlockTo(blocks[1]);
+            ////Debug.Log("Link block(id:" + blocks[1].id + ") and block(id:" + blocks[2].id + ")");
+            //blocks[1].LinkBlockTo(blocks[2]);
             //blocks[1].LinkBlockTo(blocks[2]);
         }
 
@@ -80,6 +82,95 @@ public class BlockManager : MonoBehaviour
         }
     }
 
+    void LinkAllBlock()
+    {
+        // Initialization
+        int capacity = 0;                   // how many boss can be linked left
+        var leftBlocks = new List<int>();   // blocks which is not linked to boss yet
+        var bossBlocks = new List<int>();   // blocks which blong to boss
+        var eachCapacity = new List<int>(); // capacities of each block
+
+        foreach (var block in blocks) leftBlocks.Add(block.id);
+        foreach (var block in blocks) eachCapacity.Add(block.param.maxPairs - block.pairs.Count);
+
+        // Start linking blocks from id 0
+        TransferItem(leftBlocks[0], leftBlocks, bossBlocks);
+        capacity += blocks[0].param.maxPairs - blocks[0].pairs.Count;
+
+        while (leftBlocks.Count > 0 && capacity > 0)
+        {
+            int leftBlock = -1;     // target block in left blocks
+            int bossBlock = -1;     // target block in boss blocks
+            int lastBlock = -1;     // last target block in left blocks
+
+            // find good block in left blocks
+            foreach(int idLeft in leftBlocks)
+            {
+                if (capacity + eachCapacity[idLeft] - 2 < 0) continue;
+
+                if (capacity + eachCapacity[idLeft] - 2 == 0)
+                {
+                    lastBlock = idLeft;
+                    continue;
+                }
+
+                leftBlock = idLeft;
+                // find good block from boss blocks
+                foreach (var idBoss in bossBlocks)
+                {
+                    if (!blocks[idBoss].CheckLinkable(blocks[leftBlock]) || !blocks[leftBlock].CheckLinkable(blocks[idBoss])) continue;
+                    
+                    bossBlock = idBoss;
+                    break;
+                }
+
+                if (bossBlock != -1) break;
+            }
+
+            // Cannot find good block
+            if(bossBlock == -1)
+            {
+                // Check last block
+                foreach (var idBoss in bossBlocks)
+                {
+                    if (eachCapacity[idBoss] <= 0) continue;
+                    if (!blocks[idBoss].CheckLinkable(blocks[lastBlock]) || !blocks[lastBlock].CheckLinkable(blocks[idBoss])) continue;
+
+                    bossBlock = idBoss;
+                    break;
+                }
+
+                if (bossBlock == -1) return;
+                leftBlock = lastBlock;
+            }
+
+            // link
+            blocks[bossBlock].LinkBlockTo(blocks[leftBlock]);
+            capacity = capacity + eachCapacity[leftBlock] - 2;
+            eachCapacity[bossBlock]--;
+            eachCapacity[leftBlock]--;
+            TransferItem(leftBlock, leftBlocks, bossBlocks);
+        }
+    }
+
+    /// <summary>
+    /// Transfer item from fromList to toList
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="fromList"></param>
+    /// <param name="toList"></param>
+    void TransferItem(int item, List<int> fromList, List<int> toList)
+    {
+        if(!fromList.Contains(item))
+        {
+            Debug.Log("[Error] cannnot find item in fromList.");
+            return;
+        }
+
+        fromList.Remove(item);
+        toList.Add(item);
+    }
+
     void MoveAllBlock()
     {
         // Initialization
@@ -95,7 +186,6 @@ public class BlockManager : MonoBehaviour
         while (searchStack.Count != 0)
         {
             int current = searchStack.Pop();
-            Debug.Log(current);
             visited[current] = true;
 
             foreach (var nextBlock in blocks[current].pairs)

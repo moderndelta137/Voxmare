@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stdBlock: {fileID: 141527770160313580, guid: 8c9e5f3108cd0e4439b860d9974ed2b1, type: 3}
   atkBlock: {fileID: 1171388605128033997, guid: e16862660582a6d468249756eadafa69, type: 3}
-  generateCount: 2
+  generateCount: 5
 --- !u!4 &611755657
 Transform:
   m_ObjectHideFlags: 0
