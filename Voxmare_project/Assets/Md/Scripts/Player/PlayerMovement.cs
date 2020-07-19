@@ -38,6 +38,10 @@ public class PlayerMovement : MonoBehaviour
     private int knockback_layerMask;
     private Vector3 damage_incoming;
     private Vector3 temp_position;
+    [Header("UI")]
+    public GameObject Health_bar_prefab;
+    private Health_Bar health_bar_script;
+    public Vector3 Health_bar_offset;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +52,10 @@ public class PlayerMovement : MonoBehaviour
         rend = GetComponentInChildren<MeshRenderer>();
         original_mat = rend.material;
         knockback_layerMask = (1 << 9) + (1 << 11);//Check Enemy Layer and Terrian Layer for shooting
+        health_bar_script = Instantiate(Health_bar_prefab,this.transform.position+Health_bar_offset,Quaternion.identity).GetComponent<Health_Bar>();
+        health_bar_script.transform.SetParent(this.transform);
+        health_bar_script.SetMaxHealth(HP);
+        health_bar_script.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -92,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
         HP -= (int)Incoming.magnitude;
+        health_bar_script.SetHealth(HP);
         rend.material = Hit_reaction_mat;
         damage_incoming = Incoming.normalized;
         damage_incoming.y = 0;
@@ -116,6 +125,7 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator Knockback(Vector3 Incoming)
     {
         HP -= (int)Incoming.magnitude;
+        health_bar_script.SetHealth(HP);
         rend.material = Hit_reaction_mat;
         damage_incoming = Incoming.normalized;
         damage_incoming.y = 0;

@@ -18,11 +18,19 @@ public class TestEnemyController : MonoBehaviour
     private Tween myTween;
     private Vector3 hit_reaction_original_position;
     private Vector3 temp_position;
+    [Header("UI")]
+    public GameObject Health_bar_prefab;
+    private Health_Bar health_bar_script;
+    public Vector3 Health_bar_offset;
     // Start is called before the first frame update
     void Start()
     {
         rend = GetComponent<MeshRenderer>();
         original_mat = rend.material;
+        health_bar_script = Instantiate(Health_bar_prefab,this.transform.position+Health_bar_offset,Quaternion.identity).GetComponent<Health_Bar>();
+        health_bar_script.transform.SetParent(this.transform);
+        health_bar_script.SetMaxHealth(HP);
+
     }
 
     // Update is called once per frame
@@ -33,6 +41,8 @@ public class TestEnemyController : MonoBehaviour
 
     public IEnumerator ApplyDamage(Vector3 Incoming)
     {
+        health_bar_script.gameObject.SetActive(true);
+        health_bar_script.SetHealth(HP);
         HP -= (int)Incoming.magnitude;
         rend.material = Hit_reaction_mat;
         if(hit_reacting == 0)
