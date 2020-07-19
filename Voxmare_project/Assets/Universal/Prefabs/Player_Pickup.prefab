@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3598975855745787472
+--- !u!1 &2264443280183166179
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3598975855745787476}
-  - component: {fileID: 3598975855745787479}
-  - component: {fileID: 3598975855745787478}
-  - component: {fileID: 3598975855745787473}
-  - component: {fileID: 1137754768}
-  - component: {fileID: 3598975855745787477}
-  m_Layer: 8
-  m_Name: Player_Pickup
-  m_TagString: Pickup
+  - component: {fileID: 5992041037866078737}
+  - component: {fileID: 6764274914073214710}
+  - component: {fileID: 854770173816293633}
+  m_Layer: 0
+  m_Name: Player_Pickup_Mesh
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3598975855745787476
+--- !u!4 &5992041037866078737
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3598975855745787472}
+  m_GameObject: {fileID: 2264443280183166179}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 8.23, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 3598975855745787476}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!33 &3598975855745787479
+--- !u!33 &6764274914073214710
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3598975855745787472}
+  m_GameObject: {fileID: 2264443280183166179}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &3598975855745787478
+--- !u!23 &854770173816293633
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3598975855745787472}
+  m_GameObject: {fileID: 2264443280183166179}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -84,6 +81,41 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3598975855745787472
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3598975855745787476}
+  - component: {fileID: 3598975855745787473}
+  - component: {fileID: 1137754768}
+  - component: {fileID: 3598975855745787477}
+  - component: {fileID: 1293267466}
+  m_Layer: 8
+  m_Name: Player_Pickup
+  m_TagString: Pickup
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3598975855745787476
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3598975855745787472}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 8.23, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5992041037866078737}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!136 &3598975855745787473
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -131,4 +163,29 @@ MonoBehaviour:
   Pickup_manager: {fileID: 0}
   Hit_reaction_mat: {fileID: 2100000, guid: 14ff9e6e57d5bee4682ee74e146fccf2, type: 2}
   DEBUG_hit_reaction_duration: 0.05
-  DEBUG_hit_reaction_knockback: 1
+  DEBUG_hit_reaction_flinch: 1
+  Lookat_distance: 4.5
+  Lookat_speed: 10
+  Nav_target: {fileID: 0}
+--- !u!195 &1293267466
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3598975855745787472}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 1.5
+  m_Speed: 25
+  m_Acceleration: 1000
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 4
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 2.0000005
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
