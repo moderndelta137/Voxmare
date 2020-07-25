@@ -15,6 +15,9 @@ public class BlockManager : MonoBehaviour
     List<bool> visited;
     Stack<int> searchStack;
 
+    [Header("Link Animation")]
+    [SerializeField] float interval;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -81,41 +84,62 @@ public class BlockManager : MonoBehaviour
 
     IEnumerator LinkAllBlock()
     {
+        Debug.Log("Start LinkAllBlock");
         // Initialization
-        int capacity = 0;                   // how many boss can be linked left
-        var leftBlocks = new List<int>();   // blocks which is not linked to boss yet
+        int bossCapacity = 0;                   // how many boss can be linked left
+        int linkingCount = 0;                   // how many times block is linking in this time
+        bool allBlocksStop = true;
+        var aloneBlocks = new List<int>();   // blocks which is not linked to boss yet
         var bossBlocks = new List<int>();   // blocks which blong to boss
         var eachCapacity = new List<int>(); // capacities of each block
 
-        foreach (var block in blocks) leftBlocks.Add(block.id);
-        foreach (var block in blocks) eachCapacity.Add(block.param.maxPairs - block.GetPairsCount());
-
-        // Start linking blocks from id 0
-        TransferItem(leftBlocks[0], leftBlocks, bossBlocks);
-        capacity += blocks[0].param.maxPairs - blocks[0].GetPairsCount();
-
-        while (leftBlocks.Count > 0 && capacity > 0)
+        foreach (var block in blocks)
         {
-            int leftBlock = -1;     // target block in left blocks
-            int bossBlock = -1;     // target block in boss blocks
-            int lastBlock = -1;     // last target block in left blocks
+            eachCapacity.Add(block.param.maxPairs - block.GetPairsCount());
 
-            // find good block in left blocks
-            foreach(int idLeft in leftBlocks)
+            // ignore a moving block
+            if (block.isMoving)
             {
-                if (capacity + eachCapacity[idLeft] - 2 < 0) continue;
+                allBlocksStop = false;
+                continue;
+            }
 
-                if (capacity + eachCapacity[idLeft] - 2 == 0)
-                {
-                    lastBlock = idLeft;
-                    continue;
-                }
+            // check if the block is alone
+            if (block.isAlone)
+            {
+                aloneBlocks.Add(block.id);
+            }
+            else
+            {
+                bossBlocks.Add(block.id);
+                bossCapacity += block.param.maxPairs - block.GetPairsCount();
+            }
+        }
 
-                leftBlock = idLeft;
+        // if this is first time, block whose id is 0 changes to initial boss block
+        if (bossBlocks.Count == 0)
+        {
+            TransferItem(aloneBlocks[0], aloneBlocks, bossBlocks);
+            bossCapacity += blocks[0].param.maxPairs - blocks[0].GetPairsCount();
+        }
+
+        int bossCapacityBg = bossCapacity;
+        while (bossCapacity > 0)
+        {
+            int aloneBlock = -1;     // target block in alone blocks
+            int bossBlock = -1;     // target block in boss blocks
+
+            // find good block in alone blocks
+            foreach(int idAlone in aloneBlocks)
+            {
+                if (bossCapacityBg + eachCapacity[idAlone] - 2 <= 0) continue;
+
+                aloneBlock = idAlone;
+
                 // find good block from boss blocks
                 foreach (var idBoss in bossBlocks)
                 {
-                    if (!blocks[idBoss].CheckLinkable(blocks[leftBlock]) || !blocks[leftBlock].CheckLinkable(blocks[idBoss])) continue;
+                    if (!blocks[idBoss].CheckLinkable(blocks[aloneBlock]) || !blocks[aloneBlock].CheckLinkable(blocks[idBoss])) continue;
                     
                     bossBlock = idBoss;
                     break;
@@ -125,45 +149,102 @@ public class BlockManager : MonoBehaviour
             }
 
             // Cannot find good block
-            if(bossBlock == -1)
-            {
-                // Check last block
-                foreach (var idBoss in bossBlocks)
-                {
-                    if (eachCapacity[idBoss] <= 0) continue;
-                    if (!blocks[idBoss].CheckLinkable(blocks[lastBlock]) || !blocks[lastBlock].CheckLinkable(blocks[idBoss])) continue;
-
-                    bossBlock = idBoss;
-                    break;
-                }
-
-                if (bossBlock == -1) yield break;
-                leftBlock = lastBlock;
-            }
+            if(bossBlock == -1) break;
 
             // link
-            blocks[bossBlock].LinkBlockTo(blocks[leftBlock]);
+            blocks[bossBlock].LinkBlockTo(blocks[aloneBlock]);
 
             // move
-            blocks[leftBlock].MoveTo(blocks[bossBlock]);
+            blocks[aloneBlock].MoveTo(blocks[bossBlock]);
 
-            // check overlap
-            if(blocks[leftBlock].CheckOverlap())
+            linkingCount++;
+            bossCapacity--;
+            bossCapacityBg = bossCapacityBg + eachCapacity[aloneBlock] - 2;
+            eachCapacity[bossBlock]--;
+            eachCapacity[aloneBlock]--;
+            aloneBlocks.Remove(aloneBlock);
+
+            yield return new WaitForSeconds(interval);
+        }
+
+        // if there is a moving block, retry this coroutine 
+        if (allBlocksStop && linkingCount == 0)
+        {
+            StartCoroutine("LinkLastBlock");
+            yield break;
+        }
+
+        yield return new WaitForSeconds(0.1f);
+        StartCoroutine("LinkAllBlock");
+    }
+
+    IEnumerator LinkLastBlock()
+    {
+        // Initialization
+        int bossCapacity = 0;                   // how many boss can be linked left
+        bool allBlocksStop = true;
+        var aloneBlocks = new List<int>();   // blocks which is not linked to boss yet
+        var bossBlocks = new List<int>();   // blocks which blong to boss
+        var eachCapacity = new List<int>(); // capacities of each block
+
+        foreach (var block in blocks)
+        {
+            eachCapacity.Add(block.param.maxPairs - block.GetPairsCount());
+
+            if (block.isAlone)
             {
-                blocks[bossBlock].AddDummyBlock(blocks[leftBlock]);
-                capacity--;
-                eachCapacity[bossBlock]--;
+                aloneBlocks.Add(block.id);
             }
             else
             {
-                capacity = capacity + eachCapacity[leftBlock] - 2;
-                eachCapacity[bossBlock]--;
-                eachCapacity[leftBlock]--;
-                TransferItem(leftBlock, leftBlocks, bossBlocks);
-                yield return new WaitForSeconds(0.5f);
+                bossBlocks.Add(block.id);
+                bossCapacity += block.param.maxPairs - block.GetPairsCount();
+            }
+        }
+
+        // Wait Animation
+        if(!allBlocksStop)
+        {
+            yield return new WaitForSeconds(0.5f);
+            StartCoroutine("LinkLastBlock");
+            yield break;
+        }
+
+        // Finish condition 1 (Complete linking last block)
+        if (bossCapacity != 1) yield break;
+
+        // Link last block
+        int aloneBlock = -1;     // target block in alone blocks
+        int bossBlock = -1;     // target block in boss blocks
+        foreach (var idAlone in aloneBlocks)
+        {
+            if (eachCapacity[idAlone] != 1) continue;
+
+            aloneBlock = idAlone;
+
+            // Search good block in boss blocks
+            foreach (var idBoss in bossBlocks)
+            {
+                if (eachCapacity[idBoss] <= 0) continue;
+                if (!blocks[idBoss].CheckLinkable(blocks[idAlone]) || !blocks[idAlone].CheckLinkable(blocks[idBoss])) continue;
+
+                bossBlock = idBoss;
+                break;
             }
 
+            if (bossBlock != -1) break;
         }
+
+        // Finish condition 2 (There are no good block)
+        if (bossBlock == -1) yield break;
+
+        // link
+        blocks[bossBlock].LinkBlockTo(blocks[aloneBlock]);
+
+        // move
+        blocks[aloneBlock].MoveTo(blocks[bossBlock]);
+
+        StartCoroutine("LinkLastBlock");
     }
 
     /// <summary>
