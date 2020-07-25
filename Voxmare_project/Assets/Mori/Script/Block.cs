@@ -97,21 +97,4 @@ public abstract class Block : MonoBehaviour
         pairs = new List<int>();
         this.id = idCount++;
     }
-
-    public void Damaged(int point)
-    {
-        this.hp -= point;
-
-        if(this.hp <= 0)
-        {
-            Die();
-        }
-    }
-
-    private void Die()
-    {
-        // implement later
-        // - delete this block
-        // - if blocks are separated then BlockManager re-connects blocks.
-    }
 }
