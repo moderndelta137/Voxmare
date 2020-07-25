@@ -38,18 +38,18 @@ public class BlockManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Link
+        // Link and Move
         if(Input.GetKeyDown(KeyCode.L))
         {
             StartCoroutine("LinkAllBlock");
         }
 
         // Move
-        if(Input.GetKeyDown(KeyCode.M))
-        {
-            Debug.Log("Move");
-            MoveAllBlock();
-        }
+        //if(Input.GetKeyDown(KeyCode.M))
+        //{
+        //    Debug.Log("Move");
+        //    MoveAllBlock();
+        //}
     }
 
     void GenerateBlock(int count)
@@ -88,11 +88,11 @@ public class BlockManager : MonoBehaviour
         var eachCapacity = new List<int>(); // capacities of each block
 
         foreach (var block in blocks) leftBlocks.Add(block.id);
-        foreach (var block in blocks) eachCapacity.Add(block.param.maxPairs - block.pairs.Count);
+        foreach (var block in blocks) eachCapacity.Add(block.param.maxPairs - block.GetPairsCount());
 
         // Start linking blocks from id 0
         TransferItem(leftBlocks[0], leftBlocks, bossBlocks);
-        capacity += blocks[0].param.maxPairs - blocks[0].pairs.Count;
+        capacity += blocks[0].param.maxPairs - blocks[0].GetPairsCount();
 
         while (leftBlocks.Count > 0 && capacity > 0)
         {
@@ -147,9 +147,9 @@ public class BlockManager : MonoBehaviour
             // move
             blocks[leftBlock].MoveTo(blocks[bossBlock]);
 
+            // check overlap
             if(blocks[leftBlock].CheckOverlap())
             {
-                Debug.Log("Overlap:" + leftBlock, blocks[leftBlock]);
                 blocks[bossBlock].AddDummyBlock(blocks[leftBlock]);
                 capacity--;
                 eachCapacity[bossBlock]--;

@@ -38,9 +38,23 @@ public abstract class Block : MonoBehaviour
         // check if this block can be linked to the block
         if (!this.CheckLinkable(block) || !block.CheckLinkable(this)) return;
 
-        // link
-        this.pairs.Add(block.id);
-        block.pairs.Add(this.id);
+        // link at random point
+        var emptyIndex = new List<int>();
+        for (int i = 0; i < pairs.Count; i++)
+        {
+            if (pairs[i] == EMPTYID) emptyIndex.Add(i);
+        }
+        int rand = Random.Range(0, emptyIndex.Count);
+        pairs[emptyIndex[rand]] = block.id;
+
+        emptyIndex.Clear();
+        for (int i = 0; i < block.pairs.Count; i++)
+        {
+            if (block.pairs[i] == EMPTYID) emptyIndex.Add(i);
+        }
+        rand = Random.Range(0, emptyIndex.Count);
+        block.pairs[emptyIndex[rand]] = this.id;
+
         Debug.Log($"Block[id:{this.id}] is linked to block[id:{block.id}].");
     }
 
@@ -50,7 +64,8 @@ public abstract class Block : MonoBehaviour
     /// <returns></returns>
     public bool CheckLinkable(Block block)
     {
-        if(pairs.Count >= param.maxPairs)
+        int count = GetPairsCount();
+        if (count >= param.maxPairs)
         {
             Debug.Log("This Block is full. [ID : " + this.id + " ]");
             return false;
@@ -85,7 +100,7 @@ public abstract class Block : MonoBehaviour
             Debug.Log("Cannnot find the id in the pairs.");
             return;
         }
-        block.pairs.RemoveAt(index);
+        block.pairs[index] = EMPTYID;
     }
 
     public void MoveTo(Block block)
@@ -137,13 +152,27 @@ public abstract class Block : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Get how many blocks link to this block
+    /// </summary>
+    /// <returns>block count</returns>
+    public int GetPairsCount()
+    {
+        int count = 0;
+        foreach (var id in pairs)
+        {
+            if (id != EMPTYID) count++;
+        }
+        return count;
+    }
+
     virtual protected void Start()
     {
         pairs = new List<int>();
-        //for (int i = 0; i < param.maxPairs; i++)
-        //{
-        //    pairs.Add(-1);
-        //}
+        for (int i = 0; i < param.maxPairs; i++)
+        {
+            pairs.Add(EMPTYID);
+        }
         this.id = idCount++;
     }
 
