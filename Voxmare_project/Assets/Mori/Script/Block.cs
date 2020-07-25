@@ -26,6 +26,7 @@ public class Block : MonoBehaviour
     [HideInInspector] public bool isMoving;                       // animating now
     [HideInInspector] public bool isAlone;                        // alone or linking boss
 
+    private BlockManager manager;
     // Method
     void Start()
     {
@@ -45,6 +46,7 @@ public class Block : MonoBehaviour
         id = idCount++;
         isMoving = false;
         isAlone = true;
+        manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
     }
 
     /// <summary>
@@ -220,5 +222,19 @@ public class Block : MonoBehaviour
             if (id != EMPTYID) count++;
         }
         return count;
+    }
+
+    /// <summary>
+    /// Get how many blocks can link to this block left
+    /// </summary>
+    /// <returns>capacity</returns>
+    public int GetCapacity()
+    {
+        return maxPairs - GetPairsCount();
+    }
+
+    public void Death()
+    {
+        manager.DeathBlock(this.id);
     }
 }
