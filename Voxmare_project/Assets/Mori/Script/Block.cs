@@ -10,8 +10,12 @@ public abstract class Block : MonoBehaviour
         STANDARD,
         ATTACK
     }
+    const int EMPTYID = -1;
+    const int DUMMYID = -2;
+
 
     static int idCount = 0;
+
 
 
     // Variable
@@ -61,6 +65,29 @@ public abstract class Block : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Add dummy block at the connectPoint because the position is overlapped by another block
+    /// </summary>
+    /// <param name="block">find the block from pairs and exchange it to dummy block</param>
+    public void AddDummyBlock(Block block)
+    {
+        int index = pairs.FindIndex(id => id == block.id);
+        if(index == -1)
+        {
+            Debug.Log("Cannnot find the id in the pairs.");
+            return;
+        }
+        pairs[index] = DUMMYID;
+
+        index = block.pairs.FindIndex(id => id == this.id);
+        if (index == -1)
+        {
+            Debug.Log("Cannnot find the id in the pairs.");
+            return;
+        }
+        block.pairs.RemoveAt(index);
+    }
+
     public void MoveTo(Block block)
     {
         // Get the connect point in this block
@@ -92,9 +119,32 @@ public abstract class Block : MonoBehaviour
         this.transform.rotation = Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot;
     }
 
+    /// <summary>
+    /// Check if this block overlaps with another block
+    /// </summary>
+    /// <returns>True : overlap, False : not overlap</returns>
+    public bool CheckOverlap()
+    {
+        Vector3 castPos = transform.position + new Vector3(0, 3.0f, 0);
+        RaycastHit[] hits = Physics.BoxCastAll(castPos, transform.localScale * 0.5f - new Vector3(0.1f,0.1f, 0.1f), new Vector3(0, -1, 0), Quaternion.identity, Mathf.Infinity, layerMask: LayerMask.GetMask("Enemy"));
+
+        foreach (var hit in hits)
+        {
+            //Debug.Log("Hit Info: " + hit.collider.name, hit.collider);
+            if (hit.collider.gameObject == this.gameObject) continue;
+            return true;
+        }
+        return false;
+    }
+
     virtual protected void Start()
     {
         pairs = new List<int>();
+        //for (int i = 0; i < param.maxPairs; i++)
+        //{
+        //    pairs.Add(-1);
+        //}
         this.id = idCount++;
     }
+
 }

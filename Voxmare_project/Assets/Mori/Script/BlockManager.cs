@@ -143,15 +143,26 @@ public class BlockManager : MonoBehaviour
 
             // link
             blocks[bossBlock].LinkBlockTo(blocks[leftBlock]);
-            capacity = capacity + eachCapacity[leftBlock] - 2;
-            eachCapacity[bossBlock]--;
-            eachCapacity[leftBlock]--;
-            TransferItem(leftBlock, leftBlocks, bossBlocks);
 
             // move
             blocks[leftBlock].MoveTo(blocks[bossBlock]);
 
-            yield return new WaitForSeconds(0.5f);
+            if(blocks[leftBlock].CheckOverlap())
+            {
+                Debug.Log("Overlap:" + leftBlock, blocks[leftBlock]);
+                blocks[bossBlock].AddDummyBlock(blocks[leftBlock]);
+                capacity--;
+                eachCapacity[bossBlock]--;
+            }
+            else
+            {
+                capacity = capacity + eachCapacity[leftBlock] - 2;
+                eachCapacity[bossBlock]--;
+                eachCapacity[leftBlock]--;
+                TransferItem(leftBlock, leftBlocks, bossBlocks);
+                yield return new WaitForSeconds(0.5f);
+            }
+
         }
     }
 
