@@ -842,12 +842,12 @@ PrefabInstance:
       value: BlockManager
       objectReference: {fileID: 0}
     - target: {fileID: 103419506457627994, guid: 270ff5d085fdf724490a6a8b28945f0c, type: 3}
-      propertyPath: generateCount
-      value: 50
+      propertyPath: moveSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 103419506457627994, guid: 270ff5d085fdf724490a6a8b28945f0c, type: 3}
-      propertyPath: interval
-      value: 0.1
+      propertyPath: generateCount
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 103419506457627995, guid: 270ff5d085fdf724490a6a8b28945f0c, type: 3}
       propertyPath: m_LocalPosition.x

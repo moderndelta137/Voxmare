@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public abstract class Block : MonoBehaviour
+public class Block : MonoBehaviour
 {
     // Static Variable
     public enum BlockType
@@ -11,26 +11,41 @@ public abstract class Block : MonoBehaviour
         STANDARD,
         ATTACK
     }
+
     const int EMPTYID = -1;
     const int DUMMYID = -2;
 
-
     static int idCount = 0;
 
-
-
     // Variable
-    [SerializeField] public SpammerController spammer;
-    [SerializeField] public BlockParameter param;
-
+    [SerializeField] private BlockType blockType;
+    [SerializeField] private List<BlockType> linkableBlockType;
     public int id { get; private set; }         // id is set automatically in Start(). Readonly. (Note: id starts from 0)
-    protected BlockType blockType;              // blockType is set in Child Class's Start().
-    private int hp;                             // HP
-    public List<int> pairs;                     // store pairs by block's id
-    public bool isMoving;                       // animating now
-    public bool isAlone;                        // alone or linking boss
+    [HideInInspector] public int maxPairs;
+    [HideInInspector] public List<int> pairs;                     // store pairs by block's id
+    [HideInInspector] public bool isMoving;                       // animating now
+    [HideInInspector] public bool isAlone;                        // alone or linking boss
 
     // Method
+    void Start()
+    {
+        // Initialize variables
+        maxPairs = 0;
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("ConnectPoint")) maxPairs++;
+        }
+
+        pairs = new List<int>();
+        for (int i = 0; i < maxPairs; i++)
+        {
+            pairs.Add(EMPTYID);
+        }
+
+        id = idCount++;
+        isMoving = false;
+        isAlone = true;
+    }
 
     /// <summary>
     /// This function link this block to target block.
@@ -68,13 +83,13 @@ public abstract class Block : MonoBehaviour
     public bool CheckLinkable(Block block)
     {
         int count = GetPairsCount();
-        if (count >= param.maxPairs)
+        if (count >= maxPairs)
         {
             Debug.Log("This Block is full. [ID : " + this.id + " ]");
             return false;
         }
 
-        if(!param.linkableBlockType.Contains(block.blockType))
+        if(!linkableBlockType.Contains(block.blockType))
         {
             Debug.Log("This Block [Type: " + this.blockType + "] cannot be linked to the block [Type: " + block.blockType + "].");
             return false;
@@ -96,6 +111,7 @@ public abstract class Block : MonoBehaviour
             return;
         }
         pairs[index] = DUMMYID;
+        Debug.Log("Add Dummy to Block[id:" + this.id + "]");
 
         index = block.pairs.FindIndex(id => id == this.id);
         if (index == -1)
@@ -106,7 +122,7 @@ public abstract class Block : MonoBehaviour
         block.pairs[index] = EMPTYID;
     }
 
-    public void MoveTo(Block block)
+    public void MoveTo(Block block, float speed)
     {
         // Get the connect point in this block
         int connectPointIndex = pairs.FindIndex(id => id == block.id);
@@ -115,8 +131,12 @@ public abstract class Block : MonoBehaviour
             Debug.Log("Cannnot find the target block id in the pairs.");
             return;
         }
-        Transform connectPointThis = this.transform.GetChild(connectPointIndex);
-
+        var connectPoints = new List<Transform>();
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("ConnectPoint")) connectPoints.Add(child);
+        }
+        Transform connectPointThis = connectPoints[connectPointIndex];
 
         // Get the connect point in the target block
         connectPointIndex = block.pairs.FindIndex(id => id == this.id);
@@ -125,7 +145,12 @@ public abstract class Block : MonoBehaviour
             Debug.Log("Cannnot find the block id in the taget block's pairs.");
             return;
         }
-        Transform connectPointTarget = block.transform.GetChild(connectPointIndex);
+        connectPoints.Clear();
+        foreach (Transform child in block.transform)
+        {
+            if (child.CompareTag("ConnectPoint")) connectPoints.Add(child);
+        }
+        Transform connectPointTarget = connectPoints[connectPointIndex];
 
         // Move this block
         // Calculate relative position and rotation from Child to Parent
@@ -133,16 +158,19 @@ public abstract class Block : MonoBehaviour
         Quaternion c2pRot = Quaternion.Inverse(connectPointThis.localRotation);
 
         // Move parent's position to a point where both connection points match
-        //this.transform.position = connectPointTarget.position + Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot * c2pPos;
-        //this.transform.rotation = Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot;
+        Vector3 toPosition = connectPointTarget.position + Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot * c2pPos;
+        Vector3 toRotation = (Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot).eulerAngles;
 
+        //transform.position = toPosition;
+        //transform.rotation = Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot;
+        //isAlone = false;
         isMoving = true;
         Sequence seq = DOTween.Sequence();
         seq.Append(
-            this.transform.DOMove(connectPointTarget.position + Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot * c2pPos, 1.0f)
+            this.transform.DOMove(toPosition, speed)
         );
         seq.Join(
-            this.transform.DORotate((Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot).eulerAngles, 1.0f)
+            this.transform.DORotate(toRotation, speed)
         );
         seq.OnComplete(() =>
         {
@@ -168,7 +196,7 @@ public abstract class Block : MonoBehaviour
     public bool CheckOverlap()
     {
         Vector3 castPos = transform.position + new Vector3(0, 3.0f, 0);
-        RaycastHit[] hits = Physics.BoxCastAll(castPos, transform.localScale * 0.5f - new Vector3(0.1f,0.1f, 0.1f), new Vector3(0, -1, 0), Quaternion.identity, Mathf.Infinity, layerMask: LayerMask.GetMask("Enemy"));
+        RaycastHit[] hits = Physics.BoxCastAll(castPos, transform.localScale * 0.5f - new Vector3(0.1f,0.1f, 0.1f), new Vector3(0, -1, 0), Quaternion.identity, Mathf.Infinity, LayerMask.GetMask("Enemy"));
 
         foreach (var hit in hits)
         {
@@ -193,17 +221,4 @@ public abstract class Block : MonoBehaviour
         }
         return count;
     }
-
-    virtual protected void Start()
-    {
-        pairs = new List<int>();
-        for (int i = 0; i < param.maxPairs; i++)
-        {
-            pairs.Add(EMPTYID);
-        }
-        id = idCount++;
-        isMoving = false;
-        isAlone = true;
-    }
-
 }

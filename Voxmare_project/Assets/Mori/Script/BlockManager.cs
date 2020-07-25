@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class BlockManager : MonoBehaviour
 {
-    [SerializeField] GameObject target = null;
     [SerializeField] GameObject stdBlock = null;
     [SerializeField] GameObject atkBlock = null;
 
     [Header("Generate")]
     [SerializeField] int generateCount = 2;
 
-    List<Block> blocks;
-    List<bool> visited;
-    Stack<int> searchStack;
-
     [Header("Link Animation")]
     [SerializeField] float interval;
+    [SerializeField] float moveSpeed;
+
+    List<Block> blocks;
 
     // Start is called before the first frame update
     void Start()
@@ -25,34 +23,16 @@ public class BlockManager : MonoBehaviour
 
         // Generate Blocks
         GenerateBlock(generateCount);
-
-
-        visited = new List<bool>();
-        for (int i = 0; i < blocks.Count; i++)
-        {
-            visited.Add(false);
-        }
-
-        searchStack = new Stack<int>();
-
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Link and Move
         if(Input.GetKeyDown(KeyCode.L))
         {
+            // Link and Move
             StartCoroutine("LinkAllBlock");
         }
-
-        // Move
-        //if(Input.GetKeyDown(KeyCode.M))
-        //{
-        //    Debug.Log("Move");
-        //    MoveAllBlock();
-        //}
     }
 
     void GenerateBlock(int count)
@@ -75,7 +55,6 @@ public class BlockManager : MonoBehaviour
                     return;
             }
 
-            block.GetComponent<Block>().spammer.Target = this.target;
             block.transform.position = new Vector3((i % 10) * 4, 0, i / 10 * 4); // Line up 10 blocks of each row.
 
             blocks.Add(block.GetComponent<Block>());                             // The blocks are ordered by id.
@@ -84,7 +63,6 @@ public class BlockManager : MonoBehaviour
 
     IEnumerator LinkAllBlock()
     {
-        Debug.Log("Start LinkAllBlock");
         // Initialization
         int bossCapacity = 0;                   // how many boss can be linked left
         int linkingCount = 0;                   // how many times block is linking in this time
@@ -95,7 +73,7 @@ public class BlockManager : MonoBehaviour
 
         foreach (var block in blocks)
         {
-            eachCapacity.Add(block.param.maxPairs - block.GetPairsCount());
+            eachCapacity.Add(block.maxPairs - block.GetPairsCount());
 
             // ignore a moving block
             if (block.isMoving)
@@ -112,7 +90,7 @@ public class BlockManager : MonoBehaviour
             else
             {
                 bossBlocks.Add(block.id);
-                bossCapacity += block.param.maxPairs - block.GetPairsCount();
+                bossCapacity += block.maxPairs - block.GetPairsCount();
             }
         }
 
@@ -120,7 +98,8 @@ public class BlockManager : MonoBehaviour
         if (bossBlocks.Count == 0)
         {
             TransferItem(aloneBlocks[0], aloneBlocks, bossBlocks);
-            bossCapacity += blocks[0].param.maxPairs - blocks[0].GetPairsCount();
+            blocks[bossBlocks[0]].isAlone = false;
+            bossCapacity += blocks[0].maxPairs - blocks[0].GetPairsCount();
         }
 
         int bossCapacityBg = bossCapacity;
@@ -155,7 +134,7 @@ public class BlockManager : MonoBehaviour
             blocks[bossBlock].LinkBlockTo(blocks[aloneBlock]);
 
             // move
-            blocks[aloneBlock].MoveTo(blocks[bossBlock]);
+            blocks[aloneBlock].MoveTo(blocks[bossBlock], moveSpeed);
 
             linkingCount++;
             bossCapacity--;
@@ -189,7 +168,7 @@ public class BlockManager : MonoBehaviour
 
         foreach (var block in blocks)
         {
-            eachCapacity.Add(block.param.maxPairs - block.GetPairsCount());
+            eachCapacity.Add(block.maxPairs - block.GetPairsCount());
 
             if (block.isAlone)
             {
@@ -198,7 +177,7 @@ public class BlockManager : MonoBehaviour
             else
             {
                 bossBlocks.Add(block.id);
-                bossCapacity += block.param.maxPairs - block.GetPairsCount();
+                bossCapacity += block.maxPairs - block.GetPairsCount();
             }
         }
 
@@ -242,7 +221,7 @@ public class BlockManager : MonoBehaviour
         blocks[bossBlock].LinkBlockTo(blocks[aloneBlock]);
 
         // move
-        blocks[aloneBlock].MoveTo(blocks[bossBlock]);
+        blocks[aloneBlock].MoveTo(blocks[bossBlock], moveSpeed);
 
         StartCoroutine("LinkLastBlock");
     }
@@ -263,33 +242,5 @@ public class BlockManager : MonoBehaviour
 
         fromList.Remove(item);
         toList.Add(item);
-    }
-
-    void MoveAllBlock()
-    {
-        // Initialization
-        searchStack.Clear();
-        for (int i = 0; i < visited.Count; i++)
-        {
-            visited[i] = false;
-        }
-
-        // Start moving blocks from id 0
-        searchStack.Push(0);
-
-        while (searchStack.Count != 0)
-        {
-            int current = searchStack.Pop();
-            visited[current] = true;
-
-            foreach (var nextBlock in blocks[current].pairs)
-            {
-                if (visited[nextBlock]) continue;
-
-                blocks[nextBlock].MoveTo(blocks[current]);
-
-                searchStack.Push(nextBlock);
-            }
-        }
     }
 }
