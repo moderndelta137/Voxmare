@@ -6,7 +6,5 @@ using UnityEngine;
 public class BlockParameter : ScriptableObject
 {
     public int maxPairs = 4;
-    public int blockPower = 1;
-    public float blockCoolTime = 1.0f;
     public List<Block.BlockType> linkableBlockType;
 }

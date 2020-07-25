@@ -41,12 +41,7 @@ public class BlockManager : MonoBehaviour
         // Link
         if(Input.GetKeyDown(KeyCode.L))
         {
-            LinkAllBlock();
-            //Debug.Log("Link block(id:" + blocks[0].id + ") and block(id:" + blocks[1].id + ")");
-            //blocks[0].LinkBlockTo(blocks[1]);
-            ////Debug.Log("Link block(id:" + blocks[1].id + ") and block(id:" + blocks[2].id + ")");
-            //blocks[1].LinkBlockTo(blocks[2]);
-            //blocks[1].LinkBlockTo(blocks[2]);
+            StartCoroutine("LinkAllBlock");
         }
 
         // Move
@@ -84,7 +79,7 @@ public class BlockManager : MonoBehaviour
         }
     }
 
-    void LinkAllBlock()
+    IEnumerator LinkAllBlock()
     {
         // Initialization
         int capacity = 0;                   // how many boss can be linked left
@@ -142,7 +137,7 @@ public class BlockManager : MonoBehaviour
                     break;
                 }
 
-                if (bossBlock == -1) return;
+                if (bossBlock == -1) yield break;
                 leftBlock = lastBlock;
             }
 
@@ -152,6 +147,11 @@ public class BlockManager : MonoBehaviour
             eachCapacity[bossBlock]--;
             eachCapacity[leftBlock]--;
             TransferItem(leftBlock, leftBlocks, bossBlocks);
+
+            // move
+            blocks[leftBlock].MoveTo(blocks[bossBlock]);
+
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
