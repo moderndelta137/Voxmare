@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class BlockManager : MonoBehaviour
 {
-    [SerializeField] GameObject stdBlock = null;
-    [SerializeField] GameObject atkBlock = null;
-
+    //[SerializeField] GameObject stdBlock = null;
+    //[SerializeField] GameObject atkBlock = null;
+    public List<GameObject> Block_prefabs;
     [Header("Generate")]
     [SerializeField] int generateCount = 2;
 
@@ -45,9 +45,9 @@ public class BlockManager : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            int randomValue = Random.Range(0, (int)Block.BlockType.ATTACK + 1);
+            //int randomValue = Random.Range(0, (int)Block.BlockType.ATTACK + 1);
             GameObject block;
-
+            /*
             switch (randomValue)
             {
                 case 0:
@@ -60,6 +60,8 @@ public class BlockManager : MonoBehaviour
                     Debug.Log("randomValue is out of range.");
                     return;
             }
+            */
+            block = GameObject.Instantiate(Block_prefabs[Random.Range(0,Block_prefabs.Count)]);
 
             block.transform.position = new Vector3((i % 10) * 4, 0, i / 10 * 4); // Line up 10 blocks of each row.
 
