@@ -34,6 +34,11 @@ public class BlockManager : MonoBehaviour
             // Link and Move
             StartCoroutine("LinkAllBlock");
         }
+
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            Debug.Log("Size : " + GetSizeOfLinkingBlock(blocks[0]));
+        }
     }
 
     void GenerateBlock(int count)
@@ -64,6 +69,8 @@ public class BlockManager : MonoBehaviour
 
     IEnumerator LinkAllBlock()
     {
+        if (blocks.Count < 1) yield break;
+
         isLinking = true;
 
         // Initialization
@@ -95,7 +102,7 @@ public class BlockManager : MonoBehaviour
         }
 
         // if this is first time, block whose id is 0 changes to initial boss block
-        if (bossBlocks.Count == 0)
+        if (bossBlocks.Count == 0 && aloneBlocks.Count > 0)
         {
             TransferItem(aloneBlocks[0], aloneBlocks, bossBlocks);
             bossBlocks[0].isAlone = false;
@@ -249,30 +256,123 @@ public class BlockManager : MonoBehaviour
 
     public void DeathBlock(Block block)
     {
-        // Cut linking
-        while(block.GetPairsCount() > 0)
+        // store blocks next to the block
+        var nextBlocks = new List<Block>();
+        foreach (int id in block.pairs)
         {
-            int i = 0;
-            while(block.pairs[i] == Block.EMPTYID)
-            {
-                i++;
-            }
-
-            if(block.pairs[i] == Block.DUMMYID)
-            {
-                block.pairs[i] = Block.EMPTYID;
-            }
-            else
-            {
-                Block pairBlock = blocks.Find(b => b.id == block.pairs[i]);
-                block.CutLinkBlockTo(pairBlock);
-            }
+            if (id == Block.DUMMYID || id == Block.EMPTYID) continue;
+            Block blk = blocks.Find(b => b.id == id);
+            nextBlocks.Add(blk);
         }
 
+        // Cut linking
+        CutLink(block);
         // Remove block from list
         blocks.Remove(block);
 
+        // Find biggest block group
+        if (nextBlocks.Count > 1)
+        {
+            int max = 0;
+            Block maxBlock = null;
+            foreach (Block nextBlock in nextBlocks)
+            {
+                int cnt = GetSizeOfLinkingBlock(nextBlock);
+                if(cnt > max)
+                {
+                    max = cnt;
+                    maxBlock = nextBlock;
+                }
+            }
+
+            foreach (Block nextBlock in nextBlocks)
+            {
+                if (nextBlock == maxBlock) continue;
+                CutLinkBlockGroup(nextBlock);
+            }
+        }
+
         // Restart Linking
         if(!isLinking) StartCoroutine("LinkAllBlock");
+    }
+
+    void CutLink(Block block)
+    {
+        for (int i = 0; i < block.pairs.Count; i++)
+        {
+            switch (block.pairs[i])
+            {
+                case Block.EMPTYID:
+                    continue;
+                    break;
+                case Block.DUMMYID:
+                    block.pairs[i] = Block.EMPTYID;
+                    break;
+                default:
+                    Block pairBlock = blocks.Find(b => b.id == block.pairs[i]);
+                    block.CutLinkBlockTo(pairBlock);
+                    break;
+            }
+        }
+    }
+
+    void CutLinkBlockGroup(Block firstBlock)
+    {
+        // Initialization
+        var visited = new List<int>();
+        var searchStack = new Stack<Block>();
+
+        // Start Depth-first search
+        searchStack.Push(firstBlock);
+
+        while (searchStack.Count != 0)
+        {
+            Block current = searchStack.Pop();
+            visited.Add(current.id);
+
+            foreach (var nextBlockId in current.pairs)
+            {
+                if (nextBlockId == Block.DUMMYID || nextBlockId == Block.EMPTYID) continue;
+                if (visited.Contains(nextBlockId)) continue;
+                Block nextBlock = blocks.Find(b => b.id == nextBlockId);
+                searchStack.Push(nextBlock);
+            }
+
+            CutLink(current);
+            current.isAlone = true;
+        }
+    }
+
+    /// <summary>
+    /// Get the number of blocks in a block group
+    /// </summary>
+    /// <param name="firstBlock">first block to search all blocks in the group</param>
+    /// <returns>the number of blocks</returns>
+    int GetSizeOfLinkingBlock(Block firstBlock)
+    {
+        // Initialization
+        int size = 0;
+        var visited = new List<int>();
+        var searchStack = new Stack<Block>();
+        
+        // Start Depth-first search
+        searchStack.Push(firstBlock);
+
+        while (searchStack.Count != 0)
+        {
+            Block current = searchStack.Pop();
+            visited.Add(current.id);
+            size++;
+
+            foreach (var nextBlockId in current.pairs)
+            {
+                if (nextBlockId == Block.DUMMYID || nextBlockId == Block.EMPTYID) continue;
+                if (visited.Contains(nextBlockId)) continue;
+                Block nextBlock = blocks.Find(b => b.id == nextBlockId);
+                if (nextBlock == null) Debug.Log("[Error] cannot find nextBlock in blocks!");
+                searchStack.Push(nextBlock);
+            }
+        }
+        return size;
     }
 }
