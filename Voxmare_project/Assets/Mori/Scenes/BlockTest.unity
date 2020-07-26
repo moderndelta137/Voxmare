@@ -847,7 +847,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 103419506457627994, guid: 270ff5d085fdf724490a6a8b28945f0c, type: 3}
       propertyPath: generateCount
-      value: 10
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 103419506457627994, guid: 270ff5d085fdf724490a6a8b28945f0c, type: 3}
       propertyPath: stdBlock

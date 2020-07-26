@@ -37,7 +37,7 @@ public class BlockManager : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.C))
         {
-            Debug.Log("Size : " + GetSizeOfLinkingBlock(blocks[0]));
+            Debug.Log("Debug : " + blocks[0]);
         }
     }
 
@@ -118,6 +118,7 @@ public class BlockManager : MonoBehaviour
             // find good block in alone blocks
             foreach(Block aloneB in aloneBlocks)
             {
+                if (aloneB == null) continue;
                 if (bossCapacityBg + aloneB.GetCapacity() - 2 <= 0) continue;
 
                 aloneBlock = aloneB;
@@ -262,7 +263,7 @@ public class BlockManager : MonoBehaviour
         {
             if (id == Block.DUMMYID || id == Block.EMPTYID) continue;
             Block blk = blocks.Find(b => b.id == id);
-            nextBlocks.Add(blk);
+            if(blk != null) nextBlocks.Add(blk);
         }
 
         // if next block is animating, stop it
