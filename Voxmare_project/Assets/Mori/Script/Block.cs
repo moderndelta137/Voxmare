@@ -27,6 +27,7 @@ public class Block : MonoBehaviour
     [HideInInspector] public bool isAlone;                        // alone or linking boss
 
     private BlockManager manager;
+    private Sequence seq;
     // Method
     void Start()
     {
@@ -190,7 +191,7 @@ public class Block : MonoBehaviour
         //transform.rotation = Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot;
         //isAlone = false;
         isMoving = true;
-        Sequence seq = DOTween.Sequence();
+        seq = DOTween.Sequence();
         seq.Append(
             this.transform.DOMove(toPosition, speed)
         );
@@ -212,6 +213,13 @@ public class Block : MonoBehaviour
                 isAlone = false;
             }
         });
+    }
+
+    public void StopMoving()
+    {
+        seq.Kill();
+        isMoving = false;
+        isAlone = true;
     }
 
     /// <summary>
@@ -258,6 +266,7 @@ public class Block : MonoBehaviour
 
     public void Death()
     {
+        StopMoving();
         manager.DeathBlock(this);
     }
 }

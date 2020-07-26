@@ -265,6 +265,12 @@ public class BlockManager : MonoBehaviour
             nextBlocks.Add(blk);
         }
 
+        // if next block is animating, stop it
+        foreach (Block nextBlock in nextBlocks)
+        {
+            if(nextBlock.isMoving) nextBlock.StopMoving();
+        }
+
         // Cut linking
         CutLink(block);
         // Remove block from list
@@ -311,14 +317,13 @@ public class BlockManager : MonoBehaviour
             {
                 case Block.EMPTYID:
                     continue;
-                    break;
                 case Block.DUMMYID:
                     block.pairs[i] = Block.EMPTYID;
-                    break;
+                    continue;
                 default:
                     Block pairBlock = blocks.Find(b => b.id == block.pairs[i]);
                     block.CutLinkBlockTo(pairBlock);
-                    break;
+                    continue;
             }
         }
     }
