@@ -285,10 +285,17 @@ public class BlockManager : MonoBehaviour
                 }
             }
 
+            // reset dummy for the biggest group and cut all link for the other group
             foreach (Block nextBlock in nextBlocks)
             {
-                if (nextBlock == maxBlock) continue;
-                CutLinkBlockGroup(nextBlock);
+                if (nextBlock == maxBlock)
+                {
+                    ResetDummy(nextBlock);
+                }
+                else
+                {
+                    CutLinkBlockGroup(nextBlock);
+                }
             }
         }
 
@@ -374,5 +381,40 @@ public class BlockManager : MonoBehaviour
             }
         }
         return size;
+    }
+
+    void ResetDummy(Block firstBlock)
+    {
+        // Initialization
+        var visited = new List<int>();
+        var searchStack = new Stack<Block>();
+
+        // Start Depth-first search
+        searchStack.Push(firstBlock);
+
+        while (searchStack.Count != 0)
+        {
+            Block current = searchStack.Pop();
+            visited.Add(current.id);
+
+            for (int i = 0; i < current.pairs.Count; i++)
+            {
+                int nextBlockId = current.pairs[i];
+
+                if (nextBlockId == Block.EMPTYID) continue;
+
+                // Change Dummy to Empty
+                if (nextBlockId == Block.DUMMYID)
+                {
+                    current.pairs[i] = Block.EMPTYID;
+                    continue;
+                }
+
+                if (visited.Contains(nextBlockId)) continue;
+                Block nextBlock = blocks.Find(b => b.id == nextBlockId);
+                if (nextBlock == null) Debug.Log("[Error] cannot find nextBlock in blocks!");
+                searchStack.Push(nextBlock);
+            }
+        }
     }
 }
