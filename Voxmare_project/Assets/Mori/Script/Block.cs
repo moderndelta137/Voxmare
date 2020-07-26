@@ -12,8 +12,8 @@ public class Block : MonoBehaviour
         ATTACK
     }
 
-    const int EMPTYID = -1;
-    const int DUMMYID = -2;
+    public const int EMPTYID = -1;
+    public const int DUMMYID = -2;
 
     static int idCount = 0;
 
@@ -76,6 +76,29 @@ public class Block : MonoBehaviour
         block.pairs[emptyIndex[rand]] = this.id;
 
         Debug.Log($"Block[id:{this.id}] is linked to block[id:{block.id}].");
+    }
+
+    /// <summary>
+    /// Cut block linking
+    /// </summary>
+    /// <param name="block"></param>
+    public void CutLinkBlockTo(Block block)
+    {
+        int index = pairs.FindIndex(id => id == block.id);
+        if (index == -1)
+        {
+            Debug.Log("Cannnot find the id in the pairs.");
+            return;
+        }
+        pairs[index] = EMPTYID;
+
+        index = block.pairs.FindIndex(id => id == this.id);
+        if (index == -1)
+        {
+            Debug.Log("Cannnot find the id in the pairs.");
+            return;
+        }
+        block.pairs[index] = EMPTYID;
     }
 
     /// <summary>
@@ -235,6 +258,6 @@ public class Block : MonoBehaviour
 
     public void Death()
     {
-        manager.DeathBlock(this.id);
+        manager.DeathBlock(this);
     }
 }

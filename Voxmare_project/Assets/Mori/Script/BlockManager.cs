@@ -15,12 +15,13 @@ public class BlockManager : MonoBehaviour
     [SerializeField] float moveSpeed;
 
     public List<Block> blocks;
+    private bool isLinking;
 
     // Start is called before the first frame update
     void Start()
     {
         blocks = new List<Block>();
-
+        isLinking = false;
         // Generate Blocks
         GenerateBlock(generateCount);
     }
@@ -63,6 +64,8 @@ public class BlockManager : MonoBehaviour
 
     IEnumerator LinkAllBlock()
     {
+        isLinking = true;
+
         // Initialization
         int bossCapacity = 0;                   // how many boss can be linked left
         int linkingCount = 0;                   // how many times block is linking in this time
@@ -182,7 +185,11 @@ public class BlockManager : MonoBehaviour
         }
 
         // Finish condition 1 (Complete linking last block)
-        if (bossCapacity != 1) yield break;
+        if (bossCapacity != 1)
+        {
+            isLinking = false;
+            yield break;
+        }
 
         // Link last block
         Block aloneBlock = null;     // target block in alone blocks
@@ -207,7 +214,11 @@ public class BlockManager : MonoBehaviour
         }
 
         // Finish condition 2 (There are no good block)
-        if (bossBlock == null) yield break;
+        if (bossBlock == null)
+        {
+            isLinking = false;
+            yield break;
+        }
 
         // link
         bossBlock.LinkBlockTo(aloneBlock);
@@ -236,9 +247,32 @@ public class BlockManager : MonoBehaviour
         toList.Add(item);
     }
 
-    public void DeathBlock(int id)
+    public void DeathBlock(Block block)
     {
-        int index = blocks.FindIndex(block => block.id == id);
-        blocks.RemoveAt(index);
+        // Cut linking
+        while(block.GetPairsCount() > 0)
+        {
+            int i = 0;
+            while(block.pairs[i] == Block.EMPTYID)
+            {
+                i++;
+            }
+
+            if(block.pairs[i] == Block.DUMMYID)
+            {
+                block.pairs[i] = Block.EMPTYID;
+            }
+            else
+            {
+                Block pairBlock = blocks.Find(b => b.id == block.pairs[i]);
+                block.CutLinkBlockTo(pairBlock);
+            }
+        }
+
+        // Remove block from list
+        blocks.Remove(block);
+
+        // Restart Linking
+        if(!isLinking) StartCoroutine("LinkAllBlock");
     }
 }
