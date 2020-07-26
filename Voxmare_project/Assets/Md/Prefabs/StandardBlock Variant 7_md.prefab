@@ -121,9 +121,17 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 3264004436800886407, guid: c8e7fee4812b47e48b20d7435ca4fe49, type: 3}
+    - target: {fileID: 4788241957152964777, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
+      propertyPath: linkableBlockType.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4788241957152964777, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
+      propertyPath: linkableBlockType.Array.data[2]
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5841314703671143113, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
       propertyPath: m_Name
-      value: StandardBlock Variant 7
+      value: StandardBlock Variant 7_md
       objectReference: {fileID: 0}
     - target: {fileID: 5841314703671143126, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
       propertyPath: m_LocalPosition.x

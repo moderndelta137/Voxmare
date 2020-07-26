@@ -190,13 +190,17 @@ PrefabInstance:
       propertyPath: m_Size.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4788241957152964777, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
+      propertyPath: blockType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5829428164887484539, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 5841314703671143113, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
       propertyPath: m_Name
-      value: StandardBlock Variant 4
+      value: StandardBlock Variant 4_md
       objectReference: {fileID: 0}
     - target: {fileID: 5841314703671143126, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
       propertyPath: m_LocalPosition.x

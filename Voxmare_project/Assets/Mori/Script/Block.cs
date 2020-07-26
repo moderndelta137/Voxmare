@@ -9,12 +9,11 @@ public class Block : MonoBehaviour
     public enum BlockType
     {
         STANDARD,
-        ATTACK
+        ATTACK,
+        SPHERE
     }
-
     public const int EMPTYID = -1;
     public const int DUMMYID = -2;
-
     static int idCount = 0;
 
     // Variable
@@ -26,8 +25,19 @@ public class Block : MonoBehaviour
     [HideInInspector] public bool isMoving;                       // animating now
     [HideInInspector] public bool isAlone;                        // alone or linking boss
 
+    // Boss Animation
+    public float distance;
+    public float duration;
+    public Ease ease;
+    private Tween idleTween;
+
     private BlockManager manager;
-    private Sequence seq;
+    private Sequence movingSeqence;
+    private Block parent;
+
+    // DEBUG
+    bool DEBUG_MODE = false;
+
     // Method
     void Start()
     {
@@ -76,7 +86,10 @@ public class Block : MonoBehaviour
         rand = Random.Range(0, emptyIndex.Count);
         block.pairs[emptyIndex[rand]] = this.id;
 
-        Debug.Log($"Block[id:{this.id}] is linked to block[id:{block.id}].");
+        // set parent
+        parent = block;
+        
+        if(DEBUG_MODE) Debug.Log($"Block[id:{this.id}] is linked to block[id:{block.id}].");
     }
 
     /// <summary>
@@ -85,6 +98,8 @@ public class Block : MonoBehaviour
     /// <param name="block"></param>
     public void CutLinkBlockTo(Block block)
     {
+        if (block == parent) parent = null;
+
         int index = pairs.FindIndex(id => id == block.id);
         if (index == -1)
         {
@@ -111,13 +126,13 @@ public class Block : MonoBehaviour
         int count = GetPairsCount();
         if (count >= maxPairs)
         {
-            Debug.Log("This Block is full. [ID : " + this.id + " ]");
+            if(DEBUG_MODE) Debug.Log("This Block is full. [ID : " + this.id + " ]");
             return false;
         }
 
         if(!linkableBlockType.Contains(block.blockType))
         {
-            Debug.Log("This Block [Type: " + this.blockType + "] cannot be linked to the block [Type: " + block.blockType + "].");
+            if(DEBUG_MODE) Debug.Log("This Block [Type: " + this.blockType + "] cannot be linked to the block [Type: " + block.blockType + "].");
             return false;
         }
 
@@ -137,7 +152,8 @@ public class Block : MonoBehaviour
             return;
         }
         pairs[index] = DUMMYID;
-        Debug.Log("Add Dummy to Block[id:" + this.id + "]");
+        
+        if(DEBUG_MODE) Debug.Log("Add Dummy to Block[id:" + this.id + "]");
 
         index = block.pairs.FindIndex(id => id == this.id);
         if (index == -1)
@@ -150,35 +166,10 @@ public class Block : MonoBehaviour
 
     public void MoveTo(Block block, float speed)
     {
-        // Get the connect point in this block
-        int connectPointIndex = pairs.FindIndex(id => id == block.id);
-        if(connectPointIndex == -1)
-        {
-            Debug.Log("Cannnot find the target block id in the pairs.");
-            return;
-        }
-        var connectPoints = new List<Transform>();
-        foreach (Transform child in transform)
-        {
-            if (child.CompareTag("ConnectPoint")) connectPoints.Add(child);
-        }
-        Transform connectPointThis = connectPoints[connectPointIndex];
+        
+        Transform connectPointThis = GetConnectPoint(this, block.id);   // Get the connect point in this block
+        Transform connectPointTarget = GetConnectPoint(block, this.id); // Get the connect point in the target block
 
-        // Get the connect point in the target block
-        connectPointIndex = block.pairs.FindIndex(id => id == this.id);
-        if (connectPointIndex == -1)
-        {
-            Debug.Log("Cannnot find the block id in the taget block's pairs.");
-            return;
-        }
-        connectPoints.Clear();
-        foreach (Transform child in block.transform)
-        {
-            if (child.CompareTag("ConnectPoint")) connectPoints.Add(child);
-        }
-        Transform connectPointTarget = connectPoints[connectPointIndex];
-
-        // Move this block
         // Calculate relative position and rotation from Child to Parent
         Vector3 c2pPos = - connectPointThis.localPosition;
         Quaternion c2pRot = Quaternion.Inverse(connectPointThis.localRotation);
@@ -187,18 +178,15 @@ public class Block : MonoBehaviour
         Vector3 toPosition = connectPointTarget.position + Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot * c2pPos;
         Vector3 toRotation = (Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot).eulerAngles;
 
-        //transform.position = toPosition;
-        //transform.rotation = Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot;
-        //isAlone = false;
         isMoving = true;
-        seq = DOTween.Sequence();
-        seq.Append(
+        movingSeqence = DOTween.Sequence();
+        movingSeqence.Append(
             this.transform.DOMove(toPosition, speed)
         );
-        seq.Join(
+        movingSeqence.Join(
             this.transform.DORotate(toRotation, speed)
         );
-        seq.OnComplete(() =>
+        movingSeqence.OnComplete(() =>
         {
             isMoving = false;
 
@@ -211,13 +199,39 @@ public class Block : MonoBehaviour
             else
             {
                 isAlone = false;
+
+                Transform point = GetConnectPoint(this, parent.id);
+                idleTween = point.DOLocalMoveZ(point.localPosition.z + distance, duration).SetEase(ease).SetLoops(-1, LoopType.Yoyo);
+                idleTween.Pause();
             }
         });
     }
 
+    /// <summary>
+    /// Get connect point's transform
+    /// </summary>
+    /// <param name="block">block which has connect points</param>
+    /// <param name="id">target block's id</param>
+    /// <returns>connect point's transform</returns>
+    private Transform GetConnectPoint(Block block, int id)
+    {
+        int connectPointIndex = block.pairs.FindIndex(i => i == id);
+        if (connectPointIndex == -1)
+        {
+            Debug.Log("Cannnot find the target block id in the pairs.");
+            return null;
+        }
+        var connectPoints = new List<Transform>();
+        foreach (Transform child in block.GetComponent<Transform>())
+        {
+            if (child.CompareTag("ConnectPoint")) connectPoints.Add(child);
+        }
+        return connectPoints[connectPointIndex];
+    }
+
     public void StopMoving()
     {
-        seq.Kill();
+        movingSeqence.Kill();
         isMoving = false;
         isAlone = true;
     }
@@ -229,7 +243,7 @@ public class Block : MonoBehaviour
     public bool CheckOverlap()
     {
         Vector3 castPos = transform.position + new Vector3(0, 3.0f, 0);
-        RaycastHit[] hits = Physics.BoxCastAll(castPos, transform.localScale * 0.5f - new Vector3(0.1f,0.1f, 0.1f), new Vector3(0, -1, 0), Quaternion.identity, Mathf.Infinity, LayerMask.GetMask("Enemy"));
+        RaycastHit[] hits = Physics.BoxCastAll(castPos, transform.localScale * 0.5f - new Vector3(manager.overlapMargin, manager.overlapMargin, manager.overlapMargin), new Vector3(0, -1, 0), Quaternion.identity, Mathf.Infinity, LayerMask.GetMask("Enemy"));
 
         foreach (var hit in hits)
         {
@@ -268,5 +282,42 @@ public class Block : MonoBehaviour
     {
         StopMoving();
         manager.DeathBlock(this);
+    }
+
+    /*--------------------------------------- 
+     *  Animation 
+     * ------------------------------------*/
+
+    void Update()
+    {
+        if (!isAlone && !isMoving)
+        {
+            FollowParent();
+            idleTween.Play();
+        }
+        else
+        {
+            idleTween.Pause();
+        }
+
+    }
+
+    void FollowParent()
+    {
+        if (parent == null) return;
+
+        Transform connectPointThis = GetConnectPoint(this, parent.id);
+        Transform connectPointTarget = GetConnectPoint(parent, this.id);
+
+        // Calculate relative position and rotation from Child to Parent
+        Vector3 c2pPos = -connectPointThis.localPosition;
+        Quaternion c2pRot = Quaternion.Inverse(connectPointThis.localRotation);
+
+        // Move parent's position to a point where both connection points match
+        Vector3 toPosition = connectPointTarget.position + Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot * c2pPos;
+        Quaternion toRotation = Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot;
+
+        transform.position = toPosition;
+        transform.rotation = toRotation;
     }
 }

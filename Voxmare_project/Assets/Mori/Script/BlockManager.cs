@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class BlockManager : MonoBehaviour
 {
@@ -10,9 +11,15 @@ public class BlockManager : MonoBehaviour
     [Header("Generate")]
     [SerializeField] int generateCount = 2;
 
-    [Header("Link Animation")]
+    [Header("Link")]
+    [SerializeField] public float overlapMargin;
     [SerializeField] float interval;
     [SerializeField] float moveSpeed;
+
+    [Header("Boss Animation")]
+    [SerializeField] float distance = 0.01f;
+    [SerializeField] float duration = 0.5f;
+    [SerializeField] Ease ease = Ease.Linear;
 
     public List<Block> blocks;
     private bool isLinking;
@@ -45,27 +52,16 @@ public class BlockManager : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            //int randomValue = Random.Range(0, (int)Block.BlockType.ATTACK + 1);
             GameObject block;
-            /*
-            switch (randomValue)
-            {
-                case 0:
-                    block = GameObject.Instantiate(stdBlock);
-                    break;
-                case 1:
-                    block = GameObject.Instantiate(atkBlock);
-                    break;
-                default:
-                    Debug.Log("randomValue is out of range.");
-                    return;
-            }
-            */
             block = GameObject.Instantiate(Block_prefabs[Random.Range(0,Block_prefabs.Count)]);
 
             block.transform.position = new Vector3((i % 10) * 4, 0, i / 10 * 4); // Line up 10 blocks of each row.
 
-            blocks.Add(block.GetComponent<Block>());                             // The blocks are ordered by id.
+            Block b = block.GetComponent<Block>();
+            b.distance = distance;
+            b.duration = duration;
+            b.ease = ease;
+            blocks.Add(b);                             // The blocks are ordered by id.
         }
     }
 
@@ -141,7 +137,7 @@ public class BlockManager : MonoBehaviour
             if(bossBlock == null) break;
 
             // link
-            bossBlock.LinkBlockTo(aloneBlock);
+            aloneBlock.LinkBlockTo(bossBlock);
 
             // move
             aloneBlock.MoveTo(bossBlock, moveSpeed);

@@ -17,11 +17,15 @@ PrefabInstance:
       objectReference: {fileID: 8324552146186325054, guid: 9896c60ba0448384a84eb8673d41abae, type: 3}
     - target: {fileID: 4788241957152964777, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
       propertyPath: linkableBlockType.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4788241957152964777, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
       propertyPath: blockType
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4788241957152964777, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
+      propertyPath: linkableBlockType.Array.data[1]
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5841314703671143113, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
       propertyPath: m_Name
