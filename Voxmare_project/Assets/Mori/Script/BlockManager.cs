@@ -21,7 +21,14 @@ public class BlockManager : MonoBehaviour
     [SerializeField] float duration = 0.5f;
     [SerializeField] Ease ease = Ease.Linear;
 
+    [Header("Alone Animation")]
+    public float radius;
+    public float rotateSpeed;
+    public float speed;
+    public float fluctuation;
+
     public List<Block> blocks;
+    public Vector3 center;
     private bool isLinking;
 
     // Start is called before the first frame update
@@ -36,6 +43,8 @@ public class BlockManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CalcCenter();
+
         if(Input.GetKeyDown(KeyCode.L))
         {
             // Link and Move
@@ -45,6 +54,24 @@ public class BlockManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.C))
         {
             Debug.Log("Debug : " + blocks[0]);
+        }
+    }
+
+    void CalcCenter()
+    {
+        Vector3 sum = Vector3.zero;
+        foreach (Block block in blocks)
+        {
+            if(!block.isAlone && !block.isMoving) sum += block.GetComponent<Transform>().position;
+        }
+
+        if (blocks.Count == 0)
+        {
+            center = Vector3.zero;
+        }
+        else
+        {
+            center = sum / blocks.Count;
         }
     }
 
@@ -272,6 +299,7 @@ public class BlockManager : MonoBehaviour
 
         // Cut linking
         CutLink(block);
+        block.isAlone = true;
         // Remove block from list
         blocks.Remove(block);
 

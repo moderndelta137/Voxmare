@@ -12,6 +12,7 @@ public class Block : MonoBehaviour
         ATTACK,
         SPHERE
     }
+
     public const int EMPTYID = -1;
     public const int DUMMYID = -2;
     static int idCount = 0;
@@ -21,15 +22,18 @@ public class Block : MonoBehaviour
     [SerializeField] private List<BlockType> linkableBlockType;
     public int id { get; private set; }         // id is set automatically in Start(). Readonly. (Note: id starts from 0)
     [HideInInspector] public int maxPairs;
-    [HideInInspector] public List<int> pairs;                     // store pairs by block's id
-    [HideInInspector] public bool isMoving;                       // animating now
-    [HideInInspector] public bool isAlone;                        // alone or linking boss
+    public List<int> pairs;                     // store pairs by block's id
+    public bool isMoving;                       // animating now
+    public bool isAlone;                        // alone or linking boss
 
     // Boss Animation
     public float distance;
     public float duration;
     public Ease ease;
     private Tween idleTween;
+
+    // Alone Animation
+    private float randomSeed;
 
     private BlockManager manager;
     private Sequence movingSeqence;
@@ -58,6 +62,7 @@ public class Block : MonoBehaviour
         isMoving = false;
         isAlone = true;
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
+        randomSeed = Random.value;
     }
 
     /// <summary>
@@ -99,6 +104,7 @@ public class Block : MonoBehaviour
     public void CutLinkBlockTo(Block block)
     {
         if (block == parent) parent = null;
+        if (block.parent == this) block.parent = null;
 
         int index = pairs.FindIndex(id => id == block.id);
         if (index == -1)
@@ -115,6 +121,9 @@ public class Block : MonoBehaviour
             return;
         }
         block.pairs[index] = EMPTYID;
+
+        if (GetPairsCount() == 0) isAlone = true;
+        if (block.GetPairsCount() == 0) block.isAlone = true;
     }
 
     /// <summary>
@@ -249,7 +258,8 @@ public class Block : MonoBehaviour
         {
             //Debug.Log("Hit Info: " + hit.collider.name, hit.collider);
             if (hit.collider.gameObject == this.gameObject) continue;       // ignore myself
-            if (hit.collider.GetComponent<Block>().isMoving) continue;      // ignore moving block
+            Block b = hit.collider.GetComponent<Block>();
+            if (b.isMoving || b.isAlone) continue;      // ignore moving block
             return true;
         }
         return false;
@@ -294,6 +304,22 @@ public class Block : MonoBehaviour
         {
             FollowParent();
             idleTween.Play();
+        }
+        // when block is alone
+        else if(isAlone && !isMoving)
+        {
+            idleTween.Pause();
+            float radius = manager.radius + manager.fluctuation * (Mathf.PerlinNoise(Time.time * manager.rotateSpeed, randomSeed * 255) - 0.5f);
+            float theta = Time.time * manager.rotateSpeed + randomSeed * 2 * Mathf.PI / manager.rotateSpeed;
+
+            float x = radius * Mathf.Sin(theta);
+            float y = transform.position.y;
+            float z = radius * Mathf.Cos(theta);
+
+            Vector3 toPos = manager.center + new Vector3(x, y, z);
+            Vector3 toVec = (toPos - transform.position);
+            transform.position += toVec * manager.speed;
+            //transform.position = toPos;
         }
         else
         {
