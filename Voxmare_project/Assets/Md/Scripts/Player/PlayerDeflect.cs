@@ -20,23 +20,23 @@ public class PlayerDeflect : MonoBehaviour
 
     [Header("Deflect Effect")]
     public bool Velocity_bonus;//Increase bullet velocity after deflection
-    public float[] Velocity_bonus_scale;//TODO
+    public float[] Velocity_bonus_scale;
     public bool Spray_bonus;//Apply penetrate effect on bullet after deflection
-    public int[] Spray_count;//TODO
-    public float[] Spray_range;//TODO
+    public int[] Spray_count;
+    public float[] Spray_range;
     private float spray_rotate;
     private GameObject spray_instance;
     public bool Penetrate_bonus;//Apply penetrate effect on bullet after deflection
-    public float[] Penetrate_lifespan;//TODO
+    public float[] Penetrate_lifespan;
     public bool Homing_bonus;//Apply homing effect on bullet after deflection
     private int homing_layerMask;
     public float Homing_cast_radius;
-    public float[] Homing_rotation_speed;//TODO
+    public float[] Homing_rotation_speed;
     private RaycastHit homing_hit;
     public bool Reflect_bonus;//Apply reflect effect on bullet after deflection
-    public float[] Reflect_lifespan; //TODO
+    public float[] Reflect_lifespan; 
     public bool Cluster_bonus;//Apply cluster effect on bullet after deflection
-    public float[] Cluster_radius; //TODO
+    public float[] Cluster_radius; 
 
     [Header("Effect Rank")]
     public int Radius_rank;
@@ -46,9 +46,13 @@ public class PlayerDeflect : MonoBehaviour
     public int Cluster_rank;
     public int Homing_rank;
     public int Spray_rank;
+
+    [Header("Animation")]
+    private Animator player_animator;
     // Start is called before the first frame update
     void Start()
     {
+        player_animator = this.transform.parent.GetComponentInChildren<Animator>();
         bullet_layerMask = 1 << 10;//Check Bullet Layer
         homing_layerMask = 1 << 9;
         shoot_layerMask = (1 << 9) + (1 << 11);//Check Enemy Layer and Terrian Layer for shooting
@@ -58,10 +62,10 @@ public class PlayerDeflect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
         if(Input.GetButtonDown("Fire1"))
         {        
+            //Update Animation
+            player_animator.SetTrigger("Deflect");
             Bullet_list.Clear();
             hits=null;
             hits=Physics.SphereCastAll(this.transform.position, Boundary_radius[Radius_rank], Vector3.up, 0, bullet_layerMask);
@@ -156,6 +160,12 @@ public class PlayerDeflect : MonoBehaviour
     {
         this.transform.localScale = Vector3.one * Boundary_radius[Radius_rank] * Boundary_mesh_scaler;
     }
+
+    public void RankupAnimation()
+    {
+        player_animator.SetTrigger("Rankup");
+    }
+
     public void UpdatePowerRank(int type, int rank)
     {
         switch(type)

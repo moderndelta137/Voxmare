@@ -55,6 +55,7 @@ public class PlayerPIckup : MonoBehaviour
                     pickup_list.Add(pickup_script);
                     Powerup_ranks[pickup_script.Type] += 1;
                     deflect_script.UpdatePowerRank(pickup_script.Type,Powerup_ranks[pickup_script.Type]);
+                    deflect_script.RankupAnimation();
                 }
             }
         }

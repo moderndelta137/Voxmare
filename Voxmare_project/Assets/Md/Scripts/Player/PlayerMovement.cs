@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("General Control")]
     public bool Mouse_control;
-    public CharacterController Player_CC;
+    public CharacterController Player_CharacterController;
     public Camera Main_camera;
     public float Move_speed;
     public float Rotate_speed;
@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     private Ray mouse_ray;
     private float mouse_plane_distance;
     private Vector3 mouse_world_position;
+    private Vector3 mouse_direction_vector;
     [Header("Player Parameter")]
     public int HP;
     [Header("Hit Reaction")]
@@ -38,6 +39,10 @@ public class PlayerMovement : MonoBehaviour
     private int knockback_layerMask;
     private Vector3 damage_incoming;
     private Vector3 temp_position;
+
+    [Header("Animation")]
+    private Animator player_animator;
+
     [Header("UI")]
     public GameObject Health_bar_prefab;
     private Health_Bar health_bar_script;
@@ -45,13 +50,16 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Player_CC=GetComponent<CharacterController>();
+        Player_CharacterController = GetComponent<CharacterController>();
         Main_camera=Camera.main;
         if(Mouse_control)
             InitiateMouseControl();
         rend = GetComponentInChildren<MeshRenderer>();
         original_mat = rend.material;
         knockback_layerMask = (1 << 9) + (1 << 11);//Check Enemy Layer and Terrian Layer for shooting
+
+        player_animator = GetComponentInChildren<Animator>();
+
         health_bar_script = Instantiate(Health_bar_prefab,this.transform.position+Health_bar_offset,Quaternion.identity).GetComponent<Health_Bar>();
         health_bar_script.transform.SetParent(this.transform);
         health_bar_script.SetMaxHealth(HP);
@@ -66,7 +74,11 @@ public class PlayerMovement : MonoBehaviour
         move_input_vector.z = Input.GetAxis("Vertical");
         Vector3.ClampMagnitude(move_input_vector,1.0f);
         if(move_input_vector.magnitude>0)
-            Player_CC.Move(move_input_vector*Move_speed*Time.deltaTime);
+        {
+            Player_CharacterController.Move(move_input_vector*Move_speed*Time.deltaTime);
+            player_animator.SetFloat("Move_Y", Vector3.Dot(move_input_vector,this.transform.forward));
+            player_animator.SetFloat("Move_X", Vector3.Dot(move_input_vector,this.transform.right));
+        }
 
         //Rotation
         if(Mouse_control)
@@ -77,17 +89,24 @@ public class PlayerMovement : MonoBehaviour
             {
                 mouse_world_position = mouse_ray.GetPoint(mouse_plane_distance);
                 Mouse_cursor.transform.position = mouse_world_position;
-                look_input_vector = mouse_world_position - this.transform.position;
+                mouse_direction_vector = mouse_world_position - this.transform.position;
+                look_input_vector = mouse_direction_vector.normalized-this.transform.forward;
+                if(look_input_vector.magnitude>0.1f)
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mouse_direction_vector), Rotate_speed*Time.deltaTime);
             }
 
         }
         else
         {
-        look_input_vector.x = Input.GetAxis("Look_Horizontal");
-        look_input_vector.z = Input.GetAxis("Look_Vertical");
+            look_input_vector.x = Input.GetAxis("Look_Horizontal");
+            look_input_vector.z = Input.GetAxis("Look_Vertical");
+            if(look_input_vector.magnitude>0.1f)
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(look_input_vector), Rotate_speed*Time.deltaTime);
         }
-        if(look_input_vector.magnitude>0.2f)
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(look_input_vector), Rotate_speed*Time.deltaTime);
+
+        //Update Movement animation
+        player_animator.SetFloat("Move_input",move_input_vector.magnitude);
+        player_animator.SetFloat("Look_input",look_input_vector.magnitude);
     }
 
     public void InitiateMouseControl()
@@ -109,6 +128,9 @@ public class PlayerMovement : MonoBehaviour
             hit_reaction_original_position = this.transform.position;
         }
         hit_reacting += 1;
+
+        //Update animation
+        player_animator.SetTrigger("Hit");
         myTween = this.transform.DOMove(this.transform.position + damage_incoming * DEBUG_hit_reaction_flinch, DEBUG_hit_reaction_duration);
         yield return myTween.WaitForCompletion();
         myTween = this.transform.DOMove(hit_reaction_original_position, DEBUG_hit_reaction_duration);
