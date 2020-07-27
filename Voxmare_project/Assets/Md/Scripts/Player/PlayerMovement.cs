@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Hit Reaction")]
     public Material Hit_reaction_mat;
     private Material original_mat;
-    private MeshRenderer rend;
+    private SkinnedMeshRenderer rend;
     public float DEBUG_hit_reaction_duration;
     public float DEBUG_hit_reaction_flinch;
     private int hit_reacting;
@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
         Main_camera=Camera.main;
         if(Mouse_control)
             InitiateMouseControl();
-        rend = GetComponentInChildren<MeshRenderer>();
+        rend = GetComponentInChildren<SkinnedMeshRenderer>();
         original_mat = rend.material;
         knockback_layerMask = (1 << 9) + (1 << 11);//Check Enemy Layer and Terrian Layer for shooting
 
