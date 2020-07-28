@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerDeflect : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class PlayerDeflect : MonoBehaviour
     private RaycastHit[] hits;
 
     [Header("Shoot")]
+    public bool Can_deflect;
+    public float Deflect_cooldown;
+    public float DEBUG_cooldown_scale_duration;
     private RaycastHit hit;
     private int shoot_layerMask;
     private Vector3 shoot_vector;
@@ -49,6 +53,7 @@ public class PlayerDeflect : MonoBehaviour
 
     [Header("Animation")]
     private Animator player_animator;
+    private PlayerPickup pickup_zone_script;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,6 +62,8 @@ public class PlayerDeflect : MonoBehaviour
         homing_layerMask = 1 << 9;
         shoot_layerMask = (1 << 9) + (1 << 11);//Check Enemy Layer and Terrian Layer for shooting
         UpdateBoundryRadius();
+        Can_deflect = true;
+        pickup_zone_script = this.transform.parent.GetComponentInChildren<PlayerPickup>();
     }
 
     // Update is called once per frame
@@ -64,66 +71,40 @@ public class PlayerDeflect : MonoBehaviour
     {
         if(Input.GetButtonDown("Fire1"))
         {        
-            //Update Animation
-            player_animator.SetTrigger("Deflect");
-            Bullet_list.Clear();
-            hits=null;
-            hits=Physics.SphereCastAll(this.transform.position, Boundary_radius[Radius_rank], Vector3.up, 0, bullet_layerMask);
-            Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, shoot_layerMask);
-            foreach(RaycastHit bullet in hits)
+            if(Can_deflect)
             {
-                if(bullet.transform.CompareTag("Bullet"))
-                {            
-                    bullet_instance=bullet.transform.GetComponent<BulletController>();
-                    if(bullet_instance.Deflectable)
-                    {
-                        Bullet_list.Add(bullet_instance);
-                        bullet_instance.Damage_player=false;
-                        bullet_instance.Deflectable=false;
-                        shoot_vector = hit.point-bullet.transform.position;
-                        bullet_instance.transform.rotation = Quaternion.LookRotation(shoot_vector);
-                        bullet_instance.ChangeMaterial(2);
+                Can_deflect=false;
+                this.transform.DOScale(Vector3.zero,DEBUG_cooldown_scale_duration);
+                StartCoroutine(DeflectCooldown());
+                //Update Animation
+                player_animator.SetTrigger("Deflect");
+                foreach(PickupController pickup in pickup_zone_script.pickup_list)
+                {
+                    pickup.DeflectAnimation();
+                }
 
-                        //Apply Deflect Bonus
-                        if(Velocity_bonus)
+                //Sphere cast to find all bullets inside the boundary
+                Bullet_list.Clear();
+                hits=null;
+                hits=Physics.SphereCastAll(this.transform.position, Boundary_radius[Radius_rank], Vector3.up, 0, bullet_layerMask);
+                Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, shoot_layerMask);
+                foreach(RaycastHit bullet in hits)
+                {
+                    if(bullet.transform.CompareTag("Bullet"))
+                    {            
+                        bullet_instance=bullet.transform.GetComponent<BulletController>();
+                        if(bullet_instance.Deflectable)
                         {
-                            bullet_instance.Bullet_speed *= Velocity_bonus_scale[Velocity_rank];
-                        }
-                        if(Reflect_bonus)
-                        {
-                            bullet_instance.Reflect = true;
-                        }
-                        if(Penetrate_bonus)
-                        {
-                            bullet_instance.Penetrate = true;
-                        }
-                        if(Cluster_bonus)
-                        {
-                            bullet_instance.Cluster = true;
-                        }
-                        if(Homing_bonus)
-                        {
-                            if(Physics.SphereCast(this.transform.position, Homing_cast_radius, this.transform.forward, out homing_hit, 100f, homing_layerMask))
-                            {
-                                Debug.Log(homing_hit.transform.gameObject);
-                                bullet_instance.Homing_target = homing_hit.transform.gameObject;
-                                bullet_instance.Homing = true;
-                            }
-                        }
-                        if(Spray_bonus)
-                        {
-                            if(Spray_count[Spray_rank]>1)
-                            {
-                                //Rotate the first bullet
-                                bullet_instance.transform.Rotate(Vector3.up * - Spray_range[Spray_rank] / 2.0f, Space.Self);
-                                spray_instance = bullet_instance.gameObject;
-                                for(int i = 1; i < Spray_count[Spray_rank]; i++)
-                                {
-                                    spray_instance = Instantiate(spray_instance, spray_instance.transform.position, spray_instance.gameObject.transform.rotation);
-                                    //spray_rotate
-                                    spray_instance.transform.Rotate(Vector3.up * Spray_range[Spray_rank] / (Spray_count[Spray_rank] - 1), Space.Self);
-                                }
-                            }
+                            //Deflect Bullet
+                            Bullet_list.Add(bullet_instance);
+                            bullet_instance.Damage_player=false;
+                            bullet_instance.Deflectable=false;
+                            shoot_vector = hit.point-bullet.transform.position;
+                            bullet_instance.transform.rotation = Quaternion.LookRotation(shoot_vector);
+                            bullet_instance.ChangeMaterial(2);
+
+                            //Apply Deflect Bonus
+                            ApplyPowerBonus();
                         }
                     }
                 }
@@ -166,6 +147,57 @@ public class PlayerDeflect : MonoBehaviour
         player_animator.SetTrigger("Rankup");
     }
 
+    public IEnumerator DeflectCooldown()
+    {
+        yield return new WaitForSeconds(Deflect_cooldown);
+        Can_deflect = true;
+        this.transform.DOScale(Vector3.one * Boundary_radius[Radius_rank] * Boundary_mesh_scaler, DEBUG_cooldown_scale_duration);
+        //DEBUG_render.enabled=true;
+    }
+
+    private void ApplyPowerBonus()
+    {
+        if(Velocity_bonus)
+        {
+            bullet_instance.Bullet_speed *= Velocity_bonus_scale[Velocity_rank];
+        }
+        if(Reflect_bonus)
+        {
+            bullet_instance.Reflect = true;
+        }
+        if(Penetrate_bonus)
+        {
+            bullet_instance.Penetrate = true;
+        }
+        if(Cluster_bonus)
+        {
+            bullet_instance.Cluster = true;
+        }
+        if(Homing_bonus)
+        {
+            if(Physics.SphereCast(this.transform.position, Homing_cast_radius, this.transform.forward, out homing_hit, 100f, homing_layerMask))
+            {
+                Debug.Log(homing_hit.transform.gameObject);
+                bullet_instance.Homing_target = homing_hit.transform.gameObject;
+                bullet_instance.Homing = true;
+            }
+        }
+        if(Spray_bonus)
+        {
+            if(Spray_count[Spray_rank]>1)
+            {
+                //Rotate the first bullet
+                bullet_instance.transform.Rotate(Vector3.up * - Spray_range[Spray_rank] / 2.0f, Space.Self);
+                spray_instance = bullet_instance.gameObject;
+                for(int i = 1; i < Spray_count[Spray_rank]; i++)
+                {
+                    spray_instance = Instantiate(spray_instance, spray_instance.transform.position, spray_instance.gameObject.transform.rotation);
+                    //spray_rotate
+                    spray_instance.transform.Rotate(Vector3.up * Spray_range[Spray_rank] / (Spray_count[Spray_rank] - 1), Space.Self);
+                }
+            }
+        }
+    }
     public void UpdatePowerRank(int type, int rank)
     {
         switch(type)

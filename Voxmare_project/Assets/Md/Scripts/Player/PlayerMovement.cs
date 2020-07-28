@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Player Parameter")]
     public int HP;
     [Header("Hit Reaction")]
+    private bool invencible;
+    private Collider player_collider;
     public Material Hit_reaction_mat;
     private Material original_mat;
     private SkinnedMeshRenderer rend;
@@ -58,6 +60,8 @@ public class PlayerMovement : MonoBehaviour
         original_mat = rend.material;
         knockback_layerMask = (1 << 9) + (1 << 11);//Check Enemy Layer and Terrian Layer for shooting
 
+        player_collider = GetComponent<Collider>();
+
         player_animator = GetComponentInChildren<Animator>();
 
         health_bar_script = Instantiate(Health_bar_prefab,this.transform.position+Health_bar_offset,Quaternion.identity).GetComponent<Health_Bar>();
@@ -73,11 +77,14 @@ public class PlayerMovement : MonoBehaviour
         move_input_vector.x = Input.GetAxis("Horizontal");
         move_input_vector.z = Input.GetAxis("Vertical");
         Vector3.ClampMagnitude(move_input_vector,1.0f);
-        if(move_input_vector.magnitude>0)
+        if(!invencible)
         {
-            Player_CharacterController.Move(move_input_vector*Move_speed*Time.deltaTime);
-            player_animator.SetFloat("Move_Y", Vector3.Dot(move_input_vector,this.transform.forward));
-            player_animator.SetFloat("Move_X", Vector3.Dot(move_input_vector,this.transform.right));
+            if(move_input_vector.magnitude>0)
+            {
+                Player_CharacterController.Move(move_input_vector*Move_speed*Time.deltaTime);
+                player_animator.SetFloat("Move_Y", Vector3.Dot(move_input_vector,this.transform.forward));
+                player_animator.SetFloat("Move_X", Vector3.Dot(move_input_vector,this.transform.right));
+            }
         }
 
         //Rotation
@@ -117,7 +124,8 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator ApplyDamage(Vector3 Incoming)
     {
-
+        invencible=true;
+        player_collider.enabled=false;
         HP -= (int)Incoming.magnitude;
         health_bar_script.SetHealth(HP);
         rend.material = Hit_reaction_mat;
@@ -138,10 +146,14 @@ public class PlayerMovement : MonoBehaviour
         hit_reacting -= 1;
         rend.material = original_mat;
         ResetY();
+
         if(HP == 0)
         {
             Destroy(this.gameObject);
         }
+
+        invencible=false;
+        player_collider.enabled=true;
     }
 
     public IEnumerator Knockback(Vector3 Incoming)

@@ -6,7 +6,6 @@ using UnityEngine.AI;
 
 public class PickupController : MonoBehaviour
 {
-    public bool Pickedup;
     public int Type;
     /*
     0 = deflect radius increase
@@ -19,75 +18,180 @@ public class PickupController : MonoBehaviour
     movespeed?
     Max HP?
     */
-    public PlayerPIckup Pickup_manager;
+    public PlayerPickup Pickup_manager;
 
     [Header("Hit Reaction")]
+    private bool invencible;
     public Material Hit_reaction_mat;
     private Material original_mat;
-    private MeshRenderer rend;
+    private SkinnedMeshRenderer rend;
     public float DEBUG_hit_reaction_duration;
-    public float DEBUG_hit_reaction_flinch;
+    public float DEBUG_knockback_duration;
+    public float DEBUG_knockback_distance;
     private int hit_reacting;
     private Tween myTween;
     private Vector3 hit_reaction_original_position;
     private Vector3 temp_position;
+    private Collider pickup_collider;
 
     [Header("Crowd Control")]
-    //public bool Can_move;
     public float Lookat_distance;
     public float Lookat_speed;
     public Transform Nav_target;
     private NavMeshAgent agent;
+    private Vector3 flee_direction;
+    private RaycastHit flee_hit;
+    public float Flee_speed;
+    public enum Crowd_status
+    {
+        Follow,
+        Flee,
+        Scared,
+        Knockback
+    };
+    public Crowd_status AI_status;
+    private float think_duration;
+    public Vector2 Think_duration_range;
+    private IEnumerator AI_coroutine;
+
+    [Header("Animation")]
+    private Animator pickup_animator;
+
     // Start is called before the first frame update
     void Start()
     {
-        rend = GetComponentInChildren<MeshRenderer>();
-        agent = GetComponent<NavMeshAgent>();
-       
+        rend = GetComponentInChildren<SkinnedMeshRenderer>();
         original_mat = rend.material;
+        agent = GetComponent<NavMeshAgent>();
+        pickup_animator = this.GetComponentInChildren<Animator>();
+        SetNewFleeDirection();
+        AI_status = Crowd_status.Flee;
+        think_duration = Random.Range(Think_duration_range.x,Think_duration_range.y);
+        AI_coroutine = FleeOver(think_duration);
+        StartCoroutine(AI_coroutine);
+        pickup_collider = this.GetComponent<Collider>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Pickedup)
+        switch(AI_status)
         {
-         agent.SetDestination(Nav_target.position);
-         if(agent.remainingDistance<Lookat_distance)
-         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Nav_target.forward), Lookat_speed*Time.deltaTime);           
-         }
-        }
+            case Crowd_status.Follow:
+                agent.SetDestination(Nav_target.position);
+                if(agent.remainingDistance<Lookat_distance)
+                {
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Nav_target.forward), Lookat_speed*Time.deltaTime);
+                }
+                //Update Animation
+                pickup_animator.SetFloat("Move_speed", agent.velocity.magnitude);
+                break;
+            case Crowd_status.Flee:
+                this.transform.rotation=Quaternion.LookRotation(flee_direction);
+                if(Physics.Raycast(this.transform.position,this.transform.forward,out flee_hit, 2f))
+                {
+                    flee_direction = Vector3.Reflect(this.transform.forward,flee_hit.normal);
+                    flee_direction.y=0;
+                    flee_direction.Normalize();
+                }
+                agent.Move(flee_direction*Flee_speed*Time.deltaTime);
+                pickup_animator.SetFloat("Move_speed", Flee_speed);
+                break;
+            case Crowd_status.Scared:
 
+                break;
+        }
     }
 
     public IEnumerator ApplyDamage(Vector3 Incoming)
     {
-        rend.material = Hit_reaction_mat;
-        if(hit_reacting == 0)
+        if(!invencible)
         {
-            hit_reaction_original_position = this.transform.position;
-        }
-        hit_reacting += 1;
-        myTween = this.transform.DOMove(this.transform.position + Incoming.normalized * DEBUG_hit_reaction_flinch, DEBUG_hit_reaction_duration);
-        yield return myTween.WaitForCompletion();
-        myTween = this.transform.DOMove(hit_reaction_original_position, DEBUG_hit_reaction_duration);
-        yield return myTween.WaitForCompletion();
-        hit_reacting -= 1;
-        rend.material = original_mat;
-        ResetY();
-        if(Pickedup)
-        {
+            //Set invencibility
+            invencible = true;
+            pickup_collider.enabled=false;
+            //Remove Player Powerup
             if(Pickup_manager!=null)
             {
                 Pickup_manager.RemovePickup(this);
-                this.transform.parent=null;
-                //TODO Cool Dwon
-                Pickedup = false;
+
+                Pickup_manager = null;
             }
+            //Deal hit reaction
+            rend.material = Hit_reaction_mat;
+            if(hit_reacting == 0)
+            {
+                hit_reaction_original_position = this.transform.position;
+            }
+            hit_reacting += 1;
+            SetNewFleeDirection();
+            AI_status = Crowd_status.Knockback;
+            agent.isStopped=true;
+            pickup_animator.SetTrigger("Knockback");
+            pickup_animator.SetBool("Pickedup", false);
+            myTween = this.transform.DOMove(this.transform.position + Incoming.normalized * DEBUG_knockback_distance, DEBUG_knockback_duration);
+            yield return new WaitForSeconds(DEBUG_hit_reaction_duration);
+            rend.material = original_mat;   
+            yield return new WaitForSeconds(DEBUG_knockback_duration * 3);
+            hit_reacting -= 1;
+            AI_status = Crowd_status.Flee;
+            ResetY();
+            StopCoroutine(AI_coroutine);
+            think_duration = Random.Range(Think_duration_range.x,Think_duration_range.y);
+            AI_coroutine = FleeOver(think_duration);
+            StartCoroutine(AI_coroutine);
+            //Remove invencibility
+            invencible = false;
+            pickup_collider.enabled=true;
         }
     }
 
+    public void PickedByPlayer(PlayerPickup player)
+    {                    
+        Pickup_manager = player;
+        Nav_target = player.transform.parent;
+        transform.rotation = Quaternion.LookRotation(Nav_target.forward);
+        AI_status = Crowd_status.Follow;
+        pickup_animator.SetBool("Pickedup", true);
+        pickup_animator.SetTrigger("Picking up");
+        agent.isStopped=false;
+        StopCoroutine(AI_coroutine);
+    }
+
+    public IEnumerator FleeOver(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        pickup_animator.SetFloat("Move_speed", 0);
+        AI_status = Crowd_status.Scared;
+        
+        StopCoroutine(AI_coroutine);
+        think_duration = Random.Range(Think_duration_range.x,Think_duration_range.y);
+        AI_coroutine = StartFlee(think_duration);
+        StartCoroutine(AI_coroutine);
+    }
+    
+    public IEnumerator StartFlee(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        AI_status = Crowd_status.Flee;
+        StopCoroutine(AI_coroutine);
+        think_duration = Random.Range(Think_duration_range.x,Think_duration_range.y);
+        AI_coroutine = FleeOver(think_duration);
+        StartCoroutine(AI_coroutine);
+    }
+
+    private void SetNewFleeDirection()
+    {
+        flee_direction.x = Random.Range(0,1f);
+        flee_direction.z = Random.Range(0,1f);
+        flee_direction.Normalize();
+    }
+
+    public void DeflectAnimation()
+    {
+        pickup_animator.SetTrigger("Deflect");
+    }
     public void ResetY()
     {
         temp_position = this.transform.position;

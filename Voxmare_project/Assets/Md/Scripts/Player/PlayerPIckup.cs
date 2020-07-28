@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerPIckup : MonoBehaviour
+public class PlayerPickup : MonoBehaviour
 {
     public float Pickup_radius;
     private PlayerDeflect deflect_script;
@@ -46,12 +46,10 @@ public class PlayerPIckup : MonoBehaviour
             pickup_script = other.GetComponent<PickupController>();
             if(!pickup_list.Contains(pickup_script))
             {
-                if(!pickup_script.Pickedup)
+                if(pickup_script.Pickup_manager == null)
                 {
                     //Pick up pickup ;)
-                    pickup_script.Pickedup = true;
-                    pickup_script.Pickup_manager = this;
-                    pickup_script.Nav_target = this.transform.parent;
+                    pickup_script.PickedByPlayer(this);
                     pickup_list.Add(pickup_script);
                     Powerup_ranks[pickup_script.Type] += 1;
                     deflect_script.UpdatePowerRank(pickup_script.Type,Powerup_ranks[pickup_script.Type]);
@@ -67,7 +65,5 @@ public class PlayerPIckup : MonoBehaviour
         pickup_list.Remove(pickup);
         Powerup_ranks[pickup.Type] -= 1;
         deflect_script.UpdatePowerRank(pickup.Type,Powerup_ranks[pickup.Type]);
-        pickup.Pickedup = false;
-        //pickup.Can_move=true;
     }
 }

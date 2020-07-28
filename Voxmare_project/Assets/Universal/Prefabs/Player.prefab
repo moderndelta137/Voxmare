@@ -381,7 +381,7 @@ MonoBehaviour:
   Mouse_cursor_prefab: {fileID: 5603157369960796485, guid: e53eab0852e64c64a894e85c126b7ccd, type: 3}
   HP: 100
   Hit_reaction_mat: {fileID: 2100000, guid: 14ff9e6e57d5bee4682ee74e146fccf2, type: 2}
-  DEBUG_hit_reaction_duration: 0.05
+  DEBUG_hit_reaction_duration: 0.1
   DEBUG_hit_reaction_flinch: 1
   Knockback_cast_distance: 5
   DEBUG_knockback_duration: 0.15
@@ -520,6 +520,9 @@ MonoBehaviour:
   Boundary_mesh_scaler: 2
   Boundry_slowdown_scale: 0.6
   Bullet_list: []
+  Can_deflect: 0
+  Deflect_cooldown: 1
+  DEBUG_cooldown_scale_duration: 0.3
   Velocity_bonus: 0
   Velocity_bonus_scale:
   - 1
