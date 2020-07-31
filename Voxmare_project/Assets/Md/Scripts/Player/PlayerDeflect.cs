@@ -119,8 +119,9 @@ public class PlayerDeflect : MonoBehaviour
             bullet_instance=other.GetComponent<BulletController>();
             if(bullet_instance.Damage_player)
             {
-            bullet_instance.Bullet_speed=bullet_instance.Bullet_speed*Boundry_slowdown_scale;
-            bullet_instance.ChangeMaterial(1);
+                bullet_instance.Bullet_speed=bullet_instance.Bullet_speed*Boundry_slowdown_scale;
+                if(bullet_instance.Deflectable)
+                    bullet_instance.ChangeMaterial(1);
             }
         }
     }

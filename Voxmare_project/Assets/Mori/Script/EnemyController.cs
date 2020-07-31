@@ -27,7 +27,7 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rend = GetComponent<MeshRenderer>();
+        rend = GetComponentInChildren<MeshRenderer>();
         original_mat = rend.material;
         health_bar_script = Instantiate(Health_bar_prefab, this.transform.position + Health_bar_offset, Quaternion.identity).GetComponent<Health_Bar>();
         health_bar_script.transform.SetParent(this.transform);

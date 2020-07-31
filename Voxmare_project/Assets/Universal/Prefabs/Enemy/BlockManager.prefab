@@ -43,8 +43,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532398bab293dea4e81f77d33c7cf18d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stdBlock: {fileID: 114858162395206547, guid: 362459b2ec33d5a4d8a82105c37482b5, type: 3}
-  atkBlock: {fileID: 1015979578042797345, guid: 1cfaa8c6f62821b499433566cb908d11, type: 3}
+  Block_prefabs: []
   generateCount: 50
+  overlapMargin: 0.2
   interval: 0.1
-  moveSpeed: 0
+  moveSpeed: 0.5
+  distance: 0.01
+  duration: 0.5
+  ease: 1
+  radius: 0
+  rotateSpeed: 0
+  speed: 0
+  fluctuation: 0
+  blocks: []
+  center: {x: 0, y: 0, z: 0}
