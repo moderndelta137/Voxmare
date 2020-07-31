@@ -30,10 +30,12 @@ public class BlockManager : MonoBehaviour
     public List<Block> blocks;
     public Vector3 center;
     private bool isLinking;
+    public GameObject boss;
 
     // Start is called before the first frame update
     void Start()
     {
+        boss = GameObject.Find("Boss");
         blocks = new List<Block>();
         isLinking = false;
         // Generate Blocks
@@ -62,7 +64,7 @@ public class BlockManager : MonoBehaviour
         Vector3 sum = Vector3.zero;
         foreach (Block block in blocks)
         {
-            if(!block.isAlone && !block.isMoving) sum += block.GetComponent<Transform>().position;
+            if(!block.IsAlone && !block.isMoving) sum += block.GetComponent<Transform>().position;
         }
 
         if (blocks.Count == 0)
@@ -115,7 +117,7 @@ public class BlockManager : MonoBehaviour
             }
 
             // check if the block is alone
-            if (block.isAlone)
+            if (block.IsAlone)
             {
                 aloneBlocks.Add(block);
             }
@@ -130,7 +132,7 @@ public class BlockManager : MonoBehaviour
         if (bossBlocks.Count == 0 && aloneBlocks.Count > 0)
         {
             TransferItem(aloneBlocks[0], aloneBlocks, bossBlocks);
-            bossBlocks[0].isAlone = false;
+            bossBlocks[0].IsAlone = false;
             bossCapacity += bossBlocks[0].GetCapacity();
         }
 
@@ -198,7 +200,7 @@ public class BlockManager : MonoBehaviour
 
         foreach (var block in blocks)
         {
-            if (block.isAlone)
+            if (block.IsAlone)
             {
                 aloneBlocks.Add(block);
             }
@@ -299,7 +301,7 @@ public class BlockManager : MonoBehaviour
 
         // Cut linking
         CutLink(block);
-        block.isAlone = true;
+        block.IsAlone = true;
         // Remove block from list
         blocks.Remove(block);
 
@@ -378,7 +380,7 @@ public class BlockManager : MonoBehaviour
             }
 
             CutLink(current);
-            current.isAlone = true;
+            current.IsAlone = true;
         }
     }
 

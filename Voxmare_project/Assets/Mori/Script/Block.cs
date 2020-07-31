@@ -24,7 +24,24 @@ public class Block : MonoBehaviour
     [HideInInspector] public int maxPairs;
     public List<int> pairs;                     // store pairs by block's id
     public bool isMoving;                       // animating now
-    public bool isAlone;                        // alone or linking boss
+
+    // alone or linking boss
+    private bool isAlone;
+    public bool IsAlone
+    {
+        get { return isAlone; }
+        set { 
+            isAlone = value;
+            if(value)
+            {
+                this.transform.parent = null;
+            }
+            else
+            {
+                this.transform.parent = manager.boss.transform;
+            }
+        }
+    }
 
     // Boss Animation
     public float distance;
@@ -60,7 +77,7 @@ public class Block : MonoBehaviour
 
         id = idCount++;
         isMoving = false;
-        isAlone = true;
+        IsAlone = true;
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
         randomSeed = Random.value;
     }
@@ -122,8 +139,8 @@ public class Block : MonoBehaviour
         }
         block.pairs[index] = EMPTYID;
 
-        if (GetPairsCount() == 0) isAlone = true;
-        if (block.GetPairsCount() == 0) block.isAlone = true;
+        if (GetPairsCount() == 0) IsAlone = true;
+        if (block.GetPairsCount() == 0) block.IsAlone = true;
     }
 
     /// <summary>
@@ -202,12 +219,12 @@ public class Block : MonoBehaviour
             // check overlap
             if (CheckOverlap())
             {
-                isAlone = true;
+                IsAlone = true;
                 block.AddDummyBlock(this);
             }
             else
             {
-                isAlone = false;
+                IsAlone = false;
 
                 Transform point = GetConnectPoint(this, parent.id);
                 idleTween = point.DOLocalMoveZ(point.localPosition.z + distance, duration).SetEase(ease).SetLoops(-1, LoopType.Yoyo);
@@ -242,7 +259,7 @@ public class Block : MonoBehaviour
     {
         movingSeqence.Kill();
         isMoving = false;
-        isAlone = true;
+        IsAlone = true;
     }
 
     /// <summary>
@@ -259,7 +276,7 @@ public class Block : MonoBehaviour
             //Debug.Log("Hit Info: " + hit.collider.name, hit.collider);
             if (hit.collider.gameObject == this.gameObject) continue;       // ignore myself
             Block b = hit.collider.GetComponent<Block>();
-            if (b.isMoving || b.isAlone) continue;      // ignore moving block
+            if (b.isMoving || b.IsAlone) continue;      // ignore moving block
             return true;
         }
         return false;
@@ -300,13 +317,13 @@ public class Block : MonoBehaviour
 
     void Update()
     {
-        if (!isAlone && !isMoving)
+        if (!IsAlone && !isMoving)
         {
             FollowParent();
             idleTween.Play();
         }
         // when block is alone
-        else if(isAlone && !isMoving)
+        else if(IsAlone && !isMoving)
         {
             idleTween.Pause();
             float radius = manager.radius + manager.fluctuation * (Mathf.PerlinNoise(Time.time * manager.rotateSpeed, randomSeed * 255) - 0.5f);
