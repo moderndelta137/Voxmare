@@ -372,6 +372,6 @@ public class Block : MonoBehaviour
         //}
 
         transform.position = toPosition;
-        transform.rotation = toRotation;
+        //transform.rotation = toRotation;
     }
 }

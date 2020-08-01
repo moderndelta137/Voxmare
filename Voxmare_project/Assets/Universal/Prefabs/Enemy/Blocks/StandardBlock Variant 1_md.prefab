@@ -140,7 +140,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 114858162395206540}
+    m_TransformParent: {fileID: 1901395103273807919}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c8e7fee4812b47e48b20d7435ca4fe49, type: 3}
       propertyPath: m_LocalPosition.x
@@ -156,15 +156,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c8e7fee4812b47e48b20d7435ca4fe49, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c8e7fee4812b47e48b20d7435ca4fe49, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c8e7fee4812b47e48b20d7435ca4fe49, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c8e7fee4812b47e48b20d7435ca4fe49, type: 3}
       propertyPath: m_LocalRotation.w
@@ -172,7 +172,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c8e7fee4812b47e48b20d7435ca4fe49, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c8e7fee4812b47e48b20d7435ca4fe49, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -215,6 +215,10 @@ PrefabInstance:
       propertyPath: linkableBlockType.Array.data[2]
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5398574468774103413, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5841314703671143113, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
       propertyPath: m_Name
       value: StandardBlock Variant 1_md
@@ -246,5 +250,10 @@ PrefabInstance:
 --- !u!4 &114858162395206540 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5841314703671143126, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
+  m_PrefabInstance: {fileID: 5803040015085435226}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1901395103273807919 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5398574468774103413, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
   m_PrefabInstance: {fileID: 5803040015085435226}
   m_PrefabAsset: {fileID: 0}
