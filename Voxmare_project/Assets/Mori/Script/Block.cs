@@ -25,7 +25,6 @@ public class Block : MonoBehaviour
     [HideInInspector] public int maxPairs;
     public List<int> pairs;                     // store pairs by block's id
     public bool isMoving;                       // animating now
-
     // alone or linking boss
     private bool isAlone;
     public bool IsAlone
@@ -43,8 +42,14 @@ public class Block : MonoBehaviour
             }
         }
     }
+    private BoxCollider mycollider;
 
-    private Collider mycollider;
+    // Link Animation
+    Block targetBlock;
+    Transform targetBlockTransform;
+    float moveSpeed;
+    Transform connectPointThis;
+    Transform connectPointTarget;
 
     // Boss Animation
     public float distance;
@@ -83,7 +88,7 @@ public class Block : MonoBehaviour
         IsAlone = true;
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
         randomSeed = Random.value;
-        mycollider = GetComponent<Collider>();
+        mycollider = GetComponent<BoxCollider>();
     }
 
     /// <summary>
@@ -194,51 +199,16 @@ public class Block : MonoBehaviour
         block.pairs[index] = EMPTYID;
     }
 
-    public void MoveTo(Block block, float speed)
+    public void MoveTo(Block block, float moveSpeed)
     {
-        
-        Transform connectPointThis = GetConnectPoint(this, block.id);   // Get the connect point in this block
-        Transform connectPointTarget = GetConnectPoint(block, this.id); // Get the connect point in the target block
+        targetBlock = block;
+        targetBlockTransform = block.transform;
+        this.moveSpeed = moveSpeed;
 
-        // Decide Position
-        float distance = (transform.position - connectPointThis.position).magnitude;
-        Vector3 p2cTarget = (connectPointTarget.position - block.transform.position).normalized;
-        Vector3 toPosition = connectPointTarget.position + p2cTarget * distance;
-
-        // Decide Rotation
-        Quaternion toRotation = Quaternion.FromToRotation(connectPointThis.position - transform.position, connectPointTarget.position - toPosition) * transform.rotation;
-        if(toRotation.eulerAngles.z > 1)
-        {
-            toRotation = Quaternion.AngleAxis(180, transform.forward) * toRotation;
-        }
+        connectPointThis = GetConnectPoint(this, block.id);   // Get the connect point in this block
+        connectPointTarget = GetConnectPoint(block, this.id); // Get the connect point in the target block
 
         isMoving = true;
-        movingSeqence = DOTween.Sequence();
-        movingSeqence.Append(
-            this.transform.DOMove(toPosition, speed)
-        );
-        movingSeqence.Join(
-            this.transform.DORotate(toRotation.eulerAngles, speed)
-        );
-        movingSeqence.OnComplete(() =>
-        {
-            isMoving = false;
-
-            // check overlap
-            if (CheckOverlap())
-            {
-                IsAlone = true;
-                block.AddDummyBlock(this);
-            }
-            else
-            {
-                IsAlone = false;
-
-                Transform point = GetConnectPoint(this, parent.id);
-                idleTween = point.DOLocalMoveZ(point.localPosition.z + distance, duration).SetEase(ease).SetLoops(-1, LoopType.Yoyo);
-                idleTween.Pause();
-            }
-        });
     }
 
     /// <summary>
@@ -277,8 +247,7 @@ public class Block : MonoBehaviour
     public bool CheckOverlap()
     {
         Vector3 castPos = transform.position + new Vector3(0, 3.0f, 0);
-        RaycastHit[] hits = Physics.BoxCastAll(castPos, (mycollider.bounds.size - new Vector3(manager.overlapMargin, manager.overlapMargin, manager.overlapMargin)) * 0.5f, new Vector3(0, -1, 0), Quaternion.identity, Mathf.Infinity, LayerMask.GetMask("Enemy"));
-
+        RaycastHit[] hits = Physics.BoxCastAll(castPos, (mycollider.size - new Vector3(manager.overlapMargin, manager.overlapMargin, manager.overlapMargin)) * 0.5f, new Vector3(0, -1, 0), transform.rotation, Mathf.Infinity, LayerMask.GetMask("Enemy"));
         foreach (var hit in hits)
         {
             //Debug.Log("Hit Info: " + hit.collider.name, hit.collider);
@@ -327,7 +296,7 @@ public class Block : MonoBehaviour
     {
         if (!IsAlone && !isMoving)
         {
-            FollowParent();
+            //FollowParent();
             //idleTween.Play();
         }
         // when block is alone
@@ -346,11 +315,59 @@ public class Block : MonoBehaviour
             transform.position += toVec * manager.speed;
             //transform.position = toPos;
         }
+        else if(isMoving)
+        {
+            idleTween.Pause();
+            Move();
+           
+        }
         else
         {
             idleTween.Pause();
         }
 
+    }
+
+    void Move()
+    {
+        // Decide Position
+        float distance = Vector3.Distance(transform.position, connectPointThis.position);
+        Vector3 p2cTarget = (connectPointTarget.position - targetBlockTransform.position).normalized;
+        Vector3 toPosition = connectPointTarget.position + p2cTarget * distance;
+
+        // Decide Rotation
+        Quaternion toRotation = Quaternion.FromToRotation(connectPointThis.position - transform.position, connectPointTarget.position - toPosition) * transform.rotation;
+        if (toRotation.eulerAngles.z > 1)
+        {
+            toRotation = Quaternion.AngleAxis(180, transform.forward) * toRotation;
+        }
+
+        // Move and Rotation
+        float dis = Vector3.Distance(transform.position, toPosition);
+        float present = (Time.deltaTime * moveSpeed) / dis;
+
+        transform.position = Vector3.Lerp(transform.position, toPosition, present);
+        transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, present);
+
+        if(present > 1)
+        {
+            isMoving = false;
+
+            //check overlap
+            if (CheckOverlap())
+            {
+                IsAlone = true;
+                targetBlock.AddDummyBlock(this);
+            }
+            else
+            {
+                IsAlone = false;
+
+                //Transform point = GetConnectPoint(this, parent.id);
+                //idleTween = point.DOLocalMoveZ(point.localPosition.z + distance, duration).SetEase(ease).SetLoops(-1, LoopType.Yoyo);
+                //idleTween.Pause();
+            }
+        }
     }
 
     void FollowParent()

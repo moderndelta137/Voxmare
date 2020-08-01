@@ -132,6 +132,7 @@ public class BlockManager : MonoBehaviour
         if (bossBlocks.Count == 0 && aloneBlocks.Count > 0)
         {
             TransferItem(aloneBlocks[0], aloneBlocks, bossBlocks);
+            boss.transform.position = bossBlocks[0].transform.position;
             bossBlocks[0].IsAlone = false;
             bossCapacity += bossBlocks[0].GetCapacity();
         }

@@ -50,7 +50,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 114858162395206540}
+    m_TransformParent: {fileID: 1901395103273807919}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 14937a9d1e85d4e4abf777d7b8e5081d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -70,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 14937a9d1e85d4e4abf777d7b8e5081d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 14937a9d1e85d4e4abf777d7b8e5081d, type: 3}
       propertyPath: m_LocalRotation.z
@@ -82,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 14937a9d1e85d4e4abf777d7b8e5081d, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 14937a9d1e85d4e4abf777d7b8e5081d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -140,6 +140,10 @@ PrefabInstance:
     - target: {fileID: 4788241957152964777, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
       propertyPath: linkableBlockType.Array.data[2]
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5398574468774103413, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5829428164887484539, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
       propertyPath: m_LocalPosition.x
@@ -236,5 +240,10 @@ PrefabInstance:
 --- !u!4 &114858162395206540 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5841314703671143126, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
+  m_PrefabInstance: {fileID: 5803040015085435226}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1901395103273807919 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5398574468774103413, guid: b10a8b609eca8034590d10ae2d5053ae, type: 3}
   m_PrefabInstance: {fileID: 5803040015085435226}
   m_PrefabAsset: {fileID: 0}
