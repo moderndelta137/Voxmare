@@ -324,7 +324,7 @@ public class Block : MonoBehaviour
         if (!IsAlone && !isMoving)
         {
             FollowParent();
-            idleTween.Play();
+            //idleTween.Play();
         }
         // when block is alone
         else if(IsAlone && !isMoving)
