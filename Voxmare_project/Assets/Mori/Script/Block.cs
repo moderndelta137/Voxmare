@@ -43,6 +43,8 @@ public class Block : MonoBehaviour
         }
     }
 
+    private Collider mycollider;
+
     // Boss Animation
     public float distance;
     public float duration;
@@ -80,6 +82,7 @@ public class Block : MonoBehaviour
         IsAlone = true;
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
         randomSeed = Random.value;
+        mycollider = GetComponent<Collider>();
     }
 
     /// <summary>
@@ -273,7 +276,7 @@ public class Block : MonoBehaviour
     public bool CheckOverlap()
     {
         Vector3 castPos = transform.position + new Vector3(0, 3.0f, 0);
-        RaycastHit[] hits = Physics.BoxCastAll(castPos, transform.localScale * 0.5f - new Vector3(manager.overlapMargin, manager.overlapMargin, manager.overlapMargin), new Vector3(0, -1, 0), Quaternion.identity, Mathf.Infinity, LayerMask.GetMask("Enemy"));
+        RaycastHit[] hits = Physics.BoxCastAll(castPos, (mycollider.bounds.size - new Vector3(manager.overlapMargin, manager.overlapMargin, manager.overlapMargin)) * 0.5f, new Vector3(0, -1, 0), Quaternion.identity, Mathf.Infinity, LayerMask.GetMask("Enemy"));
 
         foreach (var hit in hits)
         {
