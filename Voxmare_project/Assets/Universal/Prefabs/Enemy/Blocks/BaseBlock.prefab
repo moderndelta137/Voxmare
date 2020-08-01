@@ -76,7 +76,7 @@ Transform:
   m_GameObject: {fileID: 5841314703671143113}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 5829428164887484539}
   - {fileID: 7864609670601601350}
@@ -178,7 +178,6 @@ MonoBehaviour:
   maxPairs: 0
   pairs: 
   isMoving: 0
-  isAlone: 0
   distance: 0
   duration: 0
   ease: 0
