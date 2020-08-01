@@ -196,13 +196,17 @@ public class Block : MonoBehaviour
         Transform connectPointThis = GetConnectPoint(this, block.id);   // Get the connect point in this block
         Transform connectPointTarget = GetConnectPoint(block, this.id); // Get the connect point in the target block
 
-        // Calculate relative position and rotation from Child to Parent
-        Vector3 c2pPos = - connectPointThis.localPosition;
-        Quaternion c2pRot = Quaternion.Inverse(connectPointThis.localRotation);
+        // Decide Position
+        float distance = (transform.position - connectPointThis.position).magnitude;
+        Vector3 p2cTarget = (connectPointTarget.position - block.transform.position).normalized;
+        Vector3 toPosition = connectPointTarget.position + p2cTarget * distance;
 
-        // Move parent's position to a point where both connection points match
-        Vector3 toPosition = connectPointTarget.position + Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot * c2pPos;
-        Vector3 toRotation = (Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot).eulerAngles;
+        // Decide Rotation
+        Quaternion toRotation = Quaternion.FromToRotation(connectPointThis.position - transform.position, connectPointTarget.position - toPosition) * transform.rotation;
+        if(toRotation.eulerAngles.z > 1)
+        {
+            toRotation = Quaternion.AngleAxis(180, transform.forward) * toRotation;
+        }
 
         isMoving = true;
         movingSeqence = DOTween.Sequence();
@@ -210,7 +214,7 @@ public class Block : MonoBehaviour
             this.transform.DOMove(toPosition, speed)
         );
         movingSeqence.Join(
-            this.transform.DORotate(toRotation, speed)
+            this.transform.DORotate(toRotation.eulerAngles, speed)
         );
         movingSeqence.OnComplete(() =>
         {
@@ -352,13 +356,17 @@ public class Block : MonoBehaviour
         Transform connectPointThis = GetConnectPoint(this, parent.id);
         Transform connectPointTarget = GetConnectPoint(parent, this.id);
 
-        // Calculate relative position and rotation from Child to Parent
-        Vector3 c2pPos = -connectPointThis.localPosition;
-        Quaternion c2pRot = Quaternion.Inverse(connectPointThis.localRotation);
+        // Decide Position
+        float distance = (transform.position - connectPointThis.position).magnitude;
+        Vector3 p2cTarget = (connectPointTarget.position - parent.transform.position).normalized;
+        Vector3 toPosition = connectPointTarget.position + p2cTarget * distance;
 
-        // Move parent's position to a point where both connection points match
-        Vector3 toPosition = connectPointTarget.position + Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot * c2pPos;
-        Quaternion toRotation = Quaternion.AngleAxis(180, transform.up) * connectPointTarget.rotation * c2pRot;
+        // Decide Rotation
+        Quaternion toRotation = Quaternion.FromToRotation(connectPointThis.position - transform.position, connectPointTarget.position - toPosition) * transform.rotation;
+        if (toRotation.eulerAngles.z > 1)
+        {
+            toRotation = Quaternion.AngleAxis(180, transform.forward) * toRotation;
+        }
 
         transform.position = toPosition;
         transform.rotation = toRotation;
