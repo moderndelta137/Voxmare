@@ -49,12 +49,12 @@ public class EnemyController : MonoBehaviour
         rend.material = Hit_reaction_mat;
         if (hit_reacting == 0)
         {
-            hit_reaction_original_position = this.transform.position;
+            hit_reaction_original_position = this.transform.localPosition;
         }
         hit_reacting += 1;
-        myTween = this.transform.DOMove(hit_reaction_original_position + Incoming.normalized * DEBUG_hit_reaction_flinch, DEBUG_hit_reaction_duration);
+        myTween = this.transform.DOLocalMove(hit_reaction_original_position + Incoming.normalized * DEBUG_hit_reaction_flinch, DEBUG_hit_reaction_duration);
         yield return myTween.WaitForCompletion();
-        myTween = this.transform.DOMove(hit_reaction_original_position, DEBUG_hit_reaction_duration);
+        myTween = this.transform.DOLocalMove(hit_reaction_original_position, DEBUG_hit_reaction_duration);
         yield return myTween.WaitForCompletion();
         hit_reacting -= 1;
         rend.material = original_mat;
