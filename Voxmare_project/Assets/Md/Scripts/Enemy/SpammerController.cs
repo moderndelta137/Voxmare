@@ -50,11 +50,11 @@ public class SpammerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Lockon)
-        {
-            lockon_vector = Target.position-this.transform.position;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lockon_vector), Rotate_speed*Time.deltaTime);
-        }
+        //if(Lockon)
+        //{
+        //    lockon_vector = Target.position-this.transform.position;
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lockon_vector), Rotate_speed*Time.deltaTime);
+        //}
         
     }
 

@@ -24,7 +24,7 @@ public class Block : MonoBehaviour
     public int id { get; private set; }         // id is set automatically in Start(). Readonly. (Note: id starts from 0)
     [HideInInspector] public int maxPairs;
     public List<int> pairs;                     // store pairs by block's id
-    public bool isMoving;                       // animating now
+    [HideInInspector] public bool isMoving;                       // animating now
     // alone or linking boss
     private bool isAlone;
     public bool IsAlone
@@ -52,10 +52,10 @@ public class Block : MonoBehaviour
     Transform connectPointTarget;
 
     // Boss Animation
-    public float distance;
-    public float duration;
-    public Ease ease;
-    private Tween idleTween;
+    //public float distance;
+    //public float duration;
+    //public Ease ease;
+    //private Tween idleTween;
 
     // Alone Animation
     private float randomSeed;
@@ -302,7 +302,7 @@ public class Block : MonoBehaviour
         // when block is alone
         else if(IsAlone && !isMoving)
         {
-            idleTween.Pause();
+            //idleTween.Pause();
             float radius = manager.radius + manager.fluctuation * (Mathf.PerlinNoise(Time.time * manager.rotateSpeed, randomSeed * 255) - 0.5f);
             float theta = Time.time * manager.rotateSpeed + randomSeed * 2 * Mathf.PI / manager.rotateSpeed;
 
@@ -317,13 +317,13 @@ public class Block : MonoBehaviour
         }
         else if(isMoving)
         {
-            idleTween.Pause();
+            //idleTween.Pause();
             Move();
            
         }
         else
         {
-            idleTween.Pause();
+            //idleTween.Pause();
         }
 
     }

@@ -16,10 +16,10 @@ public class BlockManager : MonoBehaviour
     [SerializeField] float interval;
     [SerializeField] float moveSpeed;
 
-    [Header("Boss Animation")]
-    [SerializeField] float distance = 0.01f;
-    [SerializeField] float duration = 0.5f;
-    [SerializeField] Ease ease = Ease.Linear;
+    //[Header("Boss Animation")]
+    //[SerializeField] float distance = 0.01f;
+    //[SerializeField] float duration = 0.5f;
+    //[SerializeField] Ease ease = Ease.Linear;
 
     [Header("Alone Animation")]
     public float radius;
@@ -87,9 +87,9 @@ public class BlockManager : MonoBehaviour
             block.transform.position = new Vector3((i % 10) * 4, 0, i / 10 * 4); // Line up 10 blocks of each row.
 
             Block b = block.GetComponent<Block>();
-            b.distance = distance;
-            b.duration = duration;
-            b.ease = ease;
+            //b.distance = distance;
+            //b.duration = duration;
+            //b.ease = ease;
             blocks.Add(b);                             // The blocks are ordered by id.
         }
     }
