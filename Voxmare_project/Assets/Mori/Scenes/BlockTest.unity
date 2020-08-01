@@ -224,7 +224,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 102324599}
-  - component: {fileID: 102324601}
   - component: {fileID: 102324600}
   m_Layer: 0
   m_Name: Boss
@@ -259,6 +258,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e28a4c4e39a310409d93ff8f9cc3b82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  center: {x: 0, y: 0, z: 14.74}
+  radius: 50
   speed: 3
   centripetalPower:
     serializedVersion: 2
@@ -293,30 +294,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  center: {x: 0, y: 0, z: 14.74}
-  radius: 50
---- !u!195 &102324601
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 102324598}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 1
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  interval: 10
+  intervalDivergence: 3
+  tackleDuration: 3
+  tackleEase: 28
 --- !u!1001 &317599205
 PrefabInstance:
   m_ObjectHideFlags: 0

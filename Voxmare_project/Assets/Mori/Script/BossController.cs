@@ -1,53 +1,54 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
+using UnityEngine.Events;
+using DG.Tweening;
 
 public class BossController : MonoBehaviour
 {
     GameObject target;
-    NavMeshAgent navmesh;
     float randomSeed;
     State state;
 
-    [SerializeField] float speed;
-    [SerializeField] AnimationCurve centripetalPower;
     [Header("Moveable Area")]
     [SerializeField] Vector3 center;
     [SerializeField] float radius;
-
-    //[Header("Random Walk")]
-    //[SerializeField] float minDistance;
-    //[SerializeField] float maxDistance;
+    [Header("Random Walk")]
+    [SerializeField] float speed;
+    [SerializeField] AnimationCurve centripetalPower;
+    [Header("Tackle")]
+    [SerializeField] float interval;
+    [SerializeField] float intervalDivergence;
+    [SerializeField] float tackleDuration;
+    [SerializeField] Ease tackleEase;
 
     Vector3 detination;
+    Tween tackleTween;
     enum State
     {
         Random,
-        Approach,
+        Tackle,
         Leave
     }
 
     void Start()
     {
-        navmesh = GetComponent<NavMeshAgent>();
         target = GameObject.Find("Player");
         randomSeed = Random.value;
         state = State.Random;
+
+        StartCoroutine("Tackle");
     }
 
     void Update()
     {
+
         switch (state)
         {
             case State.Random:
                 MoveRandom();
                 break;
-            case State.Approach:
-                if (target != null)
-                {
-                    navmesh.destination = target.transform.position;
-                }
+            case State.Tackle:
                 break;
             case State.Leave:
                 break;
@@ -58,8 +59,6 @@ public class BossController : MonoBehaviour
 
     void MoveRandom()
     {
-        navmesh.isStopped = true;
-
         float rand = Mathf.PerlinNoise(Time.time * 0.1f, randomSeed * 256);
         float angle = rand * 2 * Mathf.PI;
         Vector3 velocity = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));    // [0, 1]
@@ -67,6 +66,19 @@ public class BossController : MonoBehaviour
         Vector3 centripetalVector = toCenter.normalized * centripetalPower.Evaluate(toCenter.magnitude/radius); // [0, 1]
         transform.position += (velocity + centripetalVector) * speed * Time.deltaTime;
     }
+
+    private IEnumerator Tackle()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(interval + Random.Range(-intervalDivergence, intervalDivergence));
+            state = State.Tackle;
+            tackleTween = transform.DOMove(target.transform.position, tackleDuration).SetEase(tackleEase);
+            yield return tackleTween.WaitForCompletion();
+            state = State.Random;
+        }
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
