@@ -8,9 +8,10 @@ public class Block : MonoBehaviour
     // Static Variable
     public enum BlockType
     {
-        STANDARD,
-        ATTACK,
-        SPHERE
+        Cube,
+        Cylinder,
+        Pillar,
+        Sphere
     }
 
     public const int EMPTYID = -1;
