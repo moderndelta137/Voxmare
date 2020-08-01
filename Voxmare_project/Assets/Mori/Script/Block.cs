@@ -366,10 +366,10 @@ public class Block : MonoBehaviour
 
         // Decide Rotation
         Quaternion toRotation = Quaternion.FromToRotation(connectPointThis.position - transform.position, connectPointTarget.position - toPosition) * transform.rotation;
-        if (toRotation.eulerAngles.z > 1)
-        {
-            toRotation = Quaternion.AngleAxis(180, transform.forward) * toRotation;
-        }
+        //if (toRotation.eulerAngles.z > 1)
+        //{
+        //    toRotation = Quaternion.AngleAxis(180, transform.forward) * toRotation;
+        //}
 
         transform.position = toPosition;
         transform.rotation = toRotation;
