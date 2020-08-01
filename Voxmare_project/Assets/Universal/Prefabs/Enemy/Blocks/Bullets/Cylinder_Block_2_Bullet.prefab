@@ -117,7 +117,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7947023357074736545, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
       propertyPath: m_Name
-      value: Reflect_Bullet Variant
+      value: Cylinder_Block_2_Bullet
       objectReference: {fileID: 0}
     - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
       propertyPath: Reflect
@@ -126,6 +126,10 @@ PrefabInstance:
     - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
       propertyPath: Reflect_lifespan
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+      propertyPath: Bullet_speed
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7947023357074736550, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
       propertyPath: m_LocalPosition.x

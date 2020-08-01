@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7947023357074736545}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 7.09}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7947023357618394359}
@@ -126,6 +126,7 @@ MonoBehaviour:
   Homing_distance: 7
   Reflect: 0
   Reflect_lifespan: 3
+  DEBUG_reflect_cooldown: 0.2
   Cluster: 0
   Cluster_prefab: {fileID: 3940093444654790021, guid: 3f47400870a2c5b4c9d90cfb45ec61b7, type: 3}
 --- !u!1 &7947023357618394358

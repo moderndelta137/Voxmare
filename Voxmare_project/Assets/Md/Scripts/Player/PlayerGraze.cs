@@ -6,11 +6,12 @@ public class PlayerGraze : MonoBehaviour
 {
     public float Graze_slowdown_scale;
     public float Graze_slowdown_duration;
+    private WaitForSeconds slowdown_wait;
     public bool Grazing;
     // Start is called before the first frame update
     void Start()
     {
-        
+        slowdown_wait = new WaitForSeconds(Graze_slowdown_duration);
     }
 
     // Update is called once per frame
@@ -32,7 +33,7 @@ public class PlayerGraze : MonoBehaviour
     {
         Time.timeScale=Graze_slowdown_scale;
         Grazing=true;
-        yield return new WaitForSeconds(Graze_slowdown_duration);
+        yield return slowdown_wait;
         Time.timeScale=1.0f;
         Grazing=false;
         yield return null;

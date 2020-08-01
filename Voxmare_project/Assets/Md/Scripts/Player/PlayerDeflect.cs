@@ -17,6 +17,7 @@ public class PlayerDeflect : MonoBehaviour
     [Header("Shoot")]
     public bool Can_deflect;
     public float Deflect_cooldown;
+    private WaitForSeconds deflect_wait;
     public float DEBUG_cooldown_scale_duration;
     private RaycastHit hit;
     private int shoot_layerMask;
@@ -63,6 +64,7 @@ public class PlayerDeflect : MonoBehaviour
         shoot_layerMask = (1 << 9) + (1 << 11);//Check Enemy Layer and Terrian Layer for shooting
         UpdateBoundryRadius();
         Can_deflect = true;
+        deflect_wait = new WaitForSeconds(Deflect_cooldown);
         pickup_zone_script = this.transform.parent.GetComponentInChildren<PlayerPickup>();
     }
 
@@ -84,7 +86,7 @@ public class PlayerDeflect : MonoBehaviour
                 }
 
                 //Sphere cast to find all bullets inside the boundary
-                Bullet_list.Clear();
+                //Bullet_list.Clear();
                 hits=null;
                 hits=Physics.SphereCastAll(this.transform.position, Boundary_radius[Radius_rank], Vector3.up, 0, bullet_layerMask);
                 Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, shoot_layerMask);
@@ -96,10 +98,11 @@ public class PlayerDeflect : MonoBehaviour
                         if(bullet_instance.Deflectable)
                         {
                             //Deflect Bullet
-                            Bullet_list.Add(bullet_instance);
+                            //Bullet_list.Add(bullet_instance);
                             bullet_instance.Damage_player=false;
                             bullet_instance.Deflectable=false;
                             shoot_vector = hit.point-bullet.transform.position;
+                            shoot_vector.y = 0;
                             bullet_instance.transform.rotation = Quaternion.LookRotation(shoot_vector);
                             bullet_instance.ChangeMaterial(2);
 
@@ -150,7 +153,7 @@ public class PlayerDeflect : MonoBehaviour
 
     public IEnumerator DeflectCooldown()
     {
-        yield return new WaitForSeconds(Deflect_cooldown);
+        yield return deflect_wait;
         Can_deflect = true;
         this.transform.DOScale(Vector3.one * Boundary_radius[Radius_rank] * Boundary_mesh_scaler, DEBUG_cooldown_scale_duration);
         //DEBUG_render.enabled=true;

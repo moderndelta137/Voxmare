@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7947023357074736545, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
       propertyPath: m_Name
-      value: Penetrate_Bullet
+      value: Penetrate_Bullet Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
       propertyPath: Penetrate
@@ -29,7 +29,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7947023357074736550, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.09
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7947023357074736550, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
       propertyPath: m_LocalRotation.x

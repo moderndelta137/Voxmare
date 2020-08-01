@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2052504839816471393}
   m_Layer: 0
   m_Name: Bullet_Spammer
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2052504839816471418}
   m_LocalRotation: {x: -0, y: 0.9553566, z: -0, w: 0.29545534}
-  m_LocalPosition: {x: 0, y: 0, z: 10.19}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -58,9 +58,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Bullet: {fileID: 7947023357074736545, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+  Start_delay: 1
+  Start_delay_divergence: 1
   Interval: 1
   Angular_divergence: 10
   Temporal_divergence: 0.2
+  Rapidfire: 0
+  Rapidfire_count: 0
+  Rapidfire_Interval: 0
   Target: {fileID: 0}
   Lockon: 1
   Rotate_speed: 5
+  Shrink_scale: 0.5
+  Shrink_duration: 0.1
+  Expand_scale: 2
+  Expand_duration: 0.1

@@ -8,20 +8,19 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7947023357074736550}
+  - component: {fileID: 7876263294338065104}
   - component: {fileID: 7947023357074736549}
   - component: {fileID: 7947023357074736548}
+  - component: {fileID: 6153247821609704910}
   - component: {fileID: 7947023357074736546}
-  - component: {fileID: 5070420787667368403}
-  - component: {fileID: 8088038692031127523}
   m_Layer: 10
-  m_Name: Wave_Bullet
+  m_Name: Fin_Bullet
   m_TagString: Bullet
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7947023357074736550
+--- !u!4 &7876263294338065104
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -29,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7947023357074736545}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 7.09}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -42,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7947023357074736545}
-  m_Mesh: {fileID: 2534964839176971238, guid: 222683d15585820419e3ca92d4493a21, type: 3}
+  m_Mesh: {fileID: 2534964839176971238, guid: 460fcba5a4dc86844a08fffa8ded47cd, type: 3}
 --- !u!23 &7947023357074736548
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -84,6 +83,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6153247821609704910
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7947023357074736545}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.27168202, y: 3.031054, z: 1.3690126}
+  m_Center: {x: 0.00000020116568, y: 1.5155287, z: -0.15436795}
 --- !u!114 &7947023357074736546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,49 +109,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 1
-  Bullet_speed: 15
-  Deflectable: 0
+  Bullet_speed: 35
+  Deflectable: 1
   Damage_player: 1
   Bullet_render: {fileID: 0}
   Bullet_materials:
   - {fileID: 2100000, guid: fe32e9c02a984fb4e9ed861059bd676e, type: 2}
   - {fileID: 2100000, guid: 3d64f39a4694a924b8f2043fc1df4d18, type: 2}
   - {fileID: 2100000, guid: b19282d7dfe80a2468af6bd140d7f374, type: 2}
-  Penetrate: 0
-  Penetrate_lifespan: 0
+  Penetrate: 1
+  Penetrate_lifespan: 3
   Homing: 0
   Homing_target: {fileID: 0}
   Homing_rotation_speed: 0.2
   Homing_distance: 7
   Reflect: 0
   Reflect_lifespan: 3
+  DEBUG_reflect_cooldown: 0.2
   Cluster: 0
   Cluster_prefab: {fileID: 3940093444654790021, guid: 3f47400870a2c5b4c9d90cfb45ec61b7, type: 3}
---- !u!64 &5070420787667368403
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7947023357074736545}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: -1
-  m_Mesh: {fileID: 2534964839176971238, guid: 222683d15585820419e3ca92d4493a21, type: 3}
---- !u!114 &8088038692031127523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7947023357074736545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 242e605b505f4c144a1b7d5aae3769f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Scale_vector: {x: 1, y: 0, z: 1}
-  Scale_speed: 3

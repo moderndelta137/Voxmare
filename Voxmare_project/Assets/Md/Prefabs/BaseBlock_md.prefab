@@ -154,11 +154,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 0
-  linkableBlockType: 0000000001000000
+  linkableBlockType: 000000000100000002000000
   maxPairs: 0
   pairs: 
   isMoving: 0
-  isAlone: 0
   distance: 0
   duration: 0
   ease: 0

@@ -25,12 +25,15 @@ public class BulletController : MonoBehaviour
     private Vector3 homing_vector;
     public bool Reflect;
     public float Reflect_lifespan;
+    public float DEBUG_reflect_cooldown;
+    private WaitForSeconds deflect_wait;
     private RaycastHit reflect_hit;
     public bool Cluster;
     public GameObject Cluster_prefab;
     private ClusterBulletController cluster_controller;
     private bool shuttingdown;
 
+    private Collider cd;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +42,8 @@ public class BulletController : MonoBehaviour
         {
             Homing_target = GameObject.Find("Player");
         }
+        cd = this.GetComponent<Collider>();
+        deflect_wait = new WaitForSeconds(DEBUG_reflect_cooldown);
     }
 
     // Update is called once per frame
@@ -94,7 +99,7 @@ public class BulletController : MonoBehaviour
                 {
                     if(Reflect)
                     {
-                        Physics.Raycast(this.transform.position-this.transform.forward*0.5f,this.transform.forward,out reflect_hit, 2f);
+                        Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f);
                         this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward,reflect_hit.normal));
                         other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                         Destroy(this.gameObject,Reflect_lifespan);
@@ -115,10 +120,10 @@ public class BulletController : MonoBehaviour
             }
             else
             {
-                bool result = Physics.Raycast(this.transform.position-this.transform.forward*0.5f,this.transform.forward,out reflect_hit, 2f);
+                Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f);
                 //Debug.DrawRay(this.transform.position-this.transform.forward*0.2f, this.transform.forward*1f, Color.yellow,1);
-                this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward,reflect_hit.normal));
-                //Debug.Log(result);
+                this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
+                StartCoroutine(ReflectCooldown());
                 Destroy(this.gameObject,Reflect_lifespan);
             }
         }
@@ -144,5 +149,12 @@ public class BulletController : MonoBehaviour
     public void ChangeMaterial(int index)
     {
         Bullet_render.material = Bullet_materials[index];
+    }
+
+    private IEnumerator ReflectCooldown()
+    {
+        cd.enabled =false;
+        yield return deflect_wait;
+        cd.enabled =true;
     }
 }
