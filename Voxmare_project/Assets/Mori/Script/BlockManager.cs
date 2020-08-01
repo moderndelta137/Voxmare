@@ -64,7 +64,7 @@ public class BlockManager : MonoBehaviour
         Vector3 sum = Vector3.zero;
         foreach (Block block in blocks)
         {
-            if(!block.IsAlone && !block.isMoving) sum += block.GetComponent<Transform>().position;
+            if(!block.IsAlone && !block.isMoving) sum += block.transform.position;
         }
 
         if (blocks.Count == 0)
