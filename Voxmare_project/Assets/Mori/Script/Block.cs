@@ -43,6 +43,7 @@ public class Block : MonoBehaviour
         }
     }
     private BoxCollider mycollider;
+    private List<int> emptyIndex;
 
     // Link Animation
     Block targetBlock;
@@ -89,6 +90,7 @@ public class Block : MonoBehaviour
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
         randomSeed = Random.value;
         mycollider = GetComponent<BoxCollider>();
+        emptyIndex = new List<int>();
     }
 
     /// <summary>
@@ -101,7 +103,7 @@ public class Block : MonoBehaviour
         if (!this.CheckLinkable(block) || !block.CheckLinkable(this)) return;
 
         // link at random point
-        var emptyIndex = new List<int>();
+        emptyIndex.Clear();
         for (int i = 0; i < pairs.Count; i++)
         {
             if (pairs[i] == EMPTYID) emptyIndex.Add(i);
@@ -296,7 +298,6 @@ public class Block : MonoBehaviour
     {
         if (!IsAlone && !isMoving)
         {
-            //FollowParent();
             //idleTween.Play();
         }
         // when block is alone
@@ -368,28 +369,5 @@ public class Block : MonoBehaviour
                 //idleTween.Pause();
             }
         }
-    }
-
-    void FollowParent()
-    {
-        if (parent == null) return;
-
-        Transform connectPointThis = GetConnectPoint(this, parent.id);
-        Transform connectPointTarget = GetConnectPoint(parent, this.id);
-
-        // Decide Position
-        float distance = (transform.position - connectPointThis.position).magnitude;
-        Vector3 p2cTarget = (connectPointTarget.position - parent.transform.position).normalized;
-        Vector3 toPosition = connectPointTarget.position + p2cTarget * distance;
-
-        // Decide Rotation
-        Quaternion toRotation = Quaternion.FromToRotation(connectPointThis.position - transform.position, connectPointTarget.position - toPosition) * transform.rotation;
-        //if (toRotation.eulerAngles.z > 1)
-        //{
-        //    toRotation = Quaternion.AngleAxis(180, transform.forward) * toRotation;
-        //}
-
-        transform.position = toPosition;
-        //transform.rotation = toRotation;
     }
 }

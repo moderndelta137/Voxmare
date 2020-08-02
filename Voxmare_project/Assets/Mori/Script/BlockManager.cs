@@ -29,20 +29,32 @@ public class BlockManager : MonoBehaviour
 
     public List<Block> blocks;
     public Vector3 center;
-    private bool isLinking;
     public GameObject boss;
+    private bool isLinking;
+    private List<Block> aloneBlocks;
+    private List<Block> bossBlocks;
+    private List<int> visited;
+    private Stack<Block> searchStack;
+    private Block aloneBlock;
+    private Block bossBlock;
+    private WaitForSeconds waitInterval;
+    private WaitForSeconds wait1sec;
 
-    // Start is called before the first frame update
     void Start()
     {
         boss = GameObject.Find("Boss");
         blocks = new List<Block>();
+        aloneBlocks = new List<Block>();
+        bossBlocks = new List<Block>();
+        visited = new List<int>();
+        searchStack = new Stack<Block>();
         isLinking = false;
-        // Generate Blocks
+        waitInterval = new WaitForSeconds(interval);
+        wait1sec = new WaitForSeconds(1);
+
         GenerateBlock(generateCount);
     }
 
-    // Update is called once per frame
     void Update()
     {
         CalcCenter();
@@ -104,8 +116,9 @@ public class BlockManager : MonoBehaviour
         int bossCapacity = 0;                   // how many boss can be linked left
         int linkingCount = 0;                   // how many times block is linking in this time
         bool allBlocksStop = true;
-        var aloneBlocks = new List<Block>();   // blocks which is not linked to boss yet
-        var bossBlocks = new List<Block>();   // blocks which blong to boss
+        
+        aloneBlocks.Clear();   // blocks which is not linked to boss yet
+        bossBlocks.Clear();   // blocks which blong to boss
 
         foreach (var block in blocks)
         {
@@ -140,8 +153,8 @@ public class BlockManager : MonoBehaviour
         int bossCapacityBg = bossCapacity;
         while (bossCapacity > 0)
         {
-            Block aloneBlock = null;     // target block in alone blocks
-            Block bossBlock = null;     // target block in boss blocks
+            aloneBlock = null;     // target block in alone blocks
+            bossBlock = null;     // target block in boss blocks
 
             // find good block in alone blocks
             foreach(Block aloneB in aloneBlocks)
@@ -177,7 +190,7 @@ public class BlockManager : MonoBehaviour
             bossCapacityBg = bossCapacityBg + aloneBlock.GetCapacity() - 2;
             aloneBlocks.Remove(aloneBlock);
 
-            yield return new WaitForSeconds(interval);
+            yield return waitInterval;
         }
 
         // if there is a moving block, retry this coroutine 
@@ -187,7 +200,7 @@ public class BlockManager : MonoBehaviour
             yield break;
         }
 
-        yield return new WaitForSeconds(0.1f);
+        yield return waitInterval;
         StartCoroutine("LinkAllBlock");
     }
 
@@ -196,8 +209,8 @@ public class BlockManager : MonoBehaviour
         // Initialization
         int bossCapacity = 0;                   // how many boss can be linked left
         bool allBlocksStop = true;
-        var aloneBlocks = new List<Block>();   // blocks which is not linked to boss yet
-        var bossBlocks = new List<Block>();   // blocks which blong to boss
+        aloneBlocks.Clear();   // blocks which is not linked to boss yet
+        bossBlocks.Clear();   // blocks which blong to boss
 
         foreach (var block in blocks)
         {
@@ -215,7 +228,7 @@ public class BlockManager : MonoBehaviour
         // Wait Animation
         if(!allBlocksStop)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return wait1sec;
             StartCoroutine("LinkLastBlock");
             yield break;
         }
@@ -228,8 +241,8 @@ public class BlockManager : MonoBehaviour
         }
 
         // Link last block
-        Block aloneBlock = null;     // target block in alone blocks
-        Block bossBlock = null;     // target block in boss blocks
+        aloneBlock = null;     // target block in alone blocks
+        bossBlock = null;     // target block in boss blocks
         foreach (Block aloneB in aloneBlocks)
         {
             if (aloneB.GetCapacity() != 1) continue;
@@ -361,8 +374,8 @@ public class BlockManager : MonoBehaviour
     void CutLinkBlockGroup(Block firstBlock)
     {
         // Initialization
-        var visited = new List<int>();
-        var searchStack = new Stack<Block>();
+        visited.Clear();
+        searchStack.Clear();
 
         // Start Depth-first search
         searchStack.Push(firstBlock);
@@ -394,9 +407,9 @@ public class BlockManager : MonoBehaviour
     {
         // Initialization
         int size = 0;
-        var visited = new List<int>();
-        var searchStack = new Stack<Block>();
-        
+        visited.Clear();
+        searchStack.Clear();
+
         // Start Depth-first search
         searchStack.Push(firstBlock);
 
@@ -421,8 +434,8 @@ public class BlockManager : MonoBehaviour
     void ResetDummy(Block firstBlock)
     {
         // Initialization
-        var visited = new List<int>();
-        var searchStack = new Stack<Block>();
+        visited.Clear();
+        searchStack.Clear();
 
         // Start Depth-first search
         searchStack.Push(firstBlock);
