@@ -18,8 +18,8 @@ public class BlockManager : MonoBehaviour
 
     [Header("Link")]
     [SerializeField] public float overlapMargin;
-    [SerializeField] float interval;
-    [SerializeField] float moveSpeed;
+    [SerializeField] float linkInterval;
+    [SerializeField] float linkSpeed;
 
     //[Header("Boss Animation")]
     //[SerializeField] float distance = 0.01f;
@@ -27,10 +27,9 @@ public class BlockManager : MonoBehaviour
     //[SerializeField] Ease ease = Ease.Linear;
 
     [Header("Alone Animation")]
-    public float radius;
-    public float rotateSpeed;
-    public float speed;
-    public float fluctuation;
+    public float randomWalkSpeed;
+    public float randomWalkWeight;
+    public float centripetalWeight;
 
     public List<Block> blocks;
     public Vector3 center;
@@ -56,7 +55,7 @@ public class BlockManager : MonoBehaviour
         searchStack = new Stack<Block>();
         isLinking = false;
         waitGenerate = new WaitForSeconds(generateInterval);
-        waitInterval = new WaitForSeconds(interval);
+        waitInterval = new WaitForSeconds(linkInterval);
         wait1sec = new WaitForSeconds(1);
 
         StartCoroutine("GenerateBlock");
@@ -197,7 +196,7 @@ public class BlockManager : MonoBehaviour
             aloneBlock.LinkBlockTo(bossBlock);
 
             // move
-            aloneBlock.MoveTo(bossBlock, moveSpeed);
+            aloneBlock.MoveTo(bossBlock, linkSpeed);
 
             linkingCount++;
             bossCapacity--;
@@ -287,7 +286,7 @@ public class BlockManager : MonoBehaviour
         bossBlock.LinkBlockTo(aloneBlock);
 
         // move
-        aloneBlock.MoveTo(bossBlock, moveSpeed);
+        aloneBlock.MoveTo(bossBlock, linkSpeed);
 
         StartCoroutine("LinkLastBlock");
     }

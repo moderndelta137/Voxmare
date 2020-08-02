@@ -35,6 +35,7 @@ public class Block : MonoBehaviour
             if(value)
             {
                 this.transform.parent = null;
+                aloneCoroutine = StartCoroutine(AloneAnimation());
             }
             else
             {
@@ -44,6 +45,7 @@ public class Block : MonoBehaviour
     }
     private BoxCollider mycollider;
     private List<int> emptyIndex;
+    public Transform neighbor;
 
     // Link Animation
     Block targetBlock;
@@ -59,9 +61,12 @@ public class Block : MonoBehaviour
     //private Tween idleTween;
 
     // Alone Animation
+    private Coroutine aloneCoroutine;
     private float randomSeed;
+    private Vector3 direction;
 
     private BlockManager manager;
+    private BossController bossController;
     private Sequence movingSeqence;
     private Block parent;
 
@@ -72,6 +77,11 @@ public class Block : MonoBehaviour
     void Start()
     {
         // Initialize variables
+        manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
+        bossController = GameObject.Find("Boss").GetComponent<BossController>();
+        mycollider = GetComponent<BoxCollider>();
+        randomSeed = Random.value;
+        emptyIndex = new List<int>();
         maxPairs = 0;
         foreach (Transform child in transform)
         {
@@ -87,10 +97,6 @@ public class Block : MonoBehaviour
         id = idCount++;
         isMoving = false;
         IsAlone = true;
-        manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
-        randomSeed = Random.value;
-        mycollider = GetComponent<BoxCollider>();
-        emptyIndex = new List<int>();
     }
 
     /// <summary>
@@ -206,10 +212,10 @@ public class Block : MonoBehaviour
         targetBlock = block;
         targetBlockTransform = block.transform;
         this.moveSpeed = moveSpeed;
-
         connectPointThis = GetConnectPoint(this, block.id);   // Get the connect point in this block
         connectPointTarget = GetConnectPoint(block, this.id); // Get the connect point in the target block
 
+        StopCoroutine(aloneCoroutine);
         isMoving = true;
     }
 
@@ -298,35 +304,40 @@ public class Block : MonoBehaviour
     {
         if (!IsAlone && !isMoving)
         {
-            //idleTween.Play();
         }
         // when block is alone
         else if(IsAlone && !isMoving)
         {
-            //idleTween.Pause();
-            //float radius = manager.radius + manager.fluctuation * (Mathf.PerlinNoise(Time.time * manager.rotateSpeed, randomSeed * 255) - 0.5f);
-            //float theta = Time.time * manager.rotateSpeed + randomSeed * 2 * Mathf.PI / manager.rotateSpeed;
-
-            //float x = radius * Mathf.Sin(theta);
-            //float y = transform.position.y;
-            //float z = radius * Mathf.Cos(theta);
-
-            //Vector3 toPos = manager.center + new Vector3(x, y, z);
-            //Vector3 toVec = (toPos - transform.position);
-            //transform.position += toVec * manager.speed;
-            //transform.position = toPos;
         }
         else if(isMoving)
         {
-            //idleTween.Pause();
             Move();
            
         }
         else
         {
-            //idleTween.Pause();
         }
 
+    }
+
+    IEnumerator AloneAnimation()
+    {
+        direction = new Vector3(Mathf.Cos(Random.value * 2 * Mathf.PI), 0, Mathf.Sin(Random.value * 2 * Mathf.PI)).normalized;
+        while (true)
+        {
+            float rand = Mathf.PerlinNoise(Time.time * 0.1f, randomSeed * 256);
+            float angle = (rand * 2f - 1f) * 90;   // [-90, 90]
+            Vector3 randomVector = Quaternion.Euler(0, angle, 0) * direction;    // [0, 1]
+            Vector3 toCenter = bossController.center - transform.position;
+            Vector3 centripetalVector = toCenter.normalized * bossController.centripetalPower.Evaluate(toCenter.magnitude / bossController.radius); // [0, 1]
+
+            direction = direction + (randomVector * manager.randomWalkWeight + centripetalVector * manager.centripetalWeight);
+            direction = direction.normalized;
+            transform.position += direction * manager.randomWalkSpeed * Time.deltaTime;
+            
+            yield return null;
+        }
+        
     }
 
     void Move()
@@ -363,10 +374,6 @@ public class Block : MonoBehaviour
             else
             {
                 IsAlone = false;
-
-                //Transform point = GetConnectPoint(this, parent.id);
-                //idleTween = point.DOLocalMoveZ(point.localPosition.z + distance, duration).SetEase(ease).SetLoops(-1, LoopType.Yoyo);
-                //idleTween.Pause();
             }
         }
     }

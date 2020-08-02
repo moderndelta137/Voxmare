@@ -11,11 +11,11 @@ public class BossController : MonoBehaviour
     State state;
 
     [Header("Moveable Area")]
-    [SerializeField] Vector3 center;
-    [SerializeField] float radius;
+    [SerializeField] public Vector3 center;
+    [SerializeField] public float radius;
     [Header("Random Walk")]
     [SerializeField] float speed;
-    [SerializeField] AnimationCurve centripetalPower;
+    [SerializeField] public AnimationCurve centripetalPower;
     [Header("Tackle")]
     [SerializeField] float interval;
     [SerializeField] float intervalDivergence;
