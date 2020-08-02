@@ -160,9 +160,7 @@ MonoBehaviour:
   maxPairs: 0
   pairs: 
   isMoving: 0
-  distance: 0
-  duration: 0
-  ease: 0
+  neighbor: {fileID: 0}
 --- !u!114 &6408053986441740093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +180,7 @@ MonoBehaviour:
   DEBUG_hit_reaction_duration: 0.05
   DEBUG_hit_reaction_flinch: 1
   Health_bar_prefab: {fileID: 1909103199782469627, guid: 36285098073564f4d88e44056c348fa6, type: 3}
-  Health_bar_offset: {x: 0, y: 10, z: 0}
+  Health_bar_offset: {x: 0, y: 5, z: 0}
 --- !u!1 &5855476472679515069
 GameObject:
   m_ObjectHideFlags: 0

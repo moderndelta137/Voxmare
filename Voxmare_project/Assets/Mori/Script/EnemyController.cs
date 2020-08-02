@@ -20,6 +20,7 @@ public class EnemyController : MonoBehaviour
     private Vector3 temp_position;
     [Header("UI")]
     public GameObject Health_bar_prefab;
+    //public GameObject health_bar;
     private Health_Bar health_bar_script;
     public Vector3 Health_bar_offset;
 
@@ -29,8 +30,8 @@ public class EnemyController : MonoBehaviour
     {
         rend = GetComponentInChildren<MeshRenderer>();
         original_mat = rend.material;
-        health_bar_script = Instantiate(Health_bar_prefab, this.transform.position + Health_bar_offset, Quaternion.identity).GetComponent<Health_Bar>();
-        health_bar_script.transform.SetParent(this.transform);
+        health_bar_script = Instantiate(Health_bar_prefab, Vector3.zero, Quaternion.identity,this.transform).GetComponent<Health_Bar>();
+        health_bar_script.transform.localPosition=Health_bar_offset;
         health_bar_script.SetMaxHealth(HP);
         block = GetComponent<Block>();
     }
@@ -43,9 +44,10 @@ public class EnemyController : MonoBehaviour
 
     public IEnumerator ApplyDamage(Vector3 Incoming)
     {
+
+        HP -= (int)Incoming.magnitude;
         health_bar_script.gameObject.SetActive(true);
         health_bar_script.SetHealth(HP);
-        HP -= (int)Incoming.magnitude;
         rend.material = Hit_reaction_mat;
         if (hit_reacting == 0)
         {
@@ -70,17 +72,6 @@ public class EnemyController : MonoBehaviour
         block.Death();
         Destroy(this.gameObject);
     }
-    /*
-    private void OnCollisionEnter(Collision other) 
-    {
-                    Debug.Log("Hits");
-        if(other.gameObject.CompareTag("Player"))
-        {
-                    Debug.Log("Hit");
-            other.gameObject.SendMessage("Knockback",(other.transform.position-this.transform.position).normalized);
-        }
-    }
-    */
 
     private void OnTriggerEnter(Collider other)
     {

@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public Camera Main_camera;
     public float Move_speed;
     public float Rotate_speed;
+    public bool can_move;
     private Vector3 move_input_vector;
     private Vector3 look_input_vector;
     [Header("Mouse Control")]
@@ -24,7 +25,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Player Parameter")]
     public int HP;
     [Header("Hit Reaction")]
+    public float Invencible_duration;
     private bool invencible;
+    private WaitForSeconds invencible_wait;
     private Collider player_collider;
     public Material Hit_reaction_mat;
     private Material original_mat;
@@ -40,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     private RaycastHit knockback_hit;
     private int knockback_layerMask;
     private Vector3 damage_incoming;
-    private Vector3 temp_position;
+
 
     [Header("Animation")]
     private Animator player_animator;
@@ -56,6 +59,8 @@ public class PlayerMovement : MonoBehaviour
         Main_camera=Camera.main;
         if(Mouse_control)
             InitiateMouseControl();
+
+        can_move = true;
         rend = GetComponentInChildren<SkinnedMeshRenderer>();
         original_mat = rend.material;
         knockback_layerMask = (1 << 9) + (1 << 11);//Check Enemy Layer and Terrian Layer for shooting
@@ -63,9 +68,9 @@ public class PlayerMovement : MonoBehaviour
         player_collider = GetComponent<Collider>();
 
         player_animator = GetComponentInChildren<Animator>();
-
-        health_bar_script = Instantiate(Health_bar_prefab,this.transform.position+Health_bar_offset,Quaternion.identity).GetComponent<Health_Bar>();
-        health_bar_script.transform.SetParent(this.transform);
+        invencible_wait = new WaitForSeconds(Invencible_duration);
+        health_bar_script = Instantiate(Health_bar_prefab,Vector3.zero,Quaternion.identity,this.transform).GetComponent<Health_Bar>();
+        health_bar_script.transform.localPosition = Health_bar_offset;
         health_bar_script.SetMaxHealth(HP);
         health_bar_script.gameObject.SetActive(true);
     }
@@ -77,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
         move_input_vector.x = Input.GetAxis("Horizontal");
         move_input_vector.z = Input.GetAxis("Vertical");
         Vector3.ClampMagnitude(move_input_vector,1.0f);
-        if(!invencible)
+        if(can_move)
         {
             if(move_input_vector.magnitude>0)
             {
@@ -98,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
                 Mouse_cursor.transform.position = mouse_world_position;
                 mouse_direction_vector = mouse_world_position - this.transform.position;
                 look_input_vector = mouse_direction_vector.normalized-this.transform.forward;
-                if(look_input_vector.magnitude>0.1f)
+                if(look_input_vector.magnitude>0.1f && can_move)
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mouse_direction_vector), Rotate_speed*Time.deltaTime);
             }
 
@@ -107,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
         {
             look_input_vector.x = Input.GetAxis("Look_Horizontal");
             look_input_vector.z = Input.GetAxis("Look_Vertical");
-            if(look_input_vector.magnitude>0.1f)
+            if(look_input_vector.magnitude>0.1f && can_move)
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(look_input_vector), Rotate_speed*Time.deltaTime);
         }
 
@@ -124,8 +129,8 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator ApplyDamage(Vector3 Incoming)
     {
-        invencible=true;
-        player_collider.enabled=false;
+        StartCoroutine(BecomeInvencible());
+        can_move = false;
         HP -= (int)Incoming.magnitude;
         health_bar_script.SetHealth(HP);
         rend.material = Hit_reaction_mat;
@@ -145,19 +150,20 @@ public class PlayerMovement : MonoBehaviour
         yield return myTween.WaitForCompletion();
         hit_reacting -= 1;
         rend.material = original_mat;
-        ResetY();
 
-        if(HP == 0)
+
+        if(HP <= 0)
         {
             Destroy(this.gameObject);
         }
-
-        invencible=false;
-        player_collider.enabled=true;
+        can_move = true;
+        ResetY();
     }
 
     public IEnumerator Knockback(Vector3 Incoming)
     {
+        StartCoroutine(BecomeInvencible());
+        can_move = false;
         HP -= (int)Incoming.magnitude;
         health_bar_script.SetHealth(HP);
         rend.material = Hit_reaction_mat;
@@ -173,15 +179,27 @@ public class PlayerMovement : MonoBehaviour
         }
         yield return myTween.WaitForCompletion();
         rend.material = original_mat;
-        ResetY();
-        if(HP == 0)
+        
+        if(HP <= 0)
         {
             Destroy(this.gameObject);
         }
+        can_move = true;
+        ResetY();
     }
 
-    public void ResetY()
+    private IEnumerator BecomeInvencible()
     {
+        invencible=true;
+        player_collider.enabled=false;
+        yield return invencible_wait;
+        invencible=false;
+        player_collider.enabled=true;
+        ResetY();
+    }
+    private void ResetY()
+    {
+        Vector3 temp_position;
         temp_position = this.transform.position;
         temp_position.y = 0;
         this.transform.position = temp_position;
