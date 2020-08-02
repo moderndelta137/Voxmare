@@ -24,7 +24,7 @@ public class Block : MonoBehaviour
     public int id { get; private set; }         // id is set automatically in Start(). Readonly. (Note: id starts from 0)
     [HideInInspector] public int maxPairs;
     public List<int> pairs;                     // store pairs by block's id
-    [HideInInspector] public bool isMoving;                       // animating now
+    [HideInInspector] public bool isMoving;     // animating now
     // alone or linking boss
     private bool isAlone;
     public bool IsAlone
@@ -52,12 +52,6 @@ public class Block : MonoBehaviour
     float moveSpeed;
     Transform connectPointThis;
     Transform connectPointTarget;
-
-    // Boss Animation
-    //public float distance;
-    //public float duration;
-    //public Ease ease;
-    //private Tween idleTween;
 
     // Alone Animation
     private float randomSeed;

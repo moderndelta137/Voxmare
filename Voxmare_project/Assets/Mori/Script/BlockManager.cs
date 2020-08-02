@@ -21,18 +21,12 @@ public class BlockManager : MonoBehaviour
     [SerializeField] float linkInterval;
     [SerializeField] float linkSpeed;
 
-    //[Header("Boss Animation")]
-    //[SerializeField] float distance = 0.01f;
-    //[SerializeField] float duration = 0.5f;
-    //[SerializeField] Ease ease = Ease.Linear;
-
     [Header("Alone Animation")]
     public float randomWalkSpeed;
     public float randomWalkWeight;
     public float centripetalWeight;
 
     public List<Block> blocks;
-    public Vector3 center;
     public GameObject boss;
     private bool isLinking;
     private List<Block> aloneBlocks;
@@ -63,36 +57,6 @@ public class BlockManager : MonoBehaviour
 
     void Update()
     {
-        CalcCenter();
-
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            // Link and Move
-            StartCoroutine("LinkAllBlock");
-        }
-
-        if(Input.GetKeyDown(KeyCode.C))
-        {
-            Debug.Log("Debug : " + blocks[0]);
-        }
-    }
-
-    void CalcCenter()
-    {
-        Vector3 sum = Vector3.zero;
-        foreach (Block block in blocks)
-        {
-            if(!block.IsAlone && !block.isMoving) sum += block.transform.position;
-        }
-
-        if (blocks.Count == 0)
-        {
-            center = Vector3.zero;
-        }
-        else
-        {
-            center = sum / blocks.Count;
-        }
     }
 
     IEnumerator GenerateBlock()
@@ -117,6 +81,8 @@ public class BlockManager : MonoBehaviour
 
             yield return waitGenerate;
         }
+
+        StartCoroutine("LinkAllBlock");
     }
 
     IEnumerator LinkAllBlock()

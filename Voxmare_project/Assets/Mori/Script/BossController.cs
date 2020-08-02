@@ -8,6 +8,7 @@ public class BossController : MonoBehaviour
 {
     GameObject target;
     float randomSeed;
+    Vector3 blocksCenter;
     State state;
 
     [Header("Moveable Area")]
@@ -21,9 +22,14 @@ public class BossController : MonoBehaviour
     [SerializeField] float intervalDivergence;
     [SerializeField] float tackleDuration;
     [SerializeField] Ease tackleEase;
+    [Header("CalculateCenter")]
+    [SerializeField] float calculateCenterInterval;
 
     Vector3 detination;
     Tween tackleTween;
+    WaitForSeconds waitTackleInterval;
+    WaitForSeconds waitCalculateCenterInterval;
+
     enum State
     {
         Random,
@@ -37,7 +43,11 @@ public class BossController : MonoBehaviour
         randomSeed = Random.value;
         state = State.Random;
 
+        waitTackleInterval = new WaitForSeconds(interval + Random.Range(-intervalDivergence, intervalDivergence));
+        waitCalculateCenterInterval = new WaitForSeconds(calculateCenterInterval);
+
         StartCoroutine("Tackle");
+        StartCoroutine("CalculateCenter");
     }
 
     void Update()
@@ -71,11 +81,40 @@ public class BossController : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(interval + Random.Range(-intervalDivergence, intervalDivergence));
+            yield return waitTackleInterval;
             state = State.Tackle;
             tackleTween = transform.DOMove(target.transform.position, tackleDuration).SetEase(tackleEase);
             yield return tackleTween.WaitForCompletion();
             state = State.Random;
+        }
+    }
+
+    private IEnumerator CalculateCenter()
+    {
+        while(true)
+        {
+            yield return waitCalculateCenterInterval;
+            Vector3 sum = Vector3.zero;
+            foreach (Transform block in transform)
+            {
+                sum += block.position;
+            }
+
+            if (transform.childCount > 0)
+            {
+                blocksCenter = sum / transform.childCount;
+            }
+            else
+            {
+                blocksCenter = transform.position;
+            }
+
+            Vector3 posToCenter = blocksCenter - transform.position;
+            transform.position = blocksCenter;
+            foreach (Transform block in transform)
+            {
+                block.localPosition += -posToCenter;
+            }
         }
     }
 
