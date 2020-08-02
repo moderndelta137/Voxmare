@@ -23,8 +23,6 @@ public class PlayerDeflect : MonoBehaviour
     private int shoot_layerMask;
     private Vector3 shoot_vector;
 
-    private PlayerMovement movement_script;
-
     [Header("Deflect Effect")]
     public bool Velocity_bonus;//Increase bullet velocity after deflection
     public float[] Velocity_bonus_scale;
@@ -68,7 +66,6 @@ public class PlayerDeflect : MonoBehaviour
         Can_deflect = true;
         deflect_wait = new WaitForSeconds(Deflect_cooldown);
         pickup_zone_script = this.transform.parent.GetComponentInChildren<PlayerPickup>();
-        movement_script = this.transform.parent.GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -78,7 +75,8 @@ public class PlayerDeflect : MonoBehaviour
         {        
             if(Can_deflect)
             {
-
+                Can_deflect=false;
+                this.transform.DOScale(Vector3.zero,DEBUG_cooldown_scale_duration);
                 StartCoroutine(DeflectCooldown());
                 //Update Animation
                 player_animator.SetTrigger("Deflect");
@@ -91,9 +89,7 @@ public class PlayerDeflect : MonoBehaviour
                 //Bullet_list.Clear();
                 hits=null;
                 hits=Physics.SphereCastAll(this.transform.position, Boundary_radius[Radius_rank], Vector3.up, 0, bullet_layerMask);
-                //Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, shoot_layerMask);
-                //Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, shoot_layerMask);
-                Vector3 temp_position;
+                Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, shoot_layerMask);
                 foreach(RaycastHit bullet in hits)
                 {
                     if(bullet.transform.CompareTag("Bullet"))
@@ -105,12 +101,7 @@ public class PlayerDeflect : MonoBehaviour
                             //Bullet_list.Add(bullet_instance);
                             bullet_instance.Damage_player=false;
                             bullet_instance.Deflectable=false;
-                            temp_position = bullet_instance.transform.position;
-                            temp_position.y = 0;
-                            bullet_instance.transform.position = temp_position;
-                            //Debug.Log(bullet_instance.transform.position);
-                            //shoot_vector = hit.point-bullet.transform.position;
-                            shoot_vector = movement_script.Mouse_cursor.transform.position-bullet.transform.position;
+                            shoot_vector = hit.point-bullet.transform.position;
                             shoot_vector.y = 0;
                             bullet_instance.transform.rotation = Quaternion.LookRotation(shoot_vector);
                             bullet_instance.ChangeMaterial(2);
@@ -142,9 +133,9 @@ public class PlayerDeflect : MonoBehaviour
         if(other.CompareTag("Bullet"))
         {
             bullet_instance=other.GetComponent<BulletController>();
-            bullet_instance.Bullet_speed=bullet_instance.Bullet_speed/Boundry_slowdown_scale;
             if(bullet_instance.Damage_player)
             {
+                bullet_instance.Bullet_speed=bullet_instance.Bullet_speed/Boundry_slowdown_scale;
                 bullet_instance.ChangeMaterial(0);
             }
         }
@@ -162,14 +153,10 @@ public class PlayerDeflect : MonoBehaviour
 
     public IEnumerator DeflectCooldown()
     {
-        Can_deflect=false;
-        this.transform.DOScale(Vector3.zero,DEBUG_cooldown_scale_duration);
-        movement_script.can_move = false;
         yield return deflect_wait;
         Can_deflect = true;
         this.transform.DOScale(Vector3.one * Boundary_radius[Radius_rank] * Boundary_mesh_scaler, DEBUG_cooldown_scale_duration);
-        movement_script.can_move = true;
-        
+        //DEBUG_render.enabled=true;
     }
 
     private void ApplyPowerBonus()

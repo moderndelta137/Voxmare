@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class Health_Bar : MonoBehaviour
 {
     public Slider slider;
-    public Camera cam;
+    public int MaxValue;
+    public int Value;
+    private Camera cam;
 
     // Start is called before the first frame update
     void Start()

@@ -44,12 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74c60190321bddc47b5ce2c03f536928, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  s_animation: 0
   s_duration: 1
   s_scale: {x: 0.8, y: 0.8, z: 0.8}
   s_ease: 4
   s_syncrosynchronized: 0
-  m_animation: 0
   m_duration: 1
   m_distance: {x: 0, y: 0, z: 0.2}
   m_ease: 4
@@ -182,7 +180,6 @@ MonoBehaviour:
   maxPairs: 0
   pairs: 
   isMoving: 0
-  neighbor: {fileID: 0}
 --- !u!114 &6408053986441740093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,14 +192,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b99ce267ccc2e6f499b8e1f29c5181cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 5
+  HP: 3
   Damage: 3
   Damage_player: 1
   Hit_reaction_mat: {fileID: 2100000, guid: 14ff9e6e57d5bee4682ee74e146fccf2, type: 2}
   DEBUG_hit_reaction_duration: 0.05
   DEBUG_hit_reaction_flinch: 1
   Health_bar_prefab: {fileID: 1909103199782469627, guid: 36285098073564f4d88e44056c348fa6, type: 3}
-  Health_bar_offset: {x: 0, y: 5, z: 0}
+  Health_bar_offset: {x: 0, y: 10, z: 0}
 --- !u!1001 &3482638474024536994
 PrefabInstance:
   m_ObjectHideFlags: 0

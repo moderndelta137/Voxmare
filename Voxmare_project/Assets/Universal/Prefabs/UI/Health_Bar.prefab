@@ -353,7 +353,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 1909103198979673465}
-  cam: {fileID: 0}
+  MaxValue: 0
+  Value: 0
 --- !u!1 &1909103200112266494
 GameObject:
   m_ObjectHideFlags: 0
