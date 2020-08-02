@@ -208,9 +208,7 @@ MonoBehaviour:
   maxPairs: 0
   pairs: 
   isMoving: 0
-  distance: 0
-  duration: 0
-  ease: 0
+  neighbor: {fileID: 0}
 --- !u!114 &-1261616098011179214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,31 +221,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b99ce267ccc2e6f499b8e1f29c5181cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 3
+  HP: 2
   Damage: 3
   Damage_player: 1
   Hit_reaction_mat: {fileID: 2100000, guid: 14ff9e6e57d5bee4682ee74e146fccf2, type: 2}
   DEBUG_hit_reaction_duration: 0.05
   DEBUG_hit_reaction_flinch: 1
   Health_bar_prefab: {fileID: 1909103199782469627, guid: 36285098073564f4d88e44056c348fa6, type: 3}
-  Health_bar_offset: {x: 0, y: 10, z: 0}
---- !u!114 &8187822917626079149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7864609670601601370}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae9741be0bce4a94292b88cb0bea6fdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Eye: {fileID: 0}
-  Eye_vector_up: {x: 0, y: 0, z: 0}
-  Eye_vector_right: {x: 0, y: 0, z: 0}
-  Eye_movement_range: 0.15
-  Eye_movement_scale: 0.01
+  Health_bar_offset: {x: 0, y: 5, z: 0}
 --- !u!1001 &829371268088919934
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -727,11 +708,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed810fdaaed25ec40ae39e7c6a45b91e, type: 3}
---- !u!1 &7864609670601601370 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2052504839816471418, guid: ed810fdaaed25ec40ae39e7c6a45b91e, type: 3}
-  m_PrefabInstance: {fileID: 8169321457936536096}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7864609670601601350 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2052504839816471398, guid: ed810fdaaed25ec40ae39e7c6a45b91e, type: 3}
