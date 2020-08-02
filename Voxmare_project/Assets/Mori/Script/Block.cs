@@ -35,7 +35,6 @@ public class Block : MonoBehaviour
             if(value)
             {
                 this.transform.parent = null;
-                aloneCoroutine = StartCoroutine(AloneAnimation());
             }
             else
             {
@@ -61,7 +60,6 @@ public class Block : MonoBehaviour
     //private Tween idleTween;
 
     // Alone Animation
-    private Coroutine aloneCoroutine;
     private float randomSeed;
     private Vector3 direction;
 
@@ -97,6 +95,7 @@ public class Block : MonoBehaviour
         id = idCount++;
         isMoving = false;
         IsAlone = true;
+        direction = new Vector3(Mathf.Cos(Random.value * 2 * Mathf.PI), 0, Mathf.Sin(Random.value * 2 * Mathf.PI)).normalized;
     }
 
     /// <summary>
@@ -215,7 +214,6 @@ public class Block : MonoBehaviour
         connectPointThis = GetConnectPoint(this, block.id);   // Get the connect point in this block
         connectPointTarget = GetConnectPoint(block, this.id); // Get the connect point in the target block
 
-        StopCoroutine(aloneCoroutine);
         isMoving = true;
     }
 
@@ -308,11 +306,11 @@ public class Block : MonoBehaviour
         // when block is alone
         else if(IsAlone && !isMoving)
         {
+            AloneAnimation();
         }
         else if(isMoving)
         {
-            Move();
-           
+            LinkAnimation();
         }
         else
         {
@@ -320,27 +318,20 @@ public class Block : MonoBehaviour
 
     }
 
-    IEnumerator AloneAnimation()
+    void AloneAnimation()
     {
-        direction = new Vector3(Mathf.Cos(Random.value * 2 * Mathf.PI), 0, Mathf.Sin(Random.value * 2 * Mathf.PI)).normalized;
-        while (true)
-        {
-            float rand = Mathf.PerlinNoise(Time.time * 0.1f, randomSeed * 256);
-            float angle = (rand * 2f - 1f) * 90;   // [-90, 90]
-            Vector3 randomVector = Quaternion.Euler(0, angle, 0) * direction;    // [0, 1]
-            Vector3 toCenter = bossController.center - transform.position;
-            Vector3 centripetalVector = toCenter.normalized * bossController.centripetalPower.Evaluate(toCenter.magnitude / bossController.radius); // [0, 1]
+        float rand = Mathf.PerlinNoise(Time.time * 0.1f, randomSeed * 256);
+        float angle = (rand * 2f - 1f) * 90;   // [-90, 90]
+        Vector3 randomVector = Quaternion.Euler(0, angle, 0) * direction;    // [0, 1]
+        Vector3 toCenter = bossController.center - transform.position;
+        Vector3 centripetalVector = toCenter.normalized * bossController.centripetalPower.Evaluate(toCenter.magnitude / bossController.radius); // [0, 1]
 
-            direction = direction + (randomVector * manager.randomWalkWeight + centripetalVector * manager.centripetalWeight);
-            direction = direction.normalized;
-            transform.position += direction * manager.randomWalkSpeed * Time.deltaTime;
-            
-            yield return null;
-        }
-        
+        direction = direction + (randomVector * manager.randomWalkWeight + centripetalVector * manager.centripetalWeight);
+        direction = direction.normalized;
+        transform.position += direction * manager.randomWalkSpeed * Time.deltaTime;
     }
 
-    void Move()
+    void LinkAnimation()
     {
         // Decide Position
         float distance = Vector3.Distance(transform.position, connectPointThis.position);
