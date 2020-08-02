@@ -304,16 +304,16 @@ public class Block : MonoBehaviour
         else if(IsAlone && !isMoving)
         {
             //idleTween.Pause();
-            float radius = manager.radius + manager.fluctuation * (Mathf.PerlinNoise(Time.time * manager.rotateSpeed, randomSeed * 255) - 0.5f);
-            float theta = Time.time * manager.rotateSpeed + randomSeed * 2 * Mathf.PI / manager.rotateSpeed;
+            //float radius = manager.radius + manager.fluctuation * (Mathf.PerlinNoise(Time.time * manager.rotateSpeed, randomSeed * 255) - 0.5f);
+            //float theta = Time.time * manager.rotateSpeed + randomSeed * 2 * Mathf.PI / manager.rotateSpeed;
 
-            float x = radius * Mathf.Sin(theta);
-            float y = transform.position.y;
-            float z = radius * Mathf.Cos(theta);
+            //float x = radius * Mathf.Sin(theta);
+            //float y = transform.position.y;
+            //float z = radius * Mathf.Cos(theta);
 
-            Vector3 toPos = manager.center + new Vector3(x, y, z);
-            Vector3 toVec = (toPos - transform.position);
-            transform.position += toVec * manager.speed;
+            //Vector3 toPos = manager.center + new Vector3(x, y, z);
+            //Vector3 toVec = (toPos - transform.position);
+            //transform.position += toVec * manager.speed;
             //transform.position = toPos;
         }
         else if(isMoving)

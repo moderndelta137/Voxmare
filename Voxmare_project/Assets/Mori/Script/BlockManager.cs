@@ -9,7 +9,12 @@ public class BlockManager : MonoBehaviour
     //[SerializeField] GameObject atkBlock = null;
     public List<GameObject> Block_prefabs;
     [Header("Generate")]
-    [SerializeField] int generateCount = 2;
+    [SerializeField] int generateCount;
+    [SerializeField] Vector3 generateCenter;
+    [SerializeField] float generateRadius;
+    [SerializeField] float generateDuration;
+    [SerializeField] Ease generateEase;
+    [SerializeField] float generateInterval;
 
     [Header("Link")]
     [SerializeField] public float overlapMargin;
@@ -37,6 +42,7 @@ public class BlockManager : MonoBehaviour
     private Stack<Block> searchStack;
     private Block aloneBlock;
     private Block bossBlock;
+    private WaitForSeconds waitGenerate;
     private WaitForSeconds waitInterval;
     private WaitForSeconds wait1sec;
 
@@ -49,10 +55,11 @@ public class BlockManager : MonoBehaviour
         visited = new List<int>();
         searchStack = new Stack<Block>();
         isLinking = false;
+        waitGenerate = new WaitForSeconds(generateInterval);
         waitInterval = new WaitForSeconds(interval);
         wait1sec = new WaitForSeconds(1);
 
-        GenerateBlock(generateCount);
+        StartCoroutine("GenerateBlock");
     }
 
     void Update()
@@ -89,20 +96,27 @@ public class BlockManager : MonoBehaviour
         }
     }
 
-    void GenerateBlock(int count)
+    IEnumerator GenerateBlock()
     {
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < generateCount; i++)
         {
             GameObject block;
             block = GameObject.Instantiate(Block_prefabs[Random.Range(0,Block_prefabs.Count)]);
 
-            block.transform.position = new Vector3((i % 10) * 4, 0, i / 10 * 4); // Line up 10 blocks of each row.
+            // Position
+            float distance = Random.value * generateRadius;
+            float angle = Random.value * 2 * Mathf.PI;
+            block.transform.position = generateCenter + new Vector3(distance * Mathf.Cos(angle), 0, distance * Mathf.Sin(angle)); // Line up 10 blocks of each row.
+            
+            // Generate Animation
+            Vector3 scale = block.transform.localScale;
+            block.transform.localScale = Vector3.zero;
+            block.transform.DOScale(scale, generateDuration).SetEase(generateEase);
+            
+            // Store
+            blocks.Add(block.GetComponent<Block>());
 
-            Block b = block.GetComponent<Block>();
-            //b.distance = distance;
-            //b.duration = duration;
-            //b.ease = ease;
-            blocks.Add(b);                             // The blocks are ordered by id.
+            yield return waitGenerate;
         }
     }
 
@@ -464,5 +478,11 @@ public class BlockManager : MonoBehaviour
                 searchStack.Push(nextBlock);
             }
         }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(generateCenter, generateRadius);
     }
 }
