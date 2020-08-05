@@ -9,13 +9,13 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Minim_Block_mat
   m_Shader: {fileID: 4800000, guid: 7f50d1ec77e2cc9459ca9d36924ffc53, type: 3}
-  m_ShaderKeywords: BACKSOLID LEFTSOLID TEXTUREMODULE_ON TOPSOLID _AOUV_UV0 _GRADIENTSPACE_WORLD_SPACE
-    _GRADSETTINGS_B_USE_GLOBAL _GRADSETTINGS_D_USE_GLOBAL _GRADSETTINGS_F_USE_GLOBAL
-    _GRADSETTINGS_L_USE_GLOBAL _GRADSETTINGS_R_USE_GLOBAL _GRADSETTINGS_T_USE_GLOBAL
-    _LMAPBLENDINGMODE_ADD _MODE_OPAQUE _OTHERSETTINGS_ON _SHADING_B_SOLID_COLOR _SHADING_D_VERTEX_COLOR
-    _SHADING_F_VERTEXCOLOR _SHADING_L_SOLID_COLOR _SHADING_R_VERTEX_COLOR _SHADING_T_SOLID_COLOR
-    _SHOWBACK_ON _SHOWCUSTOMSHADING_ON _SHOWFRONT_ON _SHOWLEFT_ON _SHOWRIGHT_ON _SHOWTEXTURE_ON
-    _SHOWTOP_ON
+  m_ShaderKeywords: BACKSOLID LEFTSOLID RIGHTSOLID TEXTUREMODULE_ON TOPSOLID _AOUV_UV0
+    _GRADIENTSPACE_WORLD_SPACE _GRADSETTINGS_B_USE_GLOBAL _GRADSETTINGS_D_USE_GLOBAL
+    _GRADSETTINGS_F_USE_GLOBAL _GRADSETTINGS_L_USE_GLOBAL _GRADSETTINGS_R_USE_GLOBAL
+    _GRADSETTINGS_T_USE_GLOBAL _LMAPBLENDINGMODE_ADD _MODE_OPAQUE _OTHERSETTINGS_ON
+    _SHADING_B_SOLID_COLOR _SHADING_D_VERTEX_COLOR _SHADING_F_VERTEXCOLOR _SHADING_L_SOLID_COLOR
+    _SHADING_R_VERTEX_COLOR _SHADING_T_SOLID_COLOR _SHOWBACK_ON _SHOWCUSTOMSHADING_ON
+    _SHOWFRONT_ON _SHOWLEFT_ON _SHOWRIGHT_ON _SHOWTEXTURE_ON _SHOWTOP_ON
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -63,7 +63,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
-        m_Texture: {fileID: 2800000, guid: 10181a8962d70874fa7fe1240278dc1f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7c9f6bd5f08a4f44a9a0ab2c754bcd59, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -166,7 +166,7 @@ Material:
     - _Shading_D: 0
     - _Shading_F: 0
     - _Shading_L: 1
-    - _Shading_R: 0
+    - _Shading_R: 1
     - _Shading_T: 1
     - _ShadowBlend: 0
     - _ShadowInfluence: 0
@@ -203,12 +203,12 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1_B: {r: 1, g: 0.98621684, b: 0.504717, a: 1}
+    - _Color1_B: {r: 1, g: 0.9957143, b: 0.865, a: 1}
     - _Color1_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_F: {r: 0.9622642, g: 0.23597066, b: 0.05900679, a: 1}
-    - _Color1_L: {r: 0.9811321, g: 0.38412246, b: 0.6936198, a: 1}
-    - _Color1_R: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1_T: {r: 0.759434, g: 0.98834884, b: 1, a: 1}
+    - _Color1_L: {r: 0.98039216, g: 0.66078436, b: 0.72261477, a: 1}
+    - _Color1_R: {r: 0.4528299, g: 0.24221133, b: 0.681, a: 1}
+    - _Color1_T: {r: 0.8509804, g: 0.9921568, b: 1, a: 1}
     - _Color2_B: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_F: {r: 1, g: 1, b: 1, a: 1}
