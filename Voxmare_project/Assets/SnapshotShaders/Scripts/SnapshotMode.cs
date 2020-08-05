@@ -32,7 +32,7 @@ public class SnapshotMode : MonoBehaviour
 
     private List<SnapshotFilter> filters = new List<SnapshotFilter>();
 
-    private int filterIndex = 0;
+    public int filterIndex = 0;
 
     private void Awake()
     {
@@ -61,27 +61,29 @@ public class SnapshotMode : MonoBehaviour
 
         // Create all filters.
         filters.Add(new BaseFilter("None", Color.white, noneShader));
-        filters.Add(new BaseFilter("Greyscale", Color.white, greyscaleShader));
-        filters.Add(new BaseFilter("Sepia Tone", new Color(1.00f, 1.00f, 0.79f), 
-            sepiaShader));
+        //filters.Add(new BaseFilter("Greyscale", Color.white, greyscaleShader));
+        //filters.Add(new BaseFilter("Sepia Tone", new Color(1.00f, 1.00f, 0.79f), 
+        //    sepiaShader));
         filters.Add(new BlurFilter("Blur (Full)", Color.white, gaussianShader));
-        filters.Add(new BlurFilter("Blur (Edge)", Color.white, edgeBlurShader));
-        filters.Add(new BaseFilter("Silhouette", new Color(0.89f, 0.71f, 0.56f), 
-            silhouetteShader));
+        //filters.Add(new BlurFilter("Blur (Edge)", Color.white, edgeBlurShader));
+        //filters.Add(new BaseFilter("Silhouette", new Color(0.89f, 0.71f, 0.56f), 
+        //    silhouetteShader));
         filters.Add(new BaseFilter("Outlines", Color.white, outlineShader));
         filters.Add(new NeonFilter("Neon", Color.cyan, bloomShader, 
             new BaseFilter("", Color.white, neonShader)));
-        filters.Add(new BloomFilter("Bloom", Color.white, bloomShader));
-        filters.Add(new CRTFilter("NES", new Color(0.66f, 1.00f, 1.00f), 
-            crtShader, new PixelFilter("", Color.white, nesShader)));
-        filters.Add(new CRTFilter("SNES", new Color(0.80f, 1.00f, 1.00f), 
-            crtShader, new PixelFilter("", Color.white, snesShader)));
-        filters.Add(new PixelFilter("Game Boy", new Color(0.61f, 0.73f, 0.06f), 
-            gbShader));
-        filters.Add(new BaseFilter("Painting", Color.white, paintingShader));
-        filters.Add(new BaseFilter("Pride", Color.white, prideShader));
+        //filters.Add(new BloomFilter("Bloom", Color.white, bloomShader));
+        //filters.Add(new CRTFilter("NES", new Color(0.66f, 1.00f, 1.00f), 
+        //    crtShader, new PixelFilter("", Color.white, nesShader)));
+        //filters.Add(new CRTFilter("SNES", new Color(0.80f, 1.00f, 1.00f), 
+        //    crtShader, new PixelFilter("", Color.white, snesShader)));
+        //filters.Add(new PixelFilter("Game Boy", new Color(0.61f, 0.73f, 0.06f), 
+        //    gbShader));
+        //filters.Add(new BaseFilter("Painting", Color.white, paintingShader));
+        //filters.Add(new BaseFilter("Pride", Color.white, prideShader));
     }
 
+
+/*
     private void Update()
     {
         int lastIndex = filterIndex;
@@ -108,6 +110,7 @@ public class SnapshotMode : MonoBehaviour
             snapshotCanvas.SetFilterProperties(filters[filterIndex]);
         }
     }
+*/
 
     // Delegate OnRenderImage() to a SnapshotFilter object.
     private void OnRenderImage(RenderTexture src, RenderTexture dst)
