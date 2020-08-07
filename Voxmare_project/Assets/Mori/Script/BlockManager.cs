@@ -5,17 +5,6 @@ using DG.Tweening;
 
 public class BlockManager : MonoBehaviour
 {
-    //[SerializeField] GameObject stdBlock = null;
-    //[SerializeField] GameObject atkBlock = null;
-    public List<GameObject> Block_prefabs;
-    [Header("Generate")]
-    [SerializeField] int generateCount;
-    [SerializeField] Vector3 generateCenter;
-    [SerializeField] float generateRadius;
-    [SerializeField] float generateDuration;
-    [SerializeField] Ease generateEase;
-    [SerializeField] float generateInterval;
-
     [Header("Link")]
     [SerializeField] public float overlapMargin;
     [SerializeField] float linkInterval;
@@ -26,8 +15,8 @@ public class BlockManager : MonoBehaviour
     public float randomWalkWeight;
     public float centripetalWeight;
 
-    public List<Block> blocks;
-    public GameObject boss;
+    [HideInInspector] public List<Block> blocks;
+    [HideInInspector] public GameObject boss;
     private bool isLinking;
     private List<Block> aloneBlocks;
     private List<Block> bossBlocks;
@@ -35,7 +24,7 @@ public class BlockManager : MonoBehaviour
     private Stack<Block> searchStack;
     private Block aloneBlock;
     private Block bossBlock;
-    private WaitForSeconds waitGenerate;
+    
     private WaitForSeconds waitInterval;
     private WaitForSeconds wait1sec;
 
@@ -48,40 +37,16 @@ public class BlockManager : MonoBehaviour
         visited = new List<int>();
         searchStack = new Stack<Block>();
         isLinking = false;
-        waitGenerate = new WaitForSeconds(generateInterval);
         waitInterval = new WaitForSeconds(linkInterval);
         wait1sec = new WaitForSeconds(1);
-
-        StartCoroutine("GenerateBlock");
     }
 
     void Update()
     {
     }
 
-    IEnumerator GenerateBlock()
+    public void StartLink()
     {
-        for (int i = 0; i < generateCount; i++)
-        {
-            GameObject block;
-            block = GameObject.Instantiate(Block_prefabs[Random.Range(0,Block_prefabs.Count)]);
-
-            // Position
-            float distance = Random.value * generateRadius;
-            float angle = Random.value * 2 * Mathf.PI;
-            block.transform.position = generateCenter + new Vector3(distance * Mathf.Cos(angle), 0, distance * Mathf.Sin(angle)); // Line up 10 blocks of each row.
-            
-            // Generate Animation
-            Vector3 scale = block.transform.localScale;
-            block.transform.localScale = Vector3.zero;
-            block.transform.DOScale(scale, generateDuration).SetEase(generateEase);
-            
-            // Store
-            blocks.Add(block.GetComponent<Block>());
-
-            yield return waitGenerate;
-        }
-
         StartCoroutine("LinkAllBlock");
     }
 
@@ -443,11 +408,5 @@ public class BlockManager : MonoBehaviour
                 searchStack.Push(nextBlock);
             }
         }
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(generateCenter, generateRadius);
     }
 }
