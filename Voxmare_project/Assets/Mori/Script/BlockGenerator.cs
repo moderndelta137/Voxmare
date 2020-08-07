@@ -22,23 +22,29 @@ public class BlockGenerator : MonoBehaviour
     [SerializeField] float generateInterval;
 
     private BlockManager manager;
+    private ClearChecker clearChecker;
     private WaitForSeconds waitGenerate;
 
     void Start()
     {
         waitGenerate = new WaitForSeconds(generateInterval);
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
+        clearChecker = GameObject.Find("ClearChecker").GetComponent<ClearChecker>();
         StartCoroutine(GenerateBlockAndNpc());
     }
 
     IEnumerator GenerateBlockAndNpc()
     {
         Stage stage = stages[currentStage - 1];
+        int coreCount = 0;
 
         // Generate Block
         GameObject block;
         foreach (var blockSetting in stage.block)
         {
+            coreCount += blockSetting.coreCount;
+
+            int coreRemain = blockSetting.coreCount;
             for (int i = 0; i < blockSetting.count; i++)
             {
                 block = GameObject.Instantiate(blockSetting.blockPrefab);
@@ -55,6 +61,13 @@ public class BlockGenerator : MonoBehaviour
                 Vector3 scale = block.transform.localScale;
                 block.transform.localScale = Vector3.zero;
                 block.transform.DOScale(scale, generateDuration).SetEase(generateEase);
+
+                // Core
+                if(coreRemain > 0)
+                {
+                    block.GetComponent<Block>().isCore = true;
+                    coreRemain--;
+                }
 
                 // Store
                 manager.blocks.Add(block.GetComponent<Block>());
@@ -88,6 +101,7 @@ public class BlockGenerator : MonoBehaviour
             }
         }
 
+        clearChecker.setCount(coreCount);
         manager.StartLink();
     }
 

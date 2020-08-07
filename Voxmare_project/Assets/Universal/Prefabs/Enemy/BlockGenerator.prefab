@@ -43,10 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1324aaa2807bcae40bf3cd30d4c09254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentStage: 0
+  currentStage: 2
   stages:
   - {fileID: 11400000, guid: 23d8760bb259ab64cb817c1d92b2a551, type: 2}
-  blockDEBUG: {fileID: 5841314703671143113, guid: 37ad6084035b2f54fb68df13e8ae7f39, type: 3}
+  - {fileID: 11400000, guid: 387206f1c55f72e4ca7eeba4cb1ae084, type: 2}
   generateCenter: {x: 0, y: 0, z: 0}
   lengthX: 100
   lengthZ: 100

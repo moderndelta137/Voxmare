@@ -18,19 +18,20 @@ public class BlockManager : MonoBehaviour
     [HideInInspector] public List<Block> blocks;
     [HideInInspector] public GameObject boss;
     private bool isLinking;
+    private ClearChecker clearChecker;
     private List<Block> aloneBlocks;
     private List<Block> bossBlocks;
     private List<int> visited;
     private Stack<Block> searchStack;
     private Block aloneBlock;
     private Block bossBlock;
-    
     private WaitForSeconds waitInterval;
     private WaitForSeconds wait1sec;
 
     void Start()
     {
         boss = GameObject.Find("Boss");
+        clearChecker = GameObject.Find("ClearChecker").GetComponent<ClearChecker>();
         blocks = new List<Block>();
         aloneBlocks = new List<Block>();
         bossBlocks = new List<Block>();
@@ -257,10 +258,8 @@ public class BlockManager : MonoBehaviour
             if(nextBlock.isMoving) nextBlock.StopMoving();
         }
 
-        // Cut linking
         CutLink(block);
-        block.IsAlone = true;
-        // Remove block from list
+        if (block.isCore) clearChecker.decrementCount();
         blocks.Remove(block);
 
         // Find biggest block group

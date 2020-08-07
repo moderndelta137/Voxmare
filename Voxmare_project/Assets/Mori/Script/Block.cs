@@ -24,6 +24,7 @@ public class Block : MonoBehaviour
     public int id { get; private set; }         // id is set automatically in Start(). Readonly. (Note: id starts from 0)
     [HideInInspector] public int maxPairs;
     public List<int> pairs;                     // store pairs by block's id
+    [HideInInspector] public bool isCore;       // core or not (related to clear check)
     [HideInInspector] public bool isMoving;     // animating now
     // alone or linking boss
     private bool isAlone;
@@ -44,7 +45,6 @@ public class Block : MonoBehaviour
     }
     private BoxCollider mycollider;
     private List<int> emptyIndex;
-    public Transform neighbor;
 
     // Link Animation
     Block targetBlock;
@@ -59,7 +59,6 @@ public class Block : MonoBehaviour
 
     private BlockManager manager;
     private BossController bossController;
-    private Sequence movingSeqence;
     private Block parent;
 
     // DEBUG
@@ -235,7 +234,6 @@ public class Block : MonoBehaviour
 
     public void StopMoving()
     {
-        movingSeqence.Kill();
         isMoving = false;
         IsAlone = true;
     }
@@ -360,6 +358,15 @@ public class Block : MonoBehaviour
             {
                 IsAlone = false;
             }
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        if (this.isCore)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position + new Vector3(0, 4, 0), transform.localScale.x);
         }
     }
 }

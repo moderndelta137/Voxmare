@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e28a4c4e39a310409d93ff8f9cc3b82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  center: {x: 0, y: 0, z: 14.74}
+  center: {x: 0, y: 0, z: 0}
   radius: 50
   speed: 3
   centripetalPower:
@@ -79,7 +79,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  interval: 10
-  intervalDivergence: 3
+  tackleInterval: 20
+  tackleIntervalDivergence: 5
   tackleDuration: 3
-  tackleEase: 28
+  tackleEase: 26
+  spinInterval: 50
+  spinIntervalDivergence: 5
+  spinDuration: 14
+  spinCount: 7
+  spinEase: 28
+  calculateCenterInterval: 1
