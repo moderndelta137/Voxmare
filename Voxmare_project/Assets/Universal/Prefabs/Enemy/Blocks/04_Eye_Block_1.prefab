@@ -273,8 +273,8 @@ MonoBehaviour:
   linkableBlockType: 0100000002000000
   maxPairs: 0
   pairs: 
+  isCore: 0
   isMoving: 0
-  neighbor: {fileID: 0}
 --- !u!114 &6408053986441740093
 MonoBehaviour:
   m_ObjectHideFlags: 0
