@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3598975855745787472, guid: 5ded47ddf647e064694733d0804139cd, type: 3}
       propertyPath: m_Name
-      value: 02_Player_Pickup Reflect Variant
+      value: 02_NPC Reflect Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3598975855745787476, guid: 5ded47ddf647e064694733d0804139cd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -62,6 +62,6 @@ PrefabInstance:
     - target: {fileID: 4959999804399729065, guid: 5ded47ddf647e064694733d0804139cd, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 68655e8084aa0df4d95f4015da40bd3e, type: 2}
+      objectReference: {fileID: 2100000, guid: 3ecc41908319d45459e8adb63be96c09, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ded47ddf647e064694733d0804139cd, type: 3}
