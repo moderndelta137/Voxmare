@@ -31,6 +31,10 @@ PrefabInstance:
       propertyPath: Homing_distance
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+      propertyPath: Cluster
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7947023357074736550, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
