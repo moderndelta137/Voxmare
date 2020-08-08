@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df99a3c18e70d624b9fea77cac1f09b5, type: 3}
+  m_Name: Stage03
+  m_EditorClassIdentifier: 
+  block:
+  - blockPrefab: {fileID: 5841314703671143113, guid: c9db727781404474d8a074efbfb425e8, type: 3}
+    count: 10
+    coreCount: 2
+  - blockPrefab: {fileID: 5841314703671143113, guid: 3666b7b40e56bc643a105e0bb667bfee, type: 3}
+    count: 10
+    coreCount: 2
+  - blockPrefab: {fileID: 5841314703671143113, guid: 37ad6084035b2f54fb68df13e8ae7f39, type: 3}
+    count: 10
+    coreCount: 2
+  npc:
+  - NPCPrefab: {fileID: 2540976299578149253, guid: 19585934dc81c5d409c8626e8e1a46e5, type: 3}
+    count: 2
+  - NPCPrefab: {fileID: 2540976299578149253, guid: 2bf607c8bc3f16c42b93c3f47bdb1610, type: 3}
+    count: 2

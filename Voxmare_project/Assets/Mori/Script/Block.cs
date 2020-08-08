@@ -319,14 +319,27 @@ public class Block : MonoBehaviour
     void AloneAnimation()
     {
         float rand = Mathf.PerlinNoise(Time.time * 0.1f, randomSeed * 256);
-        float angle = (rand * 2f - 1f) * 90;   // [-90, 90]
-        Vector3 randomVector = Quaternion.Euler(0, angle, 0) * direction;    // [0, 1]
-        Vector3 toCenter = bossController.center - transform.position;
-        Vector3 centripetalVector = toCenter.normalized * bossController.centripetalPower.Evaluate(toCenter.magnitude / bossController.radius); // [0, 1]
-
-        direction = direction + (randomVector * manager.randomWalkWeight + centripetalVector * manager.centripetalWeight);
-        direction = direction.normalized;
+        float angle = (rand * 2f - 1f) * manager.randomWalkCurveStrength;
+        Vector3 randomVector = Quaternion.Euler(0, angle, 0) * direction;
+        direction = (direction + randomVector + GetRepulsiveVector()).normalized;
         transform.position += direction * manager.randomWalkSpeed * Time.deltaTime;
+    }
+
+    Vector3 GetRepulsiveVector()
+    {
+        Vector3 velocity = Vector3.zero;
+        Vector3 pos = transform.position;
+        float posX = pos.x - bossController.center.x;
+        float posZ = pos.z - bossController.center.z;
+        float halfLengthX = bossController.lengthX / 2;
+        float halfLengthZ = bossController.lengthZ / 2;
+
+        if (posX > 0) velocity.x -= bossController.wallStrength / ((halfLengthX - posX) / halfLengthX);
+        if (posX < 0) velocity.x -= bossController.wallStrength / ((-halfLengthX - posX) / halfLengthX);
+        if (posZ > 0) velocity.z -= bossController.wallStrength / ((halfLengthZ - posZ) / halfLengthZ);
+        if (posZ < 0) velocity.z -= bossController.wallStrength / ((-halfLengthZ - posZ) / halfLengthZ);
+
+        return velocity;
     }
 
     void LinkAnimation()

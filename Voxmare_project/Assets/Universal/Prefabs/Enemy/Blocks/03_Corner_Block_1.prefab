@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 0
-  linkableBlockType: 000000000100000002000000
+  linkableBlockType: 0100000002000000
   deathParticlePrefab: {fileID: 100748, guid: cd4d7020429cde74db076ffa72495419, type: 3}
   maxPairs: 0
   pairs: 

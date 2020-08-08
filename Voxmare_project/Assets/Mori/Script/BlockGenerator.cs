@@ -10,9 +10,6 @@ public class BlockGenerator : MonoBehaviour
 
     [Header("Position")]
     [SerializeField] Vector3 generateCenter;
-    // If stage is circle
-    //[SerializeField] float generateRadius;
-    // If stage is square
     [SerializeField] float lengthX;
     [SerializeField] float lengthZ;
 
@@ -49,12 +46,6 @@ public class BlockGenerator : MonoBehaviour
             {
                 block = GameObject.Instantiate(blockSetting.blockPrefab);
                 // Position
-                // If stage is circle
-                //float distance = Random.value * generateRadius;
-                //float angle = Random.value * 2 * Mathf.PI;
-                //block.transform.position = generateCenter + new Vector3(distance * Mathf.Cos(angle), 0, distance * Mathf.Sin(angle)); // Line up 10 blocks of each row.
-
-                // If stage is square
                 block.transform.position = generateCenter + new Vector3(Random.Range(-lengthX/2, lengthX/2), 0, Random.Range(-lengthZ/2, lengthZ/2));
 
                 // Generate Animation
@@ -84,12 +75,6 @@ public class BlockGenerator : MonoBehaviour
             {
                 npc = GameObject.Instantiate(npcSetting.NPCPrefab);
                 // Position
-                // If stage is circle
-                //float distance = Random.value * 100;
-                //float angle = Random.value * 2 * Mathf.PI;
-                //npc.transform.position = generateCenter + new Vector3(distance * Mathf.Cos(angle), 0, distance * Mathf.Sin(angle)); // Line up 10 blocks of each row.
-
-                // If stage is square
                 npc.transform.position = generateCenter + new Vector3(Random.Range(-lengthX / 2, lengthX / 2), 0, Random.Range(-lengthZ / 2, lengthZ / 2));
                 
                 // Generate Animation
@@ -113,7 +98,6 @@ public class BlockGenerator : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        //Gizmos.DrawWireSphere(generateCenter, generateRadius);
         Gizmos.DrawWireCube(generateCenter, new Vector3(lengthX, 0.0f, lengthZ));
     }
 }

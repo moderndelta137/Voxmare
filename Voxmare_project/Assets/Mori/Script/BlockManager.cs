@@ -12,8 +12,7 @@ public class BlockManager : MonoBehaviour
 
     [Header("Alone Animation")]
     public float randomWalkSpeed;
-    public float randomWalkWeight;
-    public float centripetalWeight;
+    [SerializeField, Range(0f, 10f)] public float randomWalkCurveStrength;
 
     [HideInInspector] public List<Block> blocks;
     [HideInInspector] public GameObject boss;

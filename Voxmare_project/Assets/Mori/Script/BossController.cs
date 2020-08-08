@@ -13,16 +13,17 @@ public class BossController : MonoBehaviour
 
     [Header("Moveable Area")]
     [SerializeField] public Vector3 center;
-    [SerializeField] public float radius;
-    [Header("Random Walk")]
+    [SerializeField] public float lengthX;
+    [SerializeField] public float lengthZ;
+    [SerializeField] public float wallStrength;
     [SerializeField] float speed;
-    [SerializeField] public AnimationCurve centripetalPower;
     [Header("Tackle")]
     [SerializeField] float tackleInterval;
     [SerializeField] float tackleIntervalDivergence;
     [SerializeField] float tackleDuration;
     [SerializeField] Ease tackleEase;
     [Header("Spin")]
+    [SerializeField] float radius;
     [SerializeField] float spinInterval;
     [SerializeField] float spinIntervalDivergence;
     [SerializeField] float spinDuration;
@@ -84,9 +85,25 @@ public class BossController : MonoBehaviour
         float rand = Mathf.PerlinNoise(Time.time * 0.1f, randomSeed * 256);
         float angle = rand * 2 * Mathf.PI;
         Vector3 velocity = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));    // [0, 1]
-        Vector3 toCenter = center - transform.position;
-        Vector3 centripetalVector = toCenter.normalized * centripetalPower.Evaluate(toCenter.magnitude/radius); // [0, 1]
-        transform.position += (velocity + centripetalVector) * speed * Time.deltaTime;
+        velocity += GetRepulsiveVector();
+        transform.position += velocity * speed * Time.deltaTime;
+    }
+
+    Vector3 GetRepulsiveVector()
+    {
+        Vector3 velocity = Vector3.zero;
+        Vector3 pos = transform.position;
+        float posX = pos.x - center.x;
+        float posZ = pos.z - center.z;
+        float halfLengthX = lengthX / 2;
+        float halfLengthZ = lengthZ / 2;
+
+        if(posX > 0) velocity.x -= wallStrength / ((halfLengthX - posX) / halfLengthX); 
+        if(posX < 0) velocity.x -= wallStrength / ((-halfLengthX - posX) / halfLengthX);
+        if(posZ > 0) velocity.z -= wallStrength / ((halfLengthZ - posZ) / halfLengthZ);
+        if(posZ < 0) velocity.z -= wallStrength / ((-halfLengthZ - posZ) / halfLengthZ);
+
+        return velocity;
     }
 
     private IEnumerator Tackle()
@@ -158,7 +175,7 @@ public class BossController : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(center, radius);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(center, new Vector3(lengthX, 0.0f, lengthZ));
     }
 }
