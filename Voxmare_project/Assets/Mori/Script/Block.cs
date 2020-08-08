@@ -21,6 +21,8 @@ public class Block : MonoBehaviour
     // Variable
     [SerializeField] private BlockType blockType;
     [SerializeField] private List<BlockType> linkableBlockType;
+    [SerializeField] private GameObject deathParticlePrefab;
+    private GameObject deathParticle;
     public int id { get; private set; }         // id is set automatically in Start(). Readonly. (Note: id starts from 0)
     [HideInInspector] public int maxPairs;
     public List<int> pairs;                     // store pairs by block's id
@@ -85,6 +87,8 @@ public class Block : MonoBehaviour
             pairs.Add(EMPTYID);
         }
 
+        deathParticle = Instantiate(deathParticlePrefab);
+        deathParticle.SetActive(false);
         id = idCount++;
         isMoving = false;
         IsAlone = true;
@@ -283,6 +287,8 @@ public class Block : MonoBehaviour
     public void Death()
     {
         StopMoving();
+        deathParticle.transform.position = transform.position;
+        deathParticle.SetActive(true);
         manager.DeathBlock(this);
     }
 

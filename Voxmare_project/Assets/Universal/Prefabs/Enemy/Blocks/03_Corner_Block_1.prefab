@@ -157,10 +157,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockType: 0
   linkableBlockType: 000000000100000002000000
+  deathParticlePrefab: {fileID: 100748, guid: cd4d7020429cde74db076ffa72495419, type: 3}
   maxPairs: 0
   pairs: 
+  isCore: 0
   isMoving: 0
-  neighbor: {fileID: 0}
 --- !u!114 &6408053986441740093
 MonoBehaviour:
   m_ObjectHideFlags: 0
