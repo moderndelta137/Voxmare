@@ -10,6 +10,7 @@
         [PerRendererData] _AlphaTex ("External Alpha", 2D) = "white" {}
         [PerRendererData] _EnableExternalAlpha ("Enable External Alpha", Float) = 0
 
+		[Toggle(_EMISSION)] _Emission ("Emission", Float ) = 0
         [HDR] _EmissionColor ("Emission Color", Color) = (0, 0, 0)
         [HDR] _EmissionMap ("Emission Map", 2D) = "black" {}
     }
@@ -39,6 +40,8 @@
             #pragma multi_compile_instancing
             #pragma multi_compile_local _ PIXELSNAP_ON
             #pragma multi_compile _ ETC1_EXTERNAL_ALPHA
+            #pragma shader_feature _EMISSION
+            //#pragma multi_compile _ EMISSION        
             #include "UnitySprites.cginc"
 
             sampler2D _EmissionMap;
@@ -46,8 +49,13 @@
 
             half4 frag(v2f IN) : SV_Target
             {
+            #ifdef _EMISSION
                 return SpriteFrag(IN) + half4(tex2D(_EmissionMap, IN.texcoord).rgb * _EmissionColor.rgb, 0.0);
+            #else
+                return SpriteFrag(IN);
+            #endif
             }
+
         ENDCG
         }
     }

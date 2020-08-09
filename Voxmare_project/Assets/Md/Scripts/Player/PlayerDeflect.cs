@@ -57,6 +57,9 @@ public class PlayerDeflect : MonoBehaviour
     [Header("Animation")]
     private Animator player_animator;
     private PlayerPickup pickup_zone_script;
+
+    [Header("HUD")]
+    public HUD_Controller HUD_script;
     // Start is called before the first frame update
     void Start()
     {
@@ -164,11 +167,13 @@ public class PlayerDeflect : MonoBehaviour
     {
         Can_deflect=false;
         this.transform.DOScale(Vector3.zero,DEBUG_cooldown_scale_duration);
-        movement_script.can_move = false;
+        movement_script.Move_speed/=2;
+        //movement_script.can_move = false;
         yield return deflect_wait;
         Can_deflect = true;
         this.transform.DOScale(Vector3.one * Boundary_radius[Radius_rank] * Boundary_mesh_scaler, DEBUG_cooldown_scale_duration);
-        movement_script.can_move = true;
+        //movement_script.can_move = true;
+        movement_script.Move_speed*=2;
         
     }
 
@@ -217,6 +222,7 @@ public class PlayerDeflect : MonoBehaviour
     }
     public void UpdatePowerRank(int type, int rank)
     {
+        HUD_script.UpdateRank(type,rank);
         switch(type)
         {
             case 0:

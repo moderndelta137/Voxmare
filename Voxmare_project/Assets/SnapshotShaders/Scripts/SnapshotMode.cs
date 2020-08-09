@@ -37,10 +37,12 @@ public class SnapshotMode : MonoBehaviour
     private void Awake()
     {
         // Add a canvas to show the current filter name and the controls.
+        /*
         if (useCanvas)
         {
             snapshotCanvas = Instantiate(snapshotCanvasPrefab);
         }
+        */
         filterIndex = 0;
         // Find all shader files.
         noneShader = Shader.Find("Snapshot/Base");

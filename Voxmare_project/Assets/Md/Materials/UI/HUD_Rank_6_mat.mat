@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HUD_Rank_1_Dot_mat
+  m_Name: HUD_Rank_6_mat
   m_Shader: {fileID: 4800000, guid: 0325143247408114694f208f371d9609, type: 3}
   m_ShaderKeywords: _EMISSION _OUTLINEENABLED_ON _OUTLINEMODE_GRADIENT _OUTLINEPOSITION_INSIDE_UNDER_SPRITE
     _OUTLINESHAPE_CONTOUR _TILEMODE_STRETCH
@@ -45,7 +45,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 7b3d921b0468a25448ccba1d16710fa7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 90836dd64ff50cd488be7e8b214a357e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FrameTex:
@@ -110,7 +110,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 0.4627451}
-    - _EmissionColor: {r: 10.432951, g: 10.432951, b: 10.432951, a: 1}
+    - _EmissionColor: {r: 0, g: 13.928808, b: 7.8110576, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _GradientOutline1: {r: 1, g: 0, b: 0, a: 1}
     - _GradientOutline2: {r: 1, g: 1, b: 1, a: 1}
