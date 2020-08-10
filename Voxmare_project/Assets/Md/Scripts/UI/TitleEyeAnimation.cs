@@ -22,7 +22,7 @@ public class TitleEyeAnimation : MonoBehaviour
         mouse_position.x = Input.mousePosition.x;
         mouse_position.y = Input.mousePosition.y;
         mouse_position.z = 0;
-        Debug.Log(UI_camera.WorldToScreenPoint(this.transform.position));
+//        Debug.Log(UI_camera.WorldToScreenPoint(this.transform.position));
         movement_direction = UI_camera.WorldToScreenPoint(this.transform.position);
         movement_direction.z = 0;
         movement_direction = mouse_position - movement_direction;

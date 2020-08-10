@@ -25,6 +25,7 @@ public class LevelSelect : MonoBehaviour
     {
         Selected_level=(int)Level_slider.value;
         Level_text.text = Level_slider.value.ToString();
+        LevelData.Selected_level = Selected_level;
     }
 
     public void StartSelectedLevel()

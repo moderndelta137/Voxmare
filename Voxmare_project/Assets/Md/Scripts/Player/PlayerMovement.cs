@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator player_animator;
 
     [Header("UI")]
-    public HUD_Controller HUD_script;
+    public GameObject HUD;
     public GameObject Health_bar_prefab;
     private Health_Bar health_bar_script;
     public Vector3 Health_bar_offset;
@@ -73,8 +73,8 @@ public class PlayerMovement : MonoBehaviour
         health_bar_script = Instantiate(Health_bar_prefab,Vector3.zero,Quaternion.identity,this.transform).GetComponent<Health_Bar>();
         health_bar_script.transform.localPosition = Health_bar_offset;
         health_bar_script.SetMaxHealth(HP);
-        HUD_script.SetMaxHP(HP);
         health_bar_script.gameObject.SetActive(true);
+        HUD.SetActive(true);
     }
 
     // Update is called once per frame
@@ -209,6 +209,5 @@ public class PlayerMovement : MonoBehaviour
     {
         HP -= delta;
         health_bar_script.SetHealth(HP);
-        HUD_script.UpdateHPBar(HP);
     }
 }

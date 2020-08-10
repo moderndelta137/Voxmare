@@ -26,8 +26,10 @@ public class BulletController : MonoBehaviour
     public bool Reflect;
     public float Reflect_lifespan;
     public float DEBUG_reflect_cooldown;
-    private WaitForSeconds deflect_wait;
+    private WaitForSeconds reflect_wait;
     private RaycastHit reflect_hit;
+    private int reflect_enemy_layMask;
+    private int reflect_terrian_layMask;
     public bool Cluster;
     public GameObject Cluster_prefab;
     private ClusterBulletController cluster_controller;
@@ -43,7 +45,10 @@ public class BulletController : MonoBehaviour
             Homing_target = GameObject.Find("Player");
         }
         cd = this.GetComponent<Collider>();
-        deflect_wait = new WaitForSeconds(DEBUG_reflect_cooldown);
+        reflect_wait = new WaitForSeconds(DEBUG_reflect_cooldown);
+        reflect_enemy_layMask = (1 << 9);
+        reflect_terrian_layMask = (1 << 11);
+        Destroy(this.gameObject,30);
     }
 
     // Update is called once per frame
@@ -70,6 +75,68 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        
+        switch(other.tag)
+        {
+            case "Player":
+            if(Damage_player)
+            {
+                other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                Destroy(this.gameObject);
+            }
+            break;
+            case "Pickup":
+            if(Damage_player)
+            {
+                other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                Destroy(this.gameObject);
+            }
+            break;         
+            case "Enemy":
+            if(!Damage_player)
+            {      
+                if(Penetrate)//Penetrate effect has higher priority over Reflect effect
+                {
+                    other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                    Destroy(this.gameObject,Penetrate_lifespan);
+                }     
+                else
+                {
+                    if(Reflect)
+                    {
+                        Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f,reflect_enemy_layMask);
+                        this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
+                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                        Destroy(this.gameObject,Reflect_lifespan);
+                    }
+                    else
+                    {
+                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                        Destroy(this.gameObject);
+                    }  
+                }      
+            }
+            break;    
+            case "Terrian":
+            if(!Reflect)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f, reflect_terrian_layMask);
+                //Debug.Log(reflect_hit.transform.gameObject.name);
+                //Debug.Log(reflect_hit.normal);
+                //Debug.Log(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
+                //Debug.DrawRay(this.transform.position-this.transform.forward*0.2f, this.transform.forward*1f, Color.yellow,1);
+                //this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
+                this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
+                StartCoroutine(ReflectCooldown());
+                Destroy(this.gameObject,Reflect_lifespan);
+            }
+            break;  
+        }
+        /*
         if(other.CompareTag("Player"))
         {
             if(Damage_player)
@@ -100,7 +167,7 @@ public class BulletController : MonoBehaviour
                     if(Reflect)
                     {
                         Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f);
-                        this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward,reflect_hit.normal));
+                        this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
                         other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                         Destroy(this.gameObject,Reflect_lifespan);
                     }
@@ -123,10 +190,12 @@ public class BulletController : MonoBehaviour
                 Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f);
                 //Debug.DrawRay(this.transform.position-this.transform.forward*0.2f, this.transform.forward*1f, Color.yellow,1);
                 this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
+                this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
                 StartCoroutine(ReflectCooldown());
                 Destroy(this.gameObject,Reflect_lifespan);
             }
         }
+        */
     }
 
     void OnApplicationQuit()
@@ -154,7 +223,7 @@ public class BulletController : MonoBehaviour
     private IEnumerator ReflectCooldown()
     {
         cd.enabled =false;
-        yield return deflect_wait;
+        yield return reflect_wait;
         cd.enabled =true;
     }
 }

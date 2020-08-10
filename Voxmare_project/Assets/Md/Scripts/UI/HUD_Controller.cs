@@ -28,11 +28,12 @@ public class HUD_Controller : MonoBehaviour
     public Image[] Rank6_Dot_image;
     [Space]
     public Text[] Rank_Texts;
-
+    [Header("Current Level")]
+    public Text Level_text;
     // Start is called before the first frame update
     void Start()
     {
-        
+        Level_text.text = "Level "  + LevelData.Selected_level;
     }
 
     // Update is called once per frame

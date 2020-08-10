@@ -24,6 +24,7 @@ public class BlockGenerator : MonoBehaviour
 
     void Start()
     {
+        currentStage = LevelData.Selected_level;
         waitGenerate = new WaitForSeconds(generateInterval);
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
         clearChecker = GameObject.Find("ClearChecker").GetComponent<ClearChecker>();

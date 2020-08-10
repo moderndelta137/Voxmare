@@ -59,7 +59,7 @@ public class PlayerDeflect : MonoBehaviour
     private PlayerPickup pickup_zone_script;
 
     [Header("HUD")]
-    public HUD_Controller HUD_script;
+    private HUD_Controller HUD_script;
     // Start is called before the first frame update
     void Start()
     {
@@ -72,6 +72,7 @@ public class PlayerDeflect : MonoBehaviour
         deflect_wait = new WaitForSeconds(Deflect_cooldown);
         pickup_zone_script = this.transform.parent.GetComponentInChildren<PlayerPickup>();
         movement_script = this.transform.parent.GetComponent<PlayerMovement>();
+        HUD_script = movement_script.HUD.GetComponentInChildren<HUD_Controller>();
     }
 
     // Update is called once per frame

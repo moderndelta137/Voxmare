@@ -14,16 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   block:
   - blockPrefab: {fileID: 5841314703671143113, guid: 37ad6084035b2f54fb68df13e8ae7f39, type: 3}
-    count: 10
+    count: 5
     coreCount: 1
-  - blockPrefab: {fileID: 5841314703671143113, guid: 461611afe74b9244ea5e978673bf2b9d, type: 3}
-    count: 20
-    coreCount: 0
-  - blockPrefab: {fileID: 5841314703671143113, guid: 9e75519e4895b1b4892b91539086970b, type: 3}
-    count: 10
-    coreCount: 0
   npc:
   - NPCPrefab: {fileID: 3333903626859217123, guid: 7f78736195c49ec449b7287f16a62d3e, type: 3}
-    count: 2
-  - NPCPrefab: {fileID: 2540976299578149253, guid: 19585934dc81c5d409c8626e8e1a46e5, type: 3}
-    count: 2
+    count: 10
