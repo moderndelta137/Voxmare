@@ -9,7 +9,11 @@ public class PlayerDeflect : MonoBehaviour
     public float[] Boundary_radius;
     public float Boundary_mesh_scaler;
     public float Boundry_slowdown_scale;
-    public List<BulletController> Bullet_list;
+    //public List<BulletController> Bullet_list;
+    public Light Boundary_light;
+    public float[] Boundary_light_radius;
+    public Vector2 Boundary_light_height;
+    private float boundary_light_intensity;
     private int bullet_layerMask;
     private BulletController bullet_instance;
     private RaycastHit[] hits;
@@ -67,12 +71,17 @@ public class PlayerDeflect : MonoBehaviour
         bullet_layerMask = 1 << 10;//Check Bullet Layer
         homing_layerMask = 1 << 9;
         shoot_layerMask = (1 << 9) + (1 << 11);//Check Enemy Layer and Terrian Layer for shooting
-        UpdateBoundryRadius();
+
         Can_deflect = true;
         deflect_wait = new WaitForSeconds(Deflect_cooldown);
         pickup_zone_script = this.transform.parent.GetComponentInChildren<PlayerPickup>();
         movement_script = this.transform.parent.GetComponent<PlayerMovement>();
         HUD_script = movement_script.HUD.GetComponentInChildren<HUD_Controller>();
+        Boundary_light = this.transform.parent.GetComponentInChildren<Light>();
+        boundary_light_intensity = Boundary_light.intensity;
+        Boundary_light.transform.DOMoveY(Boundary_light_height.x,DEBUG_cooldown_scale_duration);
+        UpdateBoundryRadius();
+
     }
 
     // Update is called once per frame
@@ -80,7 +89,7 @@ public class PlayerDeflect : MonoBehaviour
     {
         if(Input.GetButtonDown("Fire1"))
         {        
-            if(Can_deflect)
+            if(Can_deflect && movement_script.can_move)
             {
 
                 StartCoroutine(DeflectCooldown());
@@ -92,11 +101,8 @@ public class PlayerDeflect : MonoBehaviour
                 }
 
                 //Sphere cast to find all bullets inside the boundary
-                //Bullet_list.Clear();
                 hits=null;
                 hits=Physics.SphereCastAll(this.transform.position, Boundary_radius[Radius_rank], Vector3.up, 0, bullet_layerMask);
-                //Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, shoot_layerMask);
-                //Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, shoot_layerMask);
                 Vector3 temp_position;
                 foreach(RaycastHit bullet in hits)
                 {
@@ -106,14 +112,11 @@ public class PlayerDeflect : MonoBehaviour
                         if(bullet_instance.Deflectable)
                         {
                             //Deflect Bullet
-                            //Bullet_list.Add(bullet_instance);
                             bullet_instance.Damage_player=false;
                             bullet_instance.Deflectable=false;
                             temp_position = bullet_instance.transform.position;
                             temp_position.y = 0;
                             bullet_instance.transform.position = temp_position;
-                            //Debug.Log(bullet_instance.transform.position);
-                            //shoot_vector = hit.point-bullet.transform.position;
                             shoot_vector = movement_script.Mouse_cursor.transform.position-bullet.transform.position;
                             shoot_vector.y = 0;
                             bullet_instance.transform.rotation = Quaternion.LookRotation(shoot_vector);
@@ -157,6 +160,8 @@ public class PlayerDeflect : MonoBehaviour
     private void UpdateBoundryRadius()
     {
         this.transform.localScale = Vector3.one * Boundary_radius[Radius_rank] * Boundary_mesh_scaler;
+        Boundary_light.spotAngle = Boundary_light_radius[Radius_rank];
+        
     }
 
     public void RankupAnimation()
@@ -167,13 +172,16 @@ public class PlayerDeflect : MonoBehaviour
     public IEnumerator DeflectCooldown()
     {
         Can_deflect=false;
-        this.transform.DOScale(Vector3.zero,DEBUG_cooldown_scale_duration);
+        this.transform.DOScale(Vector3.zero, DEBUG_cooldown_scale_duration);
+        Boundary_light.transform.DOMoveY(Boundary_light_height.y, DEBUG_cooldown_scale_duration);
+        Boundary_light.DOIntensity(0f, DEBUG_cooldown_scale_duration);
         movement_script.Move_speed/=2;
-        //movement_script.can_move = false;
         yield return deflect_wait;
         Can_deflect = true;
         this.transform.DOScale(Vector3.one * Boundary_radius[Radius_rank] * Boundary_mesh_scaler, DEBUG_cooldown_scale_duration);
-        //movement_script.can_move = true;
+        //Boundary_light.intensity = 0;
+        Boundary_light.transform.DOMoveY(Boundary_light_height.x, DEBUG_cooldown_scale_duration);
+        Boundary_light.DOIntensity(boundary_light_intensity, DEBUG_cooldown_scale_duration);
         movement_script.Move_speed*=2;
         
     }
