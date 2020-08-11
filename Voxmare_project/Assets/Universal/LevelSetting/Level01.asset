@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df99a3c18e70d624b9fea77cac1f09b5, type: 3}
-  m_Name: Stage01
+  m_Name: Level01
   m_EditorClassIdentifier: 
   block:
   - blockPrefab: {fileID: 5841314703671143113, guid: 37ad6084035b2f54fb68df13e8ae7f39, type: 3}
@@ -18,4 +18,4 @@ MonoBehaviour:
     coreCount: 1
   npc:
   - NPCPrefab: {fileID: 3333903626859217123, guid: 7f78736195c49ec449b7287f16a62d3e, type: 3}
-    count: 10
+    count: 1

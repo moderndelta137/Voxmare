@@ -117,6 +117,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: fe32e9c02a984fb4e9ed861059bd676e, type: 2}
   - {fileID: 2100000, guid: 3d64f39a4694a924b8f2043fc1df4d18, type: 2}
   - {fileID: 2100000, guid: b19282d7dfe80a2468af6bd140d7f374, type: 2}
+  Bullet_force: 10
   Penetrate: 1
   Penetrate_lifespan: 3
   Homing: 0

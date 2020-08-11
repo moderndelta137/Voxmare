@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class BlockGenerator : MonoBehaviour
 {
-    [SerializeField] int currentStage;
+    private int currentStage;
     [SerializeField] List<Stage> stages;
 
     [Header("Position")]

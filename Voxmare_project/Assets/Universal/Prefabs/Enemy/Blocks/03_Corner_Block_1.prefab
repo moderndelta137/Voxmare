@@ -176,7 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 3
   Damage: 3
-  Damage_player: 1
+  Contact_force: 2
   Hit_reaction_mat: {fileID: 2100000, guid: 14ff9e6e57d5bee4682ee74e146fccf2, type: 2}
   DEBUG_hit_reaction_duration: 0.05
   DEBUG_hit_reaction_flinch: 1

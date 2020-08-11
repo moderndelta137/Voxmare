@@ -15,9 +15,14 @@ public class BubbleAnimation : MonoBehaviour
     private IEnumerator myCoroutine;
     //public RectTransform
     // Start is called before the first frame update
+    private void Awake() 
+    {
+        origin = this.transform.localPosition;
+
+    }
     void Start()
     {
-        origin = this.transform.position;
+        
     }
 
     // Update is called once per frame
@@ -34,7 +39,7 @@ public class BubbleAnimation : MonoBehaviour
         move_direction.y = Random.Range(-1f,1f);
         move_direction.Normalize();
         move_duration = Random.Range(move_duration_range.x,move_duration_range.y);
-        myTween = this.transform.DOMove(this.transform.position+move_direction*move_strength,move_duration).SetLoops(2, LoopType.Yoyo).SetEase(Ease.InOutSine);
+        myTween = this.transform.DOLocalMove(origin+move_direction*move_strength,move_duration).SetLoops(2, LoopType.Yoyo).SetEase(Ease.InOutSine);
         yield return myTween.WaitForCompletion();
          StartCoroutine(StartMoving());
     }
@@ -43,11 +48,12 @@ public class BubbleAnimation : MonoBehaviour
     {
         StopAllCoroutines();
         DOTween.KillAll();
-        this.transform.position = origin;     
+        this.transform.localPosition = origin;     
     }
 
     private void OnEnable() 
     {
+        //origin = this.transform.position;
         myCoroutine = StartMoving();
         StartCoroutine(myCoroutine);
     }

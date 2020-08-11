@@ -32,10 +32,7 @@ public class CoreEyeController : MonoBehaviour
         target_vector.y = 0;
        
         Eye.transform.rotation = Quaternion.LookRotation(target_vector,-Vector3.up);
-        //target_vector.y = Mathf.Clamp(target_vector.magnitude*y_scaler,-y_clamp,y_clamp);
         x_rotate = Mathf.Clamp(target_vector.magnitude*y_scaler,-y_clamp,y_clamp);
         Eye.transform.Rotate(Vector3.right*-x_rotate);
-        //target_vector = Vector3.ClampMagnitude(target_vector*Eye_movement_scale,Eye_movement_range);
-        //Eye.transform.localPosition = target_vector;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -64,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
         can_move = true;
         rend = GetComponentInChildren<SkinnedMeshRenderer>();
         original_mat = rend.material;
-        knockback_layerMask = (1 << 9) + (1 << 11);//Check Enemy Layer and Terrian Layer for shooting
+        knockback_layerMask = (1 << 9) + (1 << 11)+ (1 << 13);//Check Enemy Layer and Terrian Layer for shooting
 
         player_collider = GetComponent<Collider>();
 
@@ -91,6 +92,7 @@ public class PlayerMovement : MonoBehaviour
                 Player_CharacterController.Move(move_input_vector*Move_speed*Time.deltaTime);
                 player_animator.SetFloat("Move_Y", Vector3.Dot(move_input_vector,this.transform.forward));
                 player_animator.SetFloat("Move_X", Vector3.Dot(move_input_vector,this.transform.right));
+                ResetY();
             }
         }
 
@@ -107,6 +109,7 @@ public class PlayerMovement : MonoBehaviour
                 look_input_vector = mouse_direction_vector.normalized-this.transform.forward;
                 if(look_input_vector.magnitude>0.1f && can_move)
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mouse_direction_vector), Rotate_speed*Time.deltaTime);
+                ResetRotation();
             }
 
         }
@@ -121,6 +124,11 @@ public class PlayerMovement : MonoBehaviour
         //Update Movement animation
         player_animator.SetFloat("Move_input",move_input_vector.magnitude);
         player_animator.SetFloat("Look_input",look_input_vector.magnitude);
+    }
+
+    private void LateUpdate() 
+    {
+        
     }
 
     public void InitiateMouseControl()
@@ -155,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(HP <= 0)
         {
-            Destroy(this.gameObject);
+            GameOver();
         }
         can_move = true;
         ResetY();
@@ -182,7 +190,7 @@ public class PlayerMovement : MonoBehaviour
         
         if(HP <= 0)
         {
-            Destroy(this.gameObject);
+            GameOver();
         }
         can_move = true;
         ResetY();
@@ -204,10 +212,22 @@ public class PlayerMovement : MonoBehaviour
         temp_position.y = 0;
         this.transform.position = temp_position;
     }
+    private void ResetRotation()
+    {
+        Vector3 temp_eular;
+        temp_eular = this.transform.rotation.eulerAngles;
+        this.transform.rotation=Quaternion.Euler(0,temp_eular.y,0);
+    }
 
     private void UpdateHP(int delta)
     {
         HP -= delta;
         health_bar_script.SetHealth(HP);
+    }
+
+    public void GameOver()
+    {
+        Destroy(this.gameObject);
+        SceneManager.LoadScene(0);
     }
 }

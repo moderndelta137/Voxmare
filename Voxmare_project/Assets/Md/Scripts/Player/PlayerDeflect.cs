@@ -97,7 +97,7 @@ public class PlayerDeflect : MonoBehaviour
                 player_animator.SetTrigger("Deflect");
                 foreach(PickupController pickup in pickup_zone_script.pickup_list)
                 {
-                    pickup.DeflectAnimation();
+                    pickup.DeflectAnimation(movement_script.Mouse_cursor.transform.position);
                 }
 
                 //Sphere cast to find all bullets inside the boundary

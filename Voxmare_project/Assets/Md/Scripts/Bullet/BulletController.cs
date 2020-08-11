@@ -13,7 +13,7 @@ public class BulletController : MonoBehaviour
     public bool Damage_player;
     public MeshRenderer Bullet_render;
     public Material[] Bullet_materials;//0:Enemy Bullet, 1:Entered Boundry, 2:Deflected Bullet
-    //public CollisionEvent onHit;
+    public float Bullet_force;
 
     [Header("Bonus Effect")]
     public bool Penetrate;
@@ -79,61 +79,74 @@ public class BulletController : MonoBehaviour
         switch(other.tag)
         {
             case "Player":
-            if(Damage_player)
-            {
-                other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                Destroy(this.gameObject);
-            }
-            break;
-            case "Pickup":
-            if(Damage_player)
-            {
-                other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                Destroy(this.gameObject);
-            }
-            break;         
-            case "Enemy":
-            if(!Damage_player)
-            {      
-                if(Penetrate)//Penetrate effect has higher priority over Reflect effect
+                if(Damage_player)
                 {
                     other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                    Destroy(this.gameObject,Penetrate_lifespan);
-                }     
-                else
+                    Destroy(this.gameObject);
+                }
+            break;
+            case "Pickup":
+                if(Damage_player)
                 {
-                    if(Reflect)
+                    other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                    Destroy(this.gameObject);
+                }
+            break;         
+            case "Enemy":
+                if(!Damage_player)
+                {      
+                    if(Penetrate)//Penetrate effect has higher priority over Reflect effect
                     {
-                        Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f,reflect_enemy_layMask);
-                        this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
                         other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                        Destroy(this.gameObject,Reflect_lifespan);
-                    }
+                        Destroy(this.gameObject,Penetrate_lifespan);
+                    }     
                     else
                     {
-                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                        Destroy(this.gameObject);
-                    }  
-                }      
-            }
+                        if(Reflect)
+                        {
+                            Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f,reflect_enemy_layMask);
+                            this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
+                            other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                            Destroy(this.gameObject,Reflect_lifespan);
+                        }
+                        else
+                        {
+                            other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                            Destroy(this.gameObject);
+                        }  
+                    }      
+                }
             break;    
             case "Terrian":
-            if(!Reflect)
-            {
-                Destroy(this.gameObject);
-            }
-            else
-            {
-                Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f, reflect_terrian_layMask);
-                //Debug.Log(reflect_hit.transform.gameObject.name);
-                //Debug.Log(reflect_hit.normal);
-                //Debug.Log(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
-                //Debug.DrawRay(this.transform.position-this.transform.forward*0.2f, this.transform.forward*1f, Color.yellow,1);
-                //this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
-                this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
-                StartCoroutine(ReflectCooldown());
-                Destroy(this.gameObject,Reflect_lifespan);
-            }
+                other.attachedRigidbody.AddForce(this.transform.forward*Bullet_force);
+                if(!Reflect)
+                {   
+                    Destroy(this.gameObject);
+                }
+                else
+                {
+                    Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f, reflect_terrian_layMask);
+                    this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
+                    StartCoroutine(ReflectCooldown());
+                    Destroy(this.gameObject,Reflect_lifespan);
+                }
+            break;  
+            case "Wall":
+                Destroy(this.gameObject,5f);
+                /*
+                other.attachedRigidbody.AddForce(this.transform.forward*10f);
+                if(!Reflect)
+                {   
+                    Destroy(this.gameObject);
+                }
+                else
+                {
+                    Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f, reflect_terrian_layMask);
+                    this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
+                    StartCoroutine(ReflectCooldown());
+                    Destroy(this.gameObject,Reflect_lifespan);
+                }
+                */
             break;  
         }
         /*

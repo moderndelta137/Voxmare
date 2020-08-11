@@ -30,10 +30,12 @@ public class HUD_Controller : MonoBehaviour
     public Text[] Rank_Texts;
     [Header("Current Level")]
     public Text Level_text;
+    public Text Core_text;
     // Start is called before the first frame update
     void Start()
     {
-        Level_text.text = "Level "  + LevelData.Selected_level;
+        UpdateLevelText();
+        UpdateCoreText();
     }
 
     // Update is called once per frame
@@ -132,5 +134,14 @@ public class HUD_Controller : MonoBehaviour
             }
             break;
         }
+    }
+
+    public void UpdateLevelText()
+    {
+        Level_text.text = "Level "  + LevelData.Selected_level;
+    }
+    public void UpdateCoreText()
+    {
+        Core_text.text = "ｘ"  + LevelData.Remain_core;
     }
 }
