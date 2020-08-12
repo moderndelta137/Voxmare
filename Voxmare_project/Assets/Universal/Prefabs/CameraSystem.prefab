@@ -83,7 +83,7 @@ MonoBehaviour:
   m_MaximumDistance: 5000
   m_MinimumFOV: 3
   m_MaximumFOV: 60
-  m_MinimumOrthoSize: 1
+  m_MinimumOrthoSize: 15
   m_MaximumOrthoSize: 35
 --- !u!1 &1613158718328055453
 GameObject:
@@ -146,7 +146,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11.666666
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -230,6 +230,7 @@ GameObject:
   - component: {fileID: 1613158718518176968}
   - component: {fileID: 1613158718518176969}
   - component: {fileID: 1613158718518176971}
+  - component: {fileID: 369464732}
   m_Layer: 0
   m_Name: CM vcam
   m_TagString: Untagged
@@ -304,6 +305,21 @@ MonoBehaviour:
   m_BoundingShape2D: {fileID: 0}
   m_ConfineScreenEdges: 0
   m_Damping: 0
+--- !u!114 &369464732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613158718518176974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ChannelMask: 1
+  m_Gain: 1
+  m_Use2DDistance: 0
 --- !u!1 &1613158718791309731
 GameObject:
   m_ObjectHideFlags: 0

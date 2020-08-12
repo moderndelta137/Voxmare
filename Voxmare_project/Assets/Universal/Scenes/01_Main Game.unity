@@ -2287,38 +2287,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1613158717921528492, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
-      propertyPath: m_MinimumOrthoSize
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613158718328055454, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.8506746
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613158718328055454, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.12595
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613158718328055454, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -23.753824
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613158718328055455, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
-      propertyPath: orthographic size
-      value: 15.39
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613158718518176968, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.8506746
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613158718518176968, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.12595
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613158718518176968, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -23.753824
-      objectReference: {fileID: 0}
     - target: {fileID: 1613158718518176971, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
       propertyPath: m_BoundingVolume
       value: 
@@ -2331,10 +2299,6 @@ PrefabInstance:
       propertyPath: m_Targets.Array.data[1].target
       value: 
       objectReference: {fileID: 279926079}
-    - target: {fileID: 1613158718791309741, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -15.061802
-      objectReference: {fileID: 0}
     - target: {fileID: 1634080230181497678, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.6796741
@@ -2719,6 +2683,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   move_strength: 10
   move_duration_range: {x: 3, y: 5}
+--- !u!20 &1218660634 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 1613158718328055455, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
+  m_PrefabInstance: {fileID: 1033253201}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1257717702
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5386,6 +5355,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 337455001469542339, guid: 375819adf63cefc4db8d729fbe1f5655, type: 3}
+      propertyPath: Main_camera
+      value: 
+      objectReference: {fileID: 1218660634}
     - target: {fileID: 337455001469542339, guid: 375819adf63cefc4db8d729fbe1f5655, type: 3}
       propertyPath: HUD
       value: 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Cinemachine;
 
 public class PlayerDeflect : MonoBehaviour
 {
@@ -28,6 +29,9 @@ public class PlayerDeflect : MonoBehaviour
     private Vector3 shoot_vector;
 
     private PlayerMovement movement_script;
+
+    public CinemachineImpulseSource Light_impluse;
+    public CinemachineImpulseSource Strong_impluse;
 
     [Header("Deflect Effect")]
     public bool Velocity_bonus;//Increase bullet velocity after deflection
@@ -104,6 +108,14 @@ public class PlayerDeflect : MonoBehaviour
                 hits=null;
                 hits=Physics.SphereCastAll(this.transform.position, Boundary_radius[Radius_rank], Vector3.up, 0, bullet_layerMask);
                 Vector3 temp_position;
+                if(hits.Length==0)
+                {
+                    Light_impluse.GenerateImpulse();
+                }
+                else
+                {
+                    Strong_impluse.GenerateImpulse();
+                }
                 foreach(RaycastHit bullet in hits)
                 {
                     if(bullet.transform.CompareTag("Bullet"))
@@ -142,6 +154,7 @@ public class PlayerDeflect : MonoBehaviour
                 if(bullet_instance.Deflectable)
                     bullet_instance.ChangeMaterial(1);
             }
+            Light_impluse.GenerateImpulse();
         }
     }
     private void OnTriggerExit(Collider other) 

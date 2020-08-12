@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -48,6 +49,8 @@ public class PlayerMovement : MonoBehaviour
     private int knockback_layerMask;
     private Vector3 damage_incoming;
 
+    public CinemachineImpulseSource Hit_impulse;
+    public CinemachineImpulseSource Knockback_impulse;
 
     [Header("Animation")]
     private Animator player_animator;
@@ -151,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
                 hit_reaction_original_position = this.transform.position;
             }
             hit_reacting += 1;
-
+            Hit_impulse.GenerateImpulse();
             //Update animation
             player_animator.SetTrigger("Hit");
             myTween = this.transform.DOMove(this.transform.position + damage_incoming * DEBUG_hit_reaction_flinch, DEBUG_hit_reaction_duration);
@@ -181,6 +184,8 @@ public class PlayerMovement : MonoBehaviour
             rend.material = Hit_reaction_mat;
             damage_incoming = Incoming.normalized;
             damage_incoming.y = 0;
+            Knockback_impulse.GenerateImpulse();
+            player_animator.SetTrigger("Hit");
             if(Physics.CapsuleCast(this.transform.position,this.transform.position,0.5f,damage_incoming, out knockback_hit, Knockback_cast_distance,knockback_layerMask))
             {
                 myTween = this.transform.DOMove(this.transform.position+damage_incoming*knockback_hit.distance,DEBUG_knockback_duration);
