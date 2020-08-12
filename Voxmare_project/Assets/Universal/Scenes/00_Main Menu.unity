@@ -446,7 +446,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.46666566}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2143,7 +2143,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &283732047
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3819,8 +3819,10 @@ GameObject:
   - component: {fileID: 574447558}
   - component: {fileID: 574447557}
   - component: {fileID: 574447556}
-  - component: {fileID: 574447560}
   - component: {fileID: 574447561}
+  - component: {fileID: 574447560}
+  - component: {fileID: 574447562}
+  - component: {fileID: 574447563}
   m_Layer: 5
   m_Name: UI Canvas
   m_TagString: Untagged
@@ -3945,6 +3947,59 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   priority: 0
+--- !u!114 &574447562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574447555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f56306948894dce4b93399585c4a9bb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Block_material: {fileID: 2100000, guid: b36a6d54743e32342845417dbecd8915, type: 2}
+  HUD_eye_material: {fileID: 2100000, guid: 8626a9f0e3ed97949945d005b4dee5ad, type: 2}
+  block_render: {fileID: 1688885928}
+  Block_palettes:
+  - {fileID: 2800000, guid: 10181a8962d70874fa7fe1240278dc1f, type: 3}
+  - {fileID: 2800000, guid: 9944f93ad7a10be4184365fa2a8c84e8, type: 3}
+  - {fileID: 2800000, guid: 5401158a172c2e04eba04bbc1305c716, type: 3}
+  - {fileID: 2800000, guid: 2ce32ad8db44e45448effb87dcc03307, type: 3}
+  - {fileID: 2800000, guid: 2d5916dbf2deb5f4699efb5448f8d658, type: 3}
+  - {fileID: 2800000, guid: 36085ea580098f14fb9e1b3a79a0b9f8, type: 3}
+  - {fileID: 2800000, guid: 388b68c6b6158d548919039d2d901cff, type: 3}
+  - {fileID: 2800000, guid: f87ea112c181d52418a941f2e688b776, type: 3}
+  - {fileID: 2800000, guid: 18c38672dec30054b9a71f7b733fc716, type: 3}
+  - {fileID: 2800000, guid: 09d16a2922f05134a85338d85db97b90, type: 3}
+  - {fileID: 2800000, guid: 7c9f6bd5f08a4f44a9a0ab2c754bcd59, type: 3}
+  - {fileID: 2800000, guid: 971326fa13e042a418ed19a5e6c87268, type: 3}
+  - {fileID: 2800000, guid: a866e42a92313b644ae86afa474be3f2, type: 3}
+  - {fileID: 2800000, guid: 76efb8b5ef5cfb14ab9135cbdc3486da, type: 3}
+  - {fileID: 2800000, guid: efee2d5a605a4bb47ad5442965d9632d, type: 3}
+  Palette_index: 1
+  UI_dropdown: {fileID: 775680895}
+--- !u!114 &574447563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574447555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0340c9b0a57e9b249b393f7d6bd0502a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Off_text: {fileID: 1224771445}
+  Neon_text: {fileID: 2050553449}
+  Outline_text: {fileID: 454704473}
+  Filter_script: {fileID: 1075420200}
+  Table_render: {fileID: 1418326806}
+  Table_normal_material: {fileID: 2100000, guid: b3faac127ca512e418f5512a49b9e0f1, type: 2}
+  Table_simple_material: {fileID: 2100000, guid: e55b1387f3740f14a91c046fd1e02525, type: 2}
+  filter_index: 0
 --- !u!1 &574742245
 GameObject:
   m_ObjectHideFlags: 0
@@ -4259,9 +4314,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1964039283}
+      - m_Target: {fileID: 574447563}
         m_TargetAssemblyTypeName: ChangeFiler, Assembly-CSharp
-        m_MethodName: ChangeIndex
+        m_MethodName: UpdateFilter
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4391,7 +4446,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 69883648}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.46666566
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4856,9 +4911,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1964039283}
+      - m_Target: {fileID: 574447563}
         m_TargetAssemblyTypeName: ChangeFiler, Assembly-CSharp
-        m_MethodName: ChangeIndex
+        m_MethodName: UpdateFilter
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4918,7 +4973,6 @@ GameObject:
   - component: {fileID: 735863356}
   - component: {fileID: 735863355}
   - component: {fileID: 735863354}
-  - component: {fileID: 735863357}
   - component: {fileID: 735863358}
   m_Layer: 5
   m_Name: Color Button (4)
@@ -5028,38 +5082,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 735863352}
   m_CullTransparentMesh: 0
---- !u!114 &735863357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 735863352}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f56306948894dce4b93399585c4a9bb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Block_material: {fileID: 0}
-  block_render: {fileID: 1688885928}
-  Block_palettes:
-  - {fileID: 2800000, guid: 10181a8962d70874fa7fe1240278dc1f, type: 3}
-  - {fileID: 2800000, guid: 9944f93ad7a10be4184365fa2a8c84e8, type: 3}
-  - {fileID: 2800000, guid: 5401158a172c2e04eba04bbc1305c716, type: 3}
-  - {fileID: 2800000, guid: 2ce32ad8db44e45448effb87dcc03307, type: 3}
-  - {fileID: 2800000, guid: 2d5916dbf2deb5f4699efb5448f8d658, type: 3}
-  - {fileID: 2800000, guid: 36085ea580098f14fb9e1b3a79a0b9f8, type: 3}
-  - {fileID: 2800000, guid: 388b68c6b6158d548919039d2d901cff, type: 3}
-  - {fileID: 2800000, guid: f87ea112c181d52418a941f2e688b776, type: 3}
-  - {fileID: 2800000, guid: 18c38672dec30054b9a71f7b733fc716, type: 3}
-  - {fileID: 2800000, guid: 09d16a2922f05134a85338d85db97b90, type: 3}
-  - {fileID: 2800000, guid: 7c9f6bd5f08a4f44a9a0ab2c754bcd59, type: 3}
-  - {fileID: 2800000, guid: 971326fa13e042a418ed19a5e6c87268, type: 3}
-  - {fileID: 2800000, guid: a866e42a92313b644ae86afa474be3f2, type: 3}
-  - {fileID: 2800000, guid: 76efb8b5ef5cfb14ab9135cbdc3486da, type: 3}
-  - {fileID: 2800000, guid: efee2d5a605a4bb47ad5442965d9632d, type: 3}
-  Palette_index: 1
-  UI_dropdown: {fileID: 0}
 --- !u!114 &735863358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5460,9 +5482,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 735863357}
+      - m_Target: {fileID: 574447562}
         m_TargetAssemblyTypeName: ChangeBlockPalette, Assembly-CSharp
-        m_MethodName: ChangePalette
+        m_MethodName: UpdatePalette
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8232,7 +8254,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1242501414
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8269,11 +8291,11 @@ MonoBehaviour:
   m_Content: {fileID: 1516096293}
   m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 2
+  m_MovementType: 1
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 20
   m_Viewport: {fileID: 1936029255}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 622942238}
@@ -11638,7 +11660,6 @@ GameObject:
   - component: {fileID: 1964039282}
   - component: {fileID: 1964039281}
   - component: {fileID: 1964039280}
-  - component: {fileID: 1964039283}
   - component: {fileID: 1964039284}
   m_Layer: 5
   m_Name: Filer Button (5)
@@ -11748,26 +11769,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1964039278}
   m_CullTransparentMesh: 0
---- !u!114 &1964039283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1964039278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0340c9b0a57e9b249b393f7d6bd0502a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Off_text: {fileID: 1224771445}
-  Neon_text: {fileID: 2050553449}
-  Outline_text: {fileID: 454704473}
-  Filter_script: {fileID: 1075420200}
-  Table_render: {fileID: 1418326806}
-  Table_normal_material: {fileID: 2100000, guid: b3faac127ca512e418f5512a49b9e0f1, type: 2}
-  Table_simple_material: {fileID: 2100000, guid: e55b1387f3740f14a91c046fd1e02525, type: 2}
-  filter_index: 0
 --- !u!114 &1964039284
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,12 +9,7 @@ public class ClearChecker : MonoBehaviour
     public UnityEvent UpdateCoreCount;
     public UnityEvent UpdateLevelCount;
 
-    public void LoadLevelData()
-    {
-        //TODO Get core account from level data;
-        UpdateLevelCount.Invoke();
-        UpdateCoreCount.Invoke();
-    }
+
 
     public void decrementCount()
     {
@@ -43,6 +38,10 @@ public class ClearChecker : MonoBehaviour
     void Clear()
     {
         Debug.Log("Clear");
+        if(LevelData.Selected_level>PlayerPrefs.GetInt("MaxLevel"))
+        {
+            PlayerPrefs.SetInt("MaxLevel",LevelData.Selected_level);
+        }
         LevelData.Selected_level++;
         UpdateLevelCount.Invoke();
         // do something
@@ -53,10 +52,19 @@ public class ClearChecker : MonoBehaviour
     {
         
     }
-
+    public void LoadSavedData()
+    {
+        //
+        UpdateLevelCount.Invoke();
+        UpdateCoreCount.Invoke();
+    }
     // Update is called once per frame
     void Update()
     {
-        
+        //!!!!!!!!!!!FOR DEBUG ONLY!!!!!!! To Be Deleted!!!!!!!!!!!!!!
+        if(Input.GetKeyDown(KeyCode.V))
+        {
+            Clear();
+        }
     }
 }

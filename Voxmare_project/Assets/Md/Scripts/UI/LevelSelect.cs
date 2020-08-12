@@ -12,13 +12,22 @@ public class LevelSelect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        UpdateMaxLevel();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void UpdateMaxLevel()
+    {
+        if(!PlayerPrefs.HasKey("MaxLevel"))
+        {
+            PlayerPrefs.SetInt("MaxLevel",1);
+        }
+        Level_slider.maxValue = PlayerPrefs.GetInt("MaxLevel");
     }
 
     public void UpdateSelectedLevel()

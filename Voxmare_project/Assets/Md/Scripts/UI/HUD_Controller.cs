@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class HUD_Controller : MonoBehaviour
 {
-    [Header("HP")]
-    public Slider HP_bar;
     [Header("Power Rank")]
     public Material Rank_Unlit_Material;
     [Space]
@@ -42,15 +40,6 @@ public class HUD_Controller : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public void SetMaxHP(int HP)
-    {
-        HP_bar.maxValue = HP;
-    }
-    public void UpdateHPBar(int HP)
-    {
-        HP_bar.value = HP;
     }
 
     public void UpdateRank(int Type, int Rank)
