@@ -7,7 +7,7 @@ public class Pause_Menu_Controller : MonoBehaviour
 {
     public GameObject Pause_menu;
     public GameObject Option_menu;
-    public bool Paused;
+    //public bool Paused;
     public bool Option_menu_opened;
     // Start is called before the first frame update
     void Start()
@@ -20,11 +20,11 @@ public class Pause_Menu_Controller : MonoBehaviour
     {
     if(Input.GetButtonDown("Escape"))
         {
-            if(!Paused)
+            if(!LevelData.isPaused)
             {
-                //TODO Pause game timescale
+                LevelData.isPaused = true;
                 Time.timeScale = 0;
-                Paused = true;
+                LevelData.isPaused = true;
                 Pause_menu.SetActive(true);
             }
             else
@@ -35,7 +35,7 @@ public class Pause_Menu_Controller : MonoBehaviour
     
     if(Input.GetButtonDown("Cancel"))
         {
-            if(Paused)
+            if(LevelData.isPaused)
             {
                 if(Option_menu_opened)
                 {
@@ -51,9 +51,9 @@ public class Pause_Menu_Controller : MonoBehaviour
 
     public void ResumeGame()
     {
-        //TODO Resume game timescale
+        LevelData.isPaused = false;
         Time.timeScale = 1;
-        Paused = false;
+        LevelData.isPaused = false;
         Option_menu_opened = false;
         Option_menu.SetActive(false);
         Pause_menu.SetActive(false);
@@ -77,7 +77,7 @@ public class Pause_Menu_Controller : MonoBehaviour
     {
         //TODO Resume game timescale
         Time.timeScale = 1;
-        Paused = false;
+        LevelData.isPaused = false;
         SceneManager.LoadScene(0);
     }
 }

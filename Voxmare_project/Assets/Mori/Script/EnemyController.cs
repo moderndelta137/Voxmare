@@ -71,7 +71,6 @@ public class EnemyController : MonoBehaviour
     void Death()
     {
         block.Death();
-        Destroy(this.gameObject);
     }
 
     private void OnTriggerEnter(Collider other)

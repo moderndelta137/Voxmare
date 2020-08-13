@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class BlockGenerator : MonoBehaviour
 {
-    private int currentStage;
+    //private int currentStage;
     [SerializeField] List<Stage> stages;
 
     [Header("Position")]
@@ -24,16 +24,22 @@ public class BlockGenerator : MonoBehaviour
 
     void Start()
     {
-        currentStage = LevelData.Selected_level;
+        //currentStage = LevelData.Selected_level;
         waitGenerate = new WaitForSeconds(generateInterval);
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
         clearChecker = GameObject.Find("ClearChecker").GetComponent<ClearChecker>();
+        //StartGenerate();
+    }
+
+    public void StartGenerate()
+    {
         StartCoroutine(GenerateBlockAndNpc());
     }
 
     IEnumerator GenerateBlockAndNpc()
     {
-        Stage stage = stages[currentStage - 1];
+        manager.blocks = new List<Block>();
+        Stage stage = stages[LevelData.Selected_level - 1];
         int coreCount = 0;
 
         // Generate Block
@@ -46,6 +52,7 @@ public class BlockGenerator : MonoBehaviour
             for (int i = 0; i < blockSetting.count; i++)
             {
                 block = GameObject.Instantiate(blockSetting.blockPrefab);
+
                 // Position
                 block.transform.position = generateCenter + new Vector3(Random.Range(-lengthX/2, lengthX/2), 0, Random.Range(-lengthZ/2, lengthZ/2));
 
@@ -89,6 +96,14 @@ public class BlockGenerator : MonoBehaviour
 
         clearChecker.setCount(coreCount);
         manager.StartLink();
+    }
+
+    public void DestoryAllBlocks()
+    {
+        foreach(Block block_left in manager.blocks)
+        {
+            block_left.GetComponent<EnemyController>().SendMessage("ApplyDamage",Vector3.up*999);
+        }
     }
 
     void Update()

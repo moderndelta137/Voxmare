@@ -6,8 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class SnapshotMode : MonoBehaviour
 {
-    [SerializeField]
-    private bool useCanvas = true;
+    //[SerializeField]
+    //private bool useCanvas = true;
 
     [SerializeField]
     private SnapshotCanvas snapshotCanvasPrefab;

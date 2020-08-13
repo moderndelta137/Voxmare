@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 mouse_direction_vector;
 
     [Header("Player Parameter")]
+    public int MaxHP;
     public int HP;
     public float PushForce;
 
@@ -56,7 +57,6 @@ public class PlayerMovement : MonoBehaviour
     private Animator player_animator;
 
     [Header("UI")]
-    public GameObject HUD;
     public GameObject Health_bar_prefab;
     private Health_Bar health_bar_script;
     public Vector3 Health_bar_offset;
@@ -70,67 +70,17 @@ public class PlayerMovement : MonoBehaviour
         Main_camera=Camera.main;
         if(Mouse_control)
             InitiateMouseControl();
-
-        can_move = true;
+        
         rend = GetComponentInChildren<SkinnedMeshRenderer>();
         original_mat = rend.material;
         knockback_layerMask = (1 << 9) + (1 << 11)+ (1 << 13);//Check Enemy Layer and Terrian Layer for shooting
-
-
         player_animator = GetComponentInChildren<Animator>();
         invencible_wait = new WaitForSeconds(Invencible_duration);
         health_bar_script = Instantiate(Health_bar_prefab,Vector3.zero,Quaternion.identity,this.transform).GetComponent<Health_Bar>();
         health_bar_script.transform.localPosition = Health_bar_offset;
-        health_bar_script.SetMaxHealth(HP);
-        health_bar_script.gameObject.SetActive(true);
-        HUD.SetActive(true);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //Movement
-        move_input_vector.x = Input.GetAxis("Horizontal");
-        move_input_vector.z = Input.GetAxis("Vertical");
-        Vector3.ClampMagnitude(move_input_vector,1.0f);
-        if(can_move)
-        {
-            if(move_input_vector.magnitude>0)
-            {
-                Player_CharacterController.Move(move_input_vector*Move_speed*Time.deltaTime);
-                player_animator.SetFloat("Move_Y", Vector3.Dot(move_input_vector,this.transform.forward));
-                player_animator.SetFloat("Move_X", Vector3.Dot(move_input_vector,this.transform.right));
-                ResetY();
-            }
-        }
-        //Rotation
-        if(Mouse_control)
-        {
-            //Create a ray from the Mouse position
-            mouse_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (mouse_plane.Raycast(mouse_ray, out mouse_plane_distance))
-            {
-                mouse_world_position = mouse_ray.GetPoint(mouse_plane_distance);
-                Mouse_cursor.transform.position = mouse_world_position;
-                mouse_direction_vector = mouse_world_position - this.transform.position;
-                look_input_vector = mouse_direction_vector.normalized-this.transform.forward;
-                if(look_input_vector.magnitude>0.1f && can_move)
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mouse_direction_vector), Rotate_speed*Time.deltaTime);
-                ResetRotation();
-            }
-
-        }
-        else
-        {
-            look_input_vector.x = Input.GetAxis("Look_Horizontal");
-            look_input_vector.z = Input.GetAxis("Look_Vertical");
-            if(look_input_vector.magnitude>0.1f && can_move)
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(look_input_vector), Rotate_speed*Time.deltaTime);
-        }
-
-        //Update Movement animation
-        player_animator.SetFloat("Move_input",move_input_vector.magnitude);
-        player_animator.SetFloat("Look_input",look_input_vector.magnitude);
+        health_bar_script.SetMaxHealth(MaxHP);
+        
+        can_move = false;
     }
 
     public void InitiateMouseControl()
@@ -139,13 +89,88 @@ public class PlayerMovement : MonoBehaviour
         mouse_plane = new Plane(this.transform.up, this.transform.position);
     }
 
+    public void LevelStart()
+    {
+        HP = MaxHP;
+        health_bar_script.gameObject.SetActive(true);
+        health_bar_script.SetHealth(HP);
+        can_move = true;
+        Mouse_cursor.SetActive(true);
+    }
+
+    public void LevelClear()
+    {
+        can_move = false;
+        move_input_vector = Vector3.zero;
+        look_input_vector = Vector3.zero;
+        player_animator.SetFloat("Move_Y", 0);
+        player_animator.SetFloat("Move_X", 0);
+        player_animator.SetFloat("Move_input",0);
+        player_animator.SetFloat("Look_input",0);
+        Mouse_cursor.SetActive(false);
+    }
+
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(!LevelData.isPaused && can_move)
+        {
+            //Movement
+            move_input_vector.x = Input.GetAxis("Horizontal");
+            move_input_vector.z = Input.GetAxis("Vertical");
+            Vector3.ClampMagnitude(move_input_vector,1.0f);
+            //if(can_move)
+            {
+                if(move_input_vector.magnitude>0)
+                {
+                    Player_CharacterController.Move(move_input_vector*Move_speed*Time.deltaTime);
+                    player_animator.SetFloat("Move_Y", Vector3.Dot(move_input_vector,this.transform.forward));
+                    player_animator.SetFloat("Move_X", Vector3.Dot(move_input_vector,this.transform.right));
+                    ResetY();
+                }
+            }
+            //Rotation
+            if(Mouse_control)
+            {
+                //Create a ray from the Mouse position
+                mouse_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (mouse_plane.Raycast(mouse_ray, out mouse_plane_distance))
+                {
+                    mouse_world_position = mouse_ray.GetPoint(mouse_plane_distance);
+                    Mouse_cursor.transform.position = mouse_world_position;
+                    mouse_direction_vector = mouse_world_position - this.transform.position;
+                    look_input_vector = mouse_direction_vector.normalized-this.transform.forward;
+                    if(look_input_vector.magnitude>0.1f)
+                        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mouse_direction_vector), Rotate_speed*Time.deltaTime);
+                    ResetRotation();
+                }
+
+            }
+            else
+            {
+                look_input_vector.x = Input.GetAxis("Look_Horizontal");
+                look_input_vector.z = Input.GetAxis("Look_Vertical");
+                if(look_input_vector.magnitude>0.1f)
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(look_input_vector), Rotate_speed*Time.deltaTime);
+            }
+
+            //Update Movement animation
+            player_animator.SetFloat("Move_input",move_input_vector.magnitude);
+            player_animator.SetFloat("Look_input",look_input_vector.magnitude);
+        }
+    }
+
+
+
     public IEnumerator ApplyDamage(Vector3 Incoming)
     {
         if(!invencible)
         {
             StartCoroutine(BecomeInvencible());
             can_move = false;
-            UpdateHP((int)Incoming.magnitude);
+            LoseHP((int)Incoming.magnitude);
             rend.material = Hit_reaction_mat;
             damage_incoming = Incoming.normalized;
             damage_incoming.y = 0;
@@ -180,7 +205,7 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(BecomeInvencible());
             can_move = false;
-            UpdateHP((int)Incoming.magnitude);
+            LoseHP((int)Incoming.magnitude);
             rend.material = Hit_reaction_mat;
             damage_incoming = Incoming.normalized;
             damage_incoming.y = 0;
@@ -227,7 +252,7 @@ public class PlayerMovement : MonoBehaviour
         this.transform.rotation=Quaternion.Euler(0,temp_eular.y,0);
     }
 
-    private void UpdateHP(int delta)
+    private void LoseHP(int delta)
     {
         HP -= delta;
         health_bar_script.SetHealth(HP);

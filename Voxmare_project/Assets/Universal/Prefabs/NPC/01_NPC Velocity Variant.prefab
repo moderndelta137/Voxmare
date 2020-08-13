@@ -7,9 +7,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1137754768, guid: 5ded47ddf647e064694733d0804139cd, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1137754768, guid: 5ded47ddf647e064694733d0804139cd, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3598975855745787472, guid: 5ded47ddf647e064694733d0804139cd, type: 3}
       propertyPath: m_Name
-      value: Player_Pickup Velocity Variant
+      value: 01_NPC Velocity Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3598975855745787476, guid: 5ded47ddf647e064694733d0804139cd, type: 3}
       propertyPath: m_LocalPosition.x

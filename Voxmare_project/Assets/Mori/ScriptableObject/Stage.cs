@@ -7,6 +7,7 @@ public class Stage : ScriptableObject
 {
 	public List<BlockSetting> block = new List<BlockSetting>();
 	public List<NPCSetting> npc = new List<NPCSetting>();
+	public List<ObstacleSetting> obstacle = new List<ObstacleSetting>();
 
 	[System.Serializable]
 	public class BlockSetting
@@ -21,5 +22,11 @@ public class Stage : ScriptableObject
 	{
 		public GameObject NPCPrefab;
 		public int count;
+	}
+
+	[System.Serializable]
+	public class ObstacleSetting
+	{
+		public GameObject ObstaclePrefab;
 	}
 }

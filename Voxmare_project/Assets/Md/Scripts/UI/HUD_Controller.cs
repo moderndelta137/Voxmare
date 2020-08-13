@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class HUD_Controller : MonoBehaviour
 {
+    public GameObject HUD;
     [Header("Power Rank")]
     public Material Rank_Unlit_Material;
     [Space]
@@ -30,10 +31,9 @@ public class HUD_Controller : MonoBehaviour
     public Text Level_text;
     public Text Core_text;
     // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        UpdateLevelText();
-        UpdateCoreText();
+
     }
 
     // Update is called once per frame
@@ -125,6 +125,16 @@ public class HUD_Controller : MonoBehaviour
         }
     }
 
+    public void DisplayHUD()
+    {
+        UpdateLevelText();
+        UpdateCoreText();
+        HUD.SetActive(true);
+    }
+    public void HideHUD()
+    {
+        HUD.SetActive(false);
+    }
     public void UpdateLevelText()
     {
         Level_text.text = "Level "  + LevelData.Selected_level;

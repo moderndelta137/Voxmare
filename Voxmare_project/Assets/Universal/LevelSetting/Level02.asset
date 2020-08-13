@@ -14,13 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   block:
   - blockPrefab: {fileID: 5841314703671143113, guid: 9e75519e4895b1b4892b91539086970b, type: 3}
-    count: 20
+    count: 2
     coreCount: 2
+  - blockPrefab: {fileID: 5841314703671143113, guid: 37ad6084035b2f54fb68df13e8ae7f39, type: 3}
+    count: 10
+    coreCount: 0
+  - blockPrefab: {fileID: 5841314703671143113, guid: c9db727781404474d8a074efbfb425e8, type: 3}
+    count: 4
+    coreCount: 0
   - blockPrefab: {fileID: 5841314703671143113, guid: 4a7f9cedc2c31f140b15c70515f59fea, type: 3}
-    count: 20
-    coreCount: 2
+    count: 2
+    coreCount: 0
   npc:
   - NPCPrefab: {fileID: 2540976299578149253, guid: 10f2b7bbba85f904fb6150f130a39738, type: 3}
     count: 2
-  - NPCPrefab: {fileID: 2540976299578149253, guid: c82043e87e3260543a8322213dbcb112, type: 3}
+  - NPCPrefab: {fileID: 2540976299578149253, guid: 10f2b7bbba85f904fb6150f130a39738, type: 3}
     count: 2

@@ -25,7 +25,7 @@ public class PlayerDeflect : MonoBehaviour
     private WaitForSeconds deflect_wait;
     public float DEBUG_cooldown_scale_duration;
     private RaycastHit hit;
-    private int shoot_layerMask;
+    //private int shoot_layerMask;
     private Vector3 shoot_vector;
 
     private PlayerMovement movement_script;
@@ -67,20 +67,20 @@ public class PlayerDeflect : MonoBehaviour
     private PlayerPickup pickup_zone_script;
 
     [Header("HUD")]
-    private HUD_Controller HUD_script;
+    public HUD_Controller HUD_script;
     // Start is called before the first frame update
     void Start()
     {
         player_animator = this.transform.parent.GetComponentInChildren<Animator>();
         bullet_layerMask = 1 << 10;//Check Bullet Layer
         homing_layerMask = 1 << 9;
-        shoot_layerMask = (1 << 9) + (1 << 11);//Check Enemy Layer and Terrian Layer for shooting
+        //shoot_layerMask = (1 << 9) + (1 << 11);//Check Enemy Layer and Terrian Layer for shooting
 
         Can_deflect = true;
         deflect_wait = new WaitForSeconds(Deflect_cooldown);
         pickup_zone_script = this.transform.parent.GetComponentInChildren<PlayerPickup>();
         movement_script = this.transform.parent.GetComponent<PlayerMovement>();
-        HUD_script = movement_script.HUD.GetComponentInChildren<HUD_Controller>();
+        //HUD_script = movement_script.HUD.GetComponentInChildren<HUD_Controller>();
         Boundary_light = this.transform.parent.GetComponentInChildren<Light>();
         boundary_light_intensity = Boundary_light.intensity;
         Boundary_light.transform.DOMoveY(Boundary_light_height.x,DEBUG_cooldown_scale_duration);
@@ -91,7 +91,7 @@ public class PlayerDeflect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Fire1"))
+        if(Input.GetButtonDown("Fire1")&&!LevelData.isPaused)
         {        
             if(Can_deflect && movement_script.can_move)
             {
