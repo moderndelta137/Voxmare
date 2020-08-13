@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22c6a8af1e10af840b02efabe11467d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 5
+  Damage: 2
   Lifespan: 1
   Radius: 5
   Damage_player: 1

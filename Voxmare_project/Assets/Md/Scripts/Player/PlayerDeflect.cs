@@ -190,12 +190,11 @@ public class PlayerDeflect : MonoBehaviour
         Boundary_light.DOIntensity(0f, DEBUG_cooldown_scale_duration);
         movement_script.Move_speed/=2;
         yield return deflect_wait;
-        Can_deflect = true;
         this.transform.DOScale(Vector3.one * Boundary_radius[Radius_rank] * Boundary_mesh_scaler, DEBUG_cooldown_scale_duration);
-        //Boundary_light.intensity = 0;
         Boundary_light.transform.DOMoveY(Boundary_light_height.x, DEBUG_cooldown_scale_duration);
         Boundary_light.DOIntensity(boundary_light_intensity, DEBUG_cooldown_scale_duration);
         movement_script.Move_speed*=2;
+        Can_deflect = true;
         
     }
 
@@ -204,6 +203,7 @@ public class PlayerDeflect : MonoBehaviour
         if(Velocity_bonus)
         {
             bullet_instance.Bullet_speed *= Velocity_bonus_scale[Velocity_rank];
+            bullet_instance.Damage = (int)(bullet_instance.Damage * Velocity_bonus_scale[Velocity_rank]);
         }
         if(Reflect_bonus)
         {
@@ -254,32 +254,50 @@ public class PlayerDeflect : MonoBehaviour
             
             case 1:
                 Velocity_rank = Mathf.Clamp(Velocity_rank = rank, 0, Velocity_bonus_scale.Length-1);
-                Velocity_bonus = true;
+                if(Velocity_rank<=0)
+                    Velocity_bonus = false;
+                else
+                    Velocity_bonus = true;
             break;
 
             case 2:
                 Reflect_rank = Mathf.Clamp(Reflect_rank = rank, 0, Reflect_lifespan.Length-1);
-                Reflect_bonus = true;
+                if(Reflect_rank<=0)
+                    Reflect_bonus = false;
+                else
+                    Reflect_bonus = true;
             break;
 
             case 3:
                 Penetrate_rank = Mathf.Clamp(Penetrate_rank = rank, 0, Penetrate_lifespan.Length-1);
-                Penetrate_bonus = true;
+                if(Penetrate_rank<=0)
+                    Penetrate_bonus = false;
+                else
+                    Penetrate_bonus = true;
             break;
 
             case 4:
                 Cluster_rank = Mathf.Clamp(Cluster_rank = rank, 0, Cluster_radius.Length-1);
-                Cluster_bonus = true;
+                if(Cluster_rank<=0)
+                    Cluster_bonus = false;
+                else
+                    Cluster_bonus = true;
             break;
 
             case 5:
                 Homing_rank = Mathf.Clamp(Homing_rank = rank, 0, Homing_rotation_speed.Length-1);
-                Homing_bonus = true;
+                 if(Homing_rank<=0)
+                    Homing_bonus = false;
+                else
+                    Homing_bonus = true;
             break;
 
             case 6:
                 Spray_rank = Mathf.Clamp(Spray_rank = rank, 0, Spray_count.Length-1);
-                Spray_bonus = true;
+                if(Spray_rank<=0)
+                    Spray_bonus = false;
+                else
+                    Spray_bonus = true;
             break;
         }
     }

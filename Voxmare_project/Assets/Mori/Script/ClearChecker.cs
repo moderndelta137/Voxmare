@@ -57,7 +57,7 @@ public class ClearChecker : MonoBehaviour
         }
     }
 
-    public void CoreDestoryed()
+    public void CoreDestroyed()
     {
         LevelData.Remain_core--;
         UpdateCoreCount.Invoke();
@@ -93,7 +93,7 @@ public class ClearChecker : MonoBehaviour
             UI to hide HUD   -Done
             UI to display level clear banner;   -Done
             Player to disable control;   -Done
-            BlockManager to Destory all blocks;   -Done
+            BlockManager to Destroy all blocks;   -Done
         */
     }
 

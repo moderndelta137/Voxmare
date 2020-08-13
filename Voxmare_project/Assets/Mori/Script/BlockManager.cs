@@ -259,7 +259,7 @@ public class BlockManager : MonoBehaviour
         }
 
         CutLink(block);
-        if (block.isCore) clearChecker.CoreDestoryed();
+        if (block.isCore) clearChecker.CoreDestroyed();
         blocks.Remove(block);
 
         // Find biggest block group

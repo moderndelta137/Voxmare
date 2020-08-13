@@ -266,9 +266,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b99ce267ccc2e6f499b8e1f29c5181cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 15
+  HP: 30
   Damage: 3
-  Push_force: 2
+  Push_force: 3
   Hit_reaction_mat: {fileID: 2100000, guid: 14ff9e6e57d5bee4682ee74e146fccf2, type: 2}
   DEBUG_hit_reaction_duration: 0.05
   DEBUG_hit_reaction_flinch: 1

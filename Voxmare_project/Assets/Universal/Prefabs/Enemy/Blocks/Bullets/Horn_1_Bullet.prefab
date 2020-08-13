@@ -109,8 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 283f6a3ed8c3c214fa2ddffe4a8ccfc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
-  Bullet_speed: 70
+  Damage: 2
+  Bullet_speed: 50
   Deflectable: 1
   Damage_player: 1
   Bullet_render: {fileID: 0}

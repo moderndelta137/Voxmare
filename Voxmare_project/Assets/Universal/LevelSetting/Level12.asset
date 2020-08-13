@@ -10,18 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df99a3c18e70d624b9fea77cac1f09b5, type: 3}
-  m_Name: Level03
+  m_Name: Level12
   m_EditorClassIdentifier: 
   block:
   - blockPrefab: {fileID: 5841314703671143113, guid: 9e75519e4895b1b4892b91539086970b, type: 3}
-    count: 10
-    coreCount: 10
-  - blockPrefab: {fileID: 5841314703671143113, guid: 4a7f9cedc2c31f140b15c70515f59fea, type: 3}
+    count: 5
+    coreCount: 5
+  - blockPrefab: {fileID: 5841314703671143113, guid: 37ad6084035b2f54fb68df13e8ae7f39, type: 3}
     count: 10
     coreCount: 0
+  - blockPrefab: {fileID: 5841314703671143113, guid: 461611afe74b9244ea5e978673bf2b9d, type: 3}
+    count: 15
+    coreCount: 0
+  - blockPrefab: {fileID: 5841314703671143113, guid: 82af492e66797354183fa4c700dbdc23, type: 3}
+    count: 40
+    coreCount: 0
   npc:
-  - NPCPrefab: {fileID: 2540976299578149253, guid: c82043e87e3260543a8322213dbcb112, type: 3}
-    count: 1
   - NPCPrefab: {fileID: 2540976299578149253, guid: 22b81eb9466f88441bed4f6ee004fc3d, type: 3}
     count: 1
   obstacle: []

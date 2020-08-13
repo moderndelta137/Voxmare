@@ -517,8 +517,9 @@ MonoBehaviour:
   can_move: 1
   Mouse_cursor: {fileID: 0}
   Mouse_cursor_prefab: {fileID: 5603157369960796485, guid: e53eab0852e64c64a894e85c126b7ccd, type: 3}
-  HP: 44
-  PushForce: 10
+  MaxHP: 20
+  HP: 20
+  PushForce: 15
   Invencible_duration: 1.5
   Hit_reaction_mat: {fileID: 2100000, guid: 14ff9e6e57d5bee4682ee74e146fccf2, type: 2}
   DEBUG_hit_reaction_duration: 0.1
@@ -527,7 +528,6 @@ MonoBehaviour:
   DEBUG_knockback_duration: 0.15
   Hit_impulse: {fileID: 1243344264}
   Knockback_impulse: {fileID: 1243344265}
-  HUD: {fileID: 0}
   Health_bar_prefab: {fileID: 1909103199782469627, guid: 36285098073564f4d88e44056c348fa6, type: 3}
   Health_bar_offset: {x: 0, y: 10, z: 0}
 --- !u!114 &1243344264
@@ -803,6 +803,7 @@ MonoBehaviour:
   Cluster_rank: 0
   Homing_rank: 0
   Spray_rank: 0
+  HUD_script: {fileID: 0}
 --- !u!114 &400077626
 MonoBehaviour:
   m_ObjectHideFlags: 0

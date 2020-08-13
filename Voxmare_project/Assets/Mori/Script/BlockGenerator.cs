@@ -98,7 +98,7 @@ public class BlockGenerator : MonoBehaviour
         manager.StartLink();
     }
 
-    public void DestoryAllBlocks()
+    public void DestroyAllBlocks()
     {
         foreach(Block block_left in manager.blocks)
         {
