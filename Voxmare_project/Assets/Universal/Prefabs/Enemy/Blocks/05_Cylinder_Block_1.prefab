@@ -91,13 +91,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   s_animation: 0
   s_duration: 0
-  s_scale: {x: 0, y: 0, z: 0}
-  s_ease: 0
+  s_scale: {x: 0.8, y: 0.8, z: 0.8}
+  s_ease: 4
   s_syncrosynchronized: 0
-  m_animation: 0
-  m_duration: 0
-  m_distance: {x: 0, y: 0, z: 0}
-  m_ease: 0
+  m_animation: 1
+  m_duration: 0.5
+  m_distance: {x: 0, y: 0, z: 0.4}
+  m_ease: 4
   m_syncrosynchronized: 0
 --- !u!1 &4242523283256836271
 GameObject:
@@ -229,9 +229,9 @@ MonoBehaviour:
   blockType: 1
   linkableBlockType: 00000000010000000200000003000000
   deathParticlePrefab: {fileID: 100748, guid: cd4d7020429cde74db076ffa72495419, type: 3}
+  isCore: 0
   maxPairs: 0
   pairs: 
-  isCore: 0
   isMoving: 0
 --- !u!114 &-1261616098011179214
 MonoBehaviour:

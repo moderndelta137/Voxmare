@@ -18,7 +18,7 @@ public class CoreEyeController : MonoBehaviour
         spammer_script = GetComponent<SpammerController>();
         if(spammer_script.Lockon)
         {
-            target = spammer_script.Target.transform;
+            target = GameObject.Find("Player").transform;
         }
         else{
             this.enabled = false;

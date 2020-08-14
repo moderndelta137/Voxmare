@@ -31,7 +31,7 @@ public class BlockGenerator : MonoBehaviour
     private ClearChecker clearChecker;
     private WaitForSeconds waitGenerate;
     private Transform emptyObject;
-    private List<GameObject> objects;
+    //private List<GameObject> objects;
 
     void Start()
     {
@@ -39,7 +39,7 @@ public class BlockGenerator : MonoBehaviour
         waitGenerate = new WaitForSeconds(generateInterval);
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
         clearChecker = GameObject.Find("ClearChecker").GetComponent<ClearChecker>();
-        objects = new List<GameObject>();
+        //objects = new List<GameObject>();
     }
 
     public void StartGenerate()
@@ -47,10 +47,12 @@ public class BlockGenerator : MonoBehaviour
         StartCoroutine(Generate());
     }
 
+    /*
     public void Reset()
     {
         StartCoroutine(ResetBlockAndNpc());
     }
+    */
 
     IEnumerator Generate()
     {
@@ -63,7 +65,7 @@ public class BlockGenerator : MonoBehaviour
 
     IEnumerator GenerateBlockAndNpc()
     {
-        objects.Clear();
+        //objects.Clear();
         manager.blocks = new List<Block>();
         Stage stage = stages[LevelData.Selected_level - 1];
         int coreCount = 0;
@@ -77,10 +79,10 @@ public class BlockGenerator : MonoBehaviour
             for (int i = 0; i < blockSetting.count; i++)
             {
                 block = GameObject.Instantiate(blockSetting.blockPrefab);
-                objects.Add(block);
+                //objects.Add(block);
                 // Position
                 block.transform.position = generateCenter + new Vector3(Random.Range(-lengthX/2, lengthX/2), 0, Random.Range(-lengthZ/2, lengthZ/2));
-
+                block.transform.Rotate(Vector3.up*Random.Range(0f,360f),Space.World);
                 // Generate Animation
                 Vector3 scale = block.transform.localScale;
                 block.transform.localScale = Vector3.zero;
@@ -108,7 +110,7 @@ public class BlockGenerator : MonoBehaviour
             for (int i = 0; i < npcSetting.count; i++)
             {
                 npc = GameObject.Instantiate(npcSetting.NPCPrefab);
-                objects.Add(npc);
+                //objects.Add(npc);
                 // Position
                 npc.transform.position = generateCenter + new Vector3(Random.Range(-lengthX / 2, lengthX / 2), 0, Random.Range(-lengthZ / 2, lengthZ / 2));
                 
@@ -149,6 +151,7 @@ public class BlockGenerator : MonoBehaviour
         manager.StartLink();
     }
 
+    /*
     IEnumerator ResetBlockAndNpc()
     {
         foreach (var obj in objects)
@@ -161,6 +164,7 @@ public class BlockGenerator : MonoBehaviour
         objects.Clear();
         yield return null;
     }
+    */
 
     public void DestroyAllBlocks()
     {

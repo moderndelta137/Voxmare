@@ -86,8 +86,8 @@ public class Block : MonoBehaviour
             pairs.Add(EMPTYID);
         }
 
-        deathParticle = Instantiate(deathParticlePrefab);
-        deathParticle.SetActive(false);
+        //deathParticle = Instantiate(deathParticlePrefab);
+        //deathParticle.SetActive(false);
         id = idCount++;
         isMoving = false;
         isAlone = true;
@@ -280,8 +280,9 @@ public class Block : MonoBehaviour
     public void Death()
     {
         StopMoving();
-        deathParticle.transform.position = transform.position;
-        deathParticle.SetActive(true);
+        //deathParticle.transform.position = transform.position;
+        //deathParticle.SetActive(true);
+        deathParticle = Instantiate(deathParticlePrefab,this.transform.position,Quaternion.identity);
         manager.DeathBlock(this);
         Destroy(this.gameObject);
     }

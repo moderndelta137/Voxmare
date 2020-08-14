@@ -32,16 +32,10 @@ public class SpammerController : MonoBehaviour
     public float Expand_duration;
     private Transform parent;
     private Tween shootTween;
-
-    void Awake()
-    {
-        Target = GameObject.Find("Player").transform;
-    }
-
     // Start is called before the first frame update
     void  Start()
     {
-
+        Target = GameObject.Find("Player").transform;
         StartCoroutine(StartDelay());
         if(Rapidfire)
         {           
@@ -55,11 +49,11 @@ public class SpammerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if(Lockon)
-        //{
-        //    lockon_vector = Target.position-this.transform.position;
-        //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lockon_vector), Rotate_speed*Time.deltaTime);
-        //}
+        if(Lockon)
+        {
+            lockon_vector = Target.position-this.transform.position;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lockon_vector), Rotate_speed*Time.deltaTime);
+        }
         
     }
 

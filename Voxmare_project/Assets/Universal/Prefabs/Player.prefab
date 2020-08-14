@@ -522,6 +522,7 @@ MonoBehaviour:
   PushForce: 15
   Invencible_duration: 1.5
   Hit_reaction_mat: {fileID: 2100000, guid: 14ff9e6e57d5bee4682ee74e146fccf2, type: 2}
+  rend: {fileID: 1969831427547666124}
   DEBUG_hit_reaction_duration: 0.1
   DEBUG_hit_reaction_flinch: 1
   Knockback_cast_distance: 5
@@ -754,8 +755,9 @@ MonoBehaviour:
   - 80
   Boundary_light_height: {x: 26, y: 50}
   Can_deflect: 1
-  Deflect_cooldown: 0.7
-  DEBUG_cooldown_scale_duration: 0.1
+  Deflect_cooldown_scale_duration: 0.2
+  Deflect_recoil_duration: 0.5
+  Deflect_cooldown: 1
   Light_impluse: {fileID: 400077626}
   Strong_impluse: {fileID: 400077627}
   Velocity_bonus: 0
@@ -777,6 +779,11 @@ MonoBehaviour:
   - 1.5
   - 3
   - 5
+  Penetrate_damage_bonus:
+  - 1
+  - 1.1
+  - 1.2
+  - 1.25
   Homing_bonus: 0
   Homing_cast_radius: 0
   Homing_rotation_speed:
@@ -791,11 +798,11 @@ MonoBehaviour:
   - 3
   - 5
   Cluster_bonus: 0
-  Cluster_radius:
-  - 0
-  - 5
-  - 7
-  - 10
+  Cluster_radius_scale:
+  - 1
+  - 1
+  - 1.5
+  - 2
   Radius_rank: 0
   Velocity_rank: 0
   Reflect_rank: 0
@@ -967,6 +974,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f90f4af415aa30429047df528a96c89, type: 3}
+--- !u!137 &1969831427547666124 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -6919535953607099744, guid: 4f90f4af415aa30429047df528a96c89, type: 3}
+  m_PrefabInstance: {fileID: 337455000774339692}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &226403688257162119 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4f90f4af415aa30429047df528a96c89, type: 3}

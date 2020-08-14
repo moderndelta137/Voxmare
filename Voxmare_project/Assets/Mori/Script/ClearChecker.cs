@@ -13,8 +13,13 @@ public class ClearChecker : MonoBehaviour
     public UnityEvent LevelPrepared;
     public float Clear_wait_duration;
     public float Prepare_wait_duration;
+    public float Fisrt_time_wait_duration;
     private IEnumerator Clear_wait;
     private IEnumerator Prepare_wait;
+    private IEnumerator Fisrt_time_wait;
+    private bool first_time;
+    public UnityEvent LevelPrepareReady;
+    public UnityEvent LevelClearReady;
     public enum LevelStatus
     {
         Ready,
@@ -27,6 +32,8 @@ public class ClearChecker : MonoBehaviour
     {
         Clear_wait = new WaitForSecondsRealtime(Clear_wait_duration);
         Prepare_wait = new WaitForSecondsRealtime(Prepare_wait_duration);
+        Fisrt_time_wait = new WaitForSecondsRealtime(Fisrt_time_wait_duration);
+        first_time = true;
         StartCoroutine(LevelPrepare());
     }
     // Update is called once per frame
@@ -52,8 +59,9 @@ public class ClearChecker : MonoBehaviour
         //!!!!!!!!!!!FOR DEBUG ONLY!!!!!!! To Be Deleted!!!!!!!!!!!!!!
         if(Input.GetKeyDown(KeyCode.V) && Current_status ==LevelStatus.Start)
         {
-            //StopAllCoroutines();
-            LevelClear();
+            Debug.Log("V");
+            StopAllCoroutines();
+            StartCoroutine(LevelClear());
         }
     }
 
@@ -72,11 +80,11 @@ public class ClearChecker : MonoBehaviour
     {
         LevelData.Remain_core = num;
         UpdateCoreCount.Invoke();
+        //count = num;
     }
 
     private IEnumerator LevelClear()
     {
-        //Debug.Log("Clear");
         if(LevelData.Selected_level>PlayerPrefs.GetInt("MaxLevel"))
         {
             PlayerPrefs.SetInt("MaxLevel",LevelData.Selected_level);
@@ -85,6 +93,7 @@ public class ClearChecker : MonoBehaviour
         LevelCleared.Invoke();
         Current_status = LevelStatus.Result;
         yield return Clear_wait;
+        LevelClearReady.Invoke();
         Time.timeScale = 0;
         LevelData.isPaused = true;
         /*
@@ -116,9 +125,16 @@ public class ClearChecker : MonoBehaviour
 
     private IEnumerator LevelPrepare()
     {
-        LevelPrepared.Invoke();
+        Time.timeScale = 1;
         Current_status = LevelStatus.Ready;
+        if(first_time)
+        {
+            yield return Fisrt_time_wait;
+            first_time = false;
+        }
+        LevelPrepared.Invoke();
         yield return Prepare_wait;
+        LevelPrepareReady.Invoke();
         Time.timeScale = 0;
         LevelData.isPaused = true;
     }

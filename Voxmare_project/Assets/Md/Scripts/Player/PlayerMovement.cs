@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     private WaitForSeconds invencible_wait;
     public Material Hit_reaction_mat;
     private Material original_mat;
-    private SkinnedMeshRenderer rend;
+    public SkinnedMeshRenderer rend;
     public float DEBUG_hit_reaction_duration;
     public float DEBUG_hit_reaction_flinch;
     private int hit_reacting;
