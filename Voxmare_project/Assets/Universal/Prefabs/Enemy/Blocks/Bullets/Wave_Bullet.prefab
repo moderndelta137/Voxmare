@@ -107,7 +107,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: b19282d7dfe80a2468af6bd140d7f374, type: 2}
   Bullet_force: 10
   Penetrate: 0
-  Penetrate_lifespan: 0
+  Penetrate_lifespan: 3
   Homing: 0
   Homing_target: {fileID: 0}
   Homing_rotation_speed: 0.2
@@ -116,7 +116,9 @@ MonoBehaviour:
   Reflect_lifespan: 3
   DEBUG_reflect_cooldown: 0.2
   Cluster: 0
+  Cluster_radius_scale: 1
   Cluster_prefab: {fileID: 3940093444654790021, guid: 3f47400870a2c5b4c9d90cfb45ec61b7, type: 3}
+  Hit_fx_prefab: {fileID: 0}
 --- !u!64 &5070420787667368403
 MeshCollider:
   m_ObjectHideFlags: 0

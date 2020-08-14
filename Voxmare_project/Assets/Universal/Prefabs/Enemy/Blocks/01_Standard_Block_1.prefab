@@ -447,7 +447,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2052504839816471393, guid: ed810fdaaed25ec40ae39e7c6a45b91e, type: 3}
       propertyPath: Lockon
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2052504839816471393, guid: ed810fdaaed25ec40ae39e7c6a45b91e, type: 3}
       propertyPath: Temporal_divergence

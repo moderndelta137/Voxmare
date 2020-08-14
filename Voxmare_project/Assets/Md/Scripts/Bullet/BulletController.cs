@@ -31,11 +31,14 @@ public class BulletController : MonoBehaviour
     private int reflect_enemy_layMask;
     private int reflect_terrian_layMask;
     public bool Cluster;
+    public float Cluster_radius_scale;
     public GameObject Cluster_prefab;
     private ClusterBulletController cluster_controller;
     private bool shuttingdown;
 
     private Collider cd;
+
+    public GameObject Hit_fx_prefab;//Only a placehold FX, feel free to change it.
     // Start is called before the first frame update
     void Start()
     {
@@ -82,6 +85,7 @@ public class BulletController : MonoBehaviour
                 if(Damage_player)
                 {
                     other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                    ShowHitFX();//TODO change it to a hit enemy effect
                     Destroy(this.gameObject);
                 }
             break;
@@ -89,56 +93,69 @@ public class BulletController : MonoBehaviour
                 if(Damage_player)
                 {
                     other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                    ShowHitFX();//TODO change it to a hit enemy effect
                     Destroy(this.gameObject);
                 }
             break;         
             case "Enemy":
                 if(!Damage_player)
                 {      
-                    if(Penetrate)//Penetrate effect has higher priority over Reflect effect
+                    if(Reflect)
                     {
+                        Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f,reflect_enemy_layMask);
+                        this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
+                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                        if(Cluster)
+                        {
+                            cluster_controller = Instantiate(Cluster_prefab, this.transform.position, Quaternion.identity).GetComponent<ClusterBulletController>();
+                            cluster_controller.Radius *= Cluster_radius_scale;
+                            cluster_controller.transform.localScale*=Cluster_radius_scale;
+                            cluster_controller.Damage_player = Damage_player;
+                        }
+                        ShowHitFX();//TODO change it to a hit enemy effect
+                        Destroy(this.gameObject,Reflect_lifespan);
+                    }
+                    else if(Penetrate)//Penetrate effect has higher priority over Reflect effect
+                    {
+                        ShowHitFX();//TODO change it to a hit enemy effect
                         other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                         Destroy(this.gameObject,Penetrate_lifespan);
                     }     
                     else
                     {
-                        if(Reflect)
-                        {
-                            Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f,reflect_enemy_layMask);
-                            this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
-                            other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                            if(Cluster)
-                            {
-                                cluster_controller = Instantiate(Cluster_prefab, this.transform.position, Quaternion.identity).GetComponent<ClusterBulletController>();
-                                cluster_controller.Damage_player = Damage_player;
-                            }
-                            Destroy(this.gameObject,Reflect_lifespan);
-                        }
-                        else
-                        {
-                            other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                            Destroy(this.gameObject);
-                        }  
-                    }      
+                        ShowHitFX();//TODO change it to a hit enemy effect
+                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                        Destroy(this.gameObject);
+                    }     
                 }
             break;    
             case "Terrian":
                 other.attachedRigidbody.AddForce(this.transform.forward*Bullet_force,ForceMode.VelocityChange);
-                if(!Reflect)
+                if(Reflect)
                 {   
-                    Destroy(this.gameObject);
-                }
-                else
-                {
                     Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f, reflect_terrian_layMask);
                     this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
                     StartCoroutine(ReflectCooldown());
                     if(Cluster)
                     {
                         cluster_controller = Instantiate(Cluster_prefab, this.transform.position, Quaternion.identity).GetComponent<ClusterBulletController>();
+                        cluster_controller.Radius *= Cluster_radius_scale;
+                        cluster_controller.transform.localScale*=Cluster_radius_scale;
                         cluster_controller.Damage_player = Damage_player;
                     }
+                    ShowHitFX();
                     Destroy(this.gameObject,Reflect_lifespan);
+                    
+                }
+                else if (Penetrate)
+                {
+                    other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                    Destroy(this.gameObject,Penetrate_lifespan);
+                }
+                else
+                {
+                    ShowHitFX();
+                    Destroy(this.gameObject);
                 }
             break;  
             case "Wall":
@@ -160,6 +177,8 @@ public class BulletController : MonoBehaviour
             if(Cluster)
             {
                 cluster_controller = Instantiate(Cluster_prefab, this.transform.position, Quaternion.identity).GetComponent<ClusterBulletController>();
+                cluster_controller.Radius *= Cluster_radius_scale;
+                cluster_controller.transform.localScale*=Cluster_radius_scale;
                 cluster_controller.Damage_player = Damage_player;
             }
         }
@@ -175,5 +194,11 @@ public class BulletController : MonoBehaviour
         cd.enabled =false;
         yield return reflect_wait;
         cd.enabled =true;
+    }
+
+    private void ShowHitFX()
+    {
+    if(Hit_fx_prefab!=null)
+        Instantiate(Hit_fx_prefab, this.transform.position, Quaternion.identity);
     }
 }

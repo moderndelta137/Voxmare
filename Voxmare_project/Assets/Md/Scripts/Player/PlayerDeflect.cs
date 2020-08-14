@@ -21,9 +21,11 @@ public class PlayerDeflect : MonoBehaviour
 
     [Header("Shoot")]
     public bool Can_deflect;
+    public float Deflect_cooldown_scale_duration;
+    public float Deflect_recoil_duration;
     public float Deflect_cooldown;
+    private WaitForSeconds recoil_wait;
     private WaitForSeconds deflect_wait;
-    public float DEBUG_cooldown_scale_duration;
     private RaycastHit hit;
     //private int shoot_layerMask;
     private Vector3 shoot_vector;
@@ -43,6 +45,7 @@ public class PlayerDeflect : MonoBehaviour
     private GameObject spray_instance;
     public bool Penetrate_bonus;//Apply penetrate effect on bullet after deflection
     public float[] Penetrate_lifespan;
+    public float[] Penetrate_damage_bonus;
     public bool Homing_bonus;//Apply homing effect on bullet after deflection
     private int homing_layerMask;
     public float Homing_cast_radius;
@@ -51,7 +54,7 @@ public class PlayerDeflect : MonoBehaviour
     public bool Reflect_bonus;//Apply reflect effect on bullet after deflection
     public float[] Reflect_lifespan; 
     public bool Cluster_bonus;//Apply cluster effect on bullet after deflection
-    public float[] Cluster_radius; 
+    public float[] Cluster_radius_scale; 
 
     [Header("Effect Rank")]
     public int Radius_rank;
@@ -78,12 +81,13 @@ public class PlayerDeflect : MonoBehaviour
 
         Can_deflect = true;
         deflect_wait = new WaitForSeconds(Deflect_cooldown);
+        recoil_wait = new WaitForSeconds(Deflect_recoil_duration);
         pickup_zone_script = this.transform.parent.GetComponentInChildren<PlayerPickup>();
         movement_script = this.transform.parent.GetComponent<PlayerMovement>();
         //HUD_script = movement_script.HUD.GetComponentInChildren<HUD_Controller>();
         Boundary_light = this.transform.parent.GetComponentInChildren<Light>();
         boundary_light_intensity = Boundary_light.intensity;
-        Boundary_light.transform.DOMoveY(Boundary_light_height.x,DEBUG_cooldown_scale_duration);
+        Boundary_light.transform.DOMoveY(Boundary_light_height.x,Deflect_cooldown_scale_duration);
         UpdateBoundryRadius();
 
     }
@@ -185,17 +189,17 @@ public class PlayerDeflect : MonoBehaviour
     public IEnumerator DeflectCooldown()
     {
         Can_deflect=false;
-        this.transform.DOScale(Vector3.zero, DEBUG_cooldown_scale_duration);
-        Boundary_light.transform.DOMoveY(Boundary_light_height.y, DEBUG_cooldown_scale_duration);
-        Boundary_light.DOIntensity(0f, DEBUG_cooldown_scale_duration);
+        this.transform.DOScale(Vector3.zero, Deflect_cooldown_scale_duration);
+        Boundary_light.transform.DOMoveY(Boundary_light_height.y, Deflect_cooldown_scale_duration);
+        Boundary_light.DOIntensity(0f, Deflect_cooldown_scale_duration);
         movement_script.Move_speed/=2;
-        yield return deflect_wait;
-        this.transform.DOScale(Vector3.one * Boundary_radius[Radius_rank] * Boundary_mesh_scaler, DEBUG_cooldown_scale_duration);
-        Boundary_light.transform.DOMoveY(Boundary_light_height.x, DEBUG_cooldown_scale_duration);
-        Boundary_light.DOIntensity(boundary_light_intensity, DEBUG_cooldown_scale_duration);
+        yield return recoil_wait;
         movement_script.Move_speed*=2;
+        yield return deflect_wait;
+        this.transform.DOScale(Vector3.one * Boundary_radius[Radius_rank] * Boundary_mesh_scaler, Deflect_cooldown_scale_duration);
+        Boundary_light.transform.DOMoveY(Boundary_light_height.x, Deflect_cooldown_scale_duration);
+        Boundary_light.DOIntensity(boundary_light_intensity, Deflect_cooldown_scale_duration);
         Can_deflect = true;
-        
     }
 
     private void ApplyPowerBonus()
@@ -207,14 +211,18 @@ public class PlayerDeflect : MonoBehaviour
         }
         if(Reflect_bonus)
         {
+            bullet_instance.Reflect_lifespan = Reflect_lifespan[Reflect_rank];
             bullet_instance.Reflect = true;
         }
         if(Penetrate_bonus)
         {
+            bullet_instance.Penetrate_lifespan = Penetrate_lifespan[Penetrate_rank];
+            bullet_instance.Damage = (int)(bullet_instance.Damage * Penetrate_damage_bonus[Velocity_rank]);
             bullet_instance.Penetrate = true;
         }
         if(Cluster_bonus)
         {
+            bullet_instance.Cluster_radius_scale = Cluster_radius_scale[Cluster_rank];
             bullet_instance.Cluster = true;
         }
         if(Homing_bonus)
@@ -277,7 +285,7 @@ public class PlayerDeflect : MonoBehaviour
             break;
 
             case 4:
-                Cluster_rank = Mathf.Clamp(Cluster_rank = rank, 0, Cluster_radius.Length-1);
+                Cluster_rank = Mathf.Clamp(Cluster_rank = rank, 0, Cluster_radius_scale.Length-1);
                 if(Cluster_rank<=0)
                     Cluster_bonus = false;
                 else

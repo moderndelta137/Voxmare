@@ -128,4 +128,6 @@ MonoBehaviour:
   Reflect_lifespan: 3
   DEBUG_reflect_cooldown: 0.2
   Cluster: 0
+  Cluster_radius_scale: 1
   Cluster_prefab: {fileID: 3940093444654790021, guid: 3f47400870a2c5b4c9d90cfb45ec61b7, type: 3}
+  Hit_fx_prefab: {fileID: 0}

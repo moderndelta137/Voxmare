@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 5
   Lifespan: 1
-  Radius: 10
+  Radius: 5
   Damage_player: 1
   Enemy_color:
     m_Mode: 2
@@ -226,6 +226,10 @@ PrefabInstance:
     - target: {fileID: 1260962495077320731, guid: a72a99ddd4edf5640a4ac98ea8bc41f1, type: 3}
       propertyPath: m_Name
       value: FX_Fireworks_Yellow_Sphere
+      objectReference: {fileID: 0}
+    - target: {fileID: 1260962495091260351, guid: a72a99ddd4edf5640a4ac98ea8bc41f1, type: 3}
+      propertyPath: scalingMode
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a72a99ddd4edf5640a4ac98ea8bc41f1, type: 3}

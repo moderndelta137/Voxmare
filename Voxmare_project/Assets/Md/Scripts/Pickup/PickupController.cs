@@ -136,7 +136,7 @@ public class PickupController : MonoBehaviour
             myTween = this.transform.DOMove(this.transform.position + Incoming.normalized * DEBUG_knockback_distance, DEBUG_knockback_duration);
             yield return new WaitForSeconds(DEBUG_hit_reaction_duration);
             rend.material = original_mat;   
-            yield return new WaitForSeconds(DEBUG_knockback_duration * 5);
+            yield return new WaitForSeconds(DEBUG_knockback_duration * 3);
             hit_reacting -= 1;
             AI_status = Crowd_status.Flee;
             ResetY();

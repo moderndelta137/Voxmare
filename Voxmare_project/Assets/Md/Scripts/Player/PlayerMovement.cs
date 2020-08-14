@@ -96,6 +96,7 @@ public class PlayerMovement : MonoBehaviour
         health_bar_script.SetHealth(HP);
         can_move = true;
         Mouse_cursor.SetActive(true);
+        StartCoroutine(BecomeInvencible());
     }
 
     public void LevelClear()
@@ -108,6 +109,7 @@ public class PlayerMovement : MonoBehaviour
         player_animator.SetFloat("Move_input",0);
         player_animator.SetFloat("Look_input",0);
         Mouse_cursor.SetActive(false);
+        invencible = true;
     }
 
 
@@ -159,6 +161,11 @@ public class PlayerMovement : MonoBehaviour
             //Update Movement animation
             player_animator.SetFloat("Move_input",move_input_vector.magnitude);
             player_animator.SetFloat("Look_input",look_input_vector.magnitude);
+        }
+
+        if(invencible)
+        {
+            rend.enabled = !rend.enabled;
         }
     }
 
@@ -236,6 +243,7 @@ public class PlayerMovement : MonoBehaviour
         invencible=true;
         yield return invencible_wait;
         invencible=false;
+        rend.enabled = true;
         ResetY();
     }
     private void ResetY()

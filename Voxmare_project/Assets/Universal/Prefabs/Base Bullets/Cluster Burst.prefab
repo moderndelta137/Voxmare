@@ -227,6 +227,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FX_Fireworks_Yellow_Sphere
       objectReference: {fileID: 0}
+    - target: {fileID: 1260962495091260351, guid: a72a99ddd4edf5640a4ac98ea8bc41f1, type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a72a99ddd4edf5640a4ac98ea8bc41f1, type: 3}
 --- !u!4 &1571998277544591440 stripped

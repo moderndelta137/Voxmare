@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class Banner_Controller : MonoBehaviour
 {
-    public GameObject Ready_screen;
-    public Text Ready_level_text;
+    public GameObject Prepare_screen;
+    public Text Prepare_level_text;
+    public GameObject Prepare_ready;
     public GameObject Clear_screen;
+    public GameObject Clear_ready;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,21 +22,30 @@ public class Banner_Controller : MonoBehaviour
         
     }
 
-    public void DisplayReadyScreen()
+    public void DisplayPreapreScreen()
     {
-        Ready_level_text.text = "Level " + LevelData.Selected_level;
-        Ready_screen.SetActive(true);
+        Prepare_level_text.text = "Level " + LevelData.Selected_level;
+        Prepare_screen.SetActive(true);
         Clear_screen.SetActive(false);
+        Prepare_ready.SetActive(false);
     }
-
+    public void PrepareReady()
+    {
+        Prepare_ready.SetActive(true);
+    }
     public void DisplayClearScreen()
     {
-        Ready_level_text.text = "Level " + LevelData.Selected_level;
-        Ready_screen.SetActive(false);
+        Prepare_level_text.text = "Level " + LevelData.Selected_level;
+        Prepare_screen.SetActive(false);
         Clear_screen.SetActive(true);
+        Clear_ready.SetActive(false);
+    }
+    public void ClearReady()
+    {
+        Clear_ready.SetActive(true);
     }
     public void LevelStart()
     {
-        Ready_screen.SetActive(false);
+        Prepare_screen.SetActive(false);
     }
 }
