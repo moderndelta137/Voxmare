@@ -15,8 +15,10 @@ public class BossController : MonoBehaviour
     [SerializeField] public Vector3 center;
     [SerializeField] public float lengthX;
     [SerializeField] public float lengthZ;
-    [SerializeField] public float wallStrength;
+    [Header("Random Walk")]
     [SerializeField] float speed;
+    [SerializeField] public float repulsiveWallStrength;
+    [SerializeField, Range(0f, 10f)] public float randomWalkCurveStrength;
     [Header("Tackle")]
     [SerializeField] float tackleInterval;
     [SerializeField] float tackleIntervalDivergence;
@@ -32,7 +34,7 @@ public class BossController : MonoBehaviour
     [Header("CalculateCenter")]
     [SerializeField] float calculateCenterInterval;
 
-    Vector3 detination;
+    Vector3 direction;
     List<Vector3> paths;
     Tween tackleTween;
     Sequence spinSequence;
@@ -83,13 +85,13 @@ public class BossController : MonoBehaviour
     void MoveRandom()
     {
         float rand = Mathf.PerlinNoise(Time.time * 0.1f, randomSeed * 256);
-        float angle = rand * 2 * Mathf.PI;
-        Vector3 velocity = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));    // [0, 1]
-        velocity += GetRepulsiveVector();
-        transform.position += velocity * speed * Time.deltaTime;
+        float angle = (rand * 2f - 1f) * randomWalkCurveStrength;
+        Vector3 randomVector = Quaternion.Euler(0, angle, 0) * direction;
+        direction = (direction + randomVector + GetRepulsiveWallVector()).normalized;
+        transform.position += direction * speed * Time.deltaTime;
     }
 
-    Vector3 GetRepulsiveVector()
+    Vector3 GetRepulsiveWallVector()
     {
         Vector3 velocity = Vector3.zero;
         Vector3 pos = transform.position;
@@ -98,10 +100,10 @@ public class BossController : MonoBehaviour
         float halfLengthX = lengthX / 2;
         float halfLengthZ = lengthZ / 2;
 
-        if(posX > 0) velocity.x -= wallStrength / ((halfLengthX - posX) / halfLengthX); 
-        if(posX < 0) velocity.x -= wallStrength / ((-halfLengthX - posX) / halfLengthX);
-        if(posZ > 0) velocity.z -= wallStrength / ((halfLengthZ - posZ) / halfLengthZ);
-        if(posZ < 0) velocity.z -= wallStrength / ((-halfLengthZ - posZ) / halfLengthZ);
+        if(posX > 0) velocity.x -= repulsiveWallStrength / ((halfLengthX - posX) / halfLengthX); 
+        if(posX < 0) velocity.x -= repulsiveWallStrength / ((-halfLengthX - posX) / halfLengthX);
+        if(posZ > 0) velocity.z -= repulsiveWallStrength / ((halfLengthZ - posZ) / halfLengthZ);
+        if(posZ < 0) velocity.z -= repulsiveWallStrength / ((-halfLengthZ - posZ) / halfLengthZ);
 
         return velocity;
     }

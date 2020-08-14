@@ -61,7 +61,6 @@ public class Block : MonoBehaviour
 
     private BlockManager manager;
     private BossController bossController;
-    private Block parent;
 
     // DEBUG
     bool DEBUG_MODE = false;
@@ -91,7 +90,7 @@ public class Block : MonoBehaviour
         deathParticle.SetActive(false);
         id = idCount++;
         isMoving = false;
-        IsAlone = true;
+        isAlone = true;
         direction = new Vector3(Mathf.Cos(Random.value * 2 * Mathf.PI), 0, Mathf.Sin(Random.value * 2 * Mathf.PI)).normalized;
     }
 
@@ -121,9 +120,6 @@ public class Block : MonoBehaviour
         rand = Random.Range(0, emptyIndex.Count);
         block.pairs[emptyIndex[rand]] = this.id;
 
-        // set parent
-        parent = block;
-        
         if(DEBUG_MODE) Debug.Log($"Block[id:{this.id}] is linked to block[id:{block.id}].");
     }
 
@@ -133,9 +129,6 @@ public class Block : MonoBehaviour
     /// <param name="block"></param>
     public void CutLinkBlockTo(Block block)
     {
-        if (block == parent) parent = null;
-        if (block.parent == this) block.parent = null;
-
         int index = pairs.FindIndex(id => id == block.id);
         if (index == -1)
         {
@@ -316,16 +309,27 @@ public class Block : MonoBehaviour
 
     }
 
+    void OnEnable()
+    {
+        transform.GetComponentInChildren<BlockAnimator>().enabled = true;
+        transform.GetComponentInChildren<SpammerController>().enabled = true;
+    }
+    void OnDisable()
+    {
+        transform.GetComponentInChildren<BlockAnimator>().enabled = false;
+        transform.GetComponentInChildren<SpammerController>().enabled = false;
+    }
+
     void AloneAnimation()
     {
         float rand = Mathf.PerlinNoise(Time.time * 0.1f, randomSeed * 256);
         float angle = (rand * 2f - 1f) * manager.randomWalkCurveStrength;
         Vector3 randomVector = Quaternion.Euler(0, angle, 0) * direction;
-        direction = (direction + randomVector + GetRepulsiveVector()).normalized;
-        transform.position += direction * manager.randomWalkSpeed * Time.deltaTime;
+        direction = (direction + randomVector + GetRepulsiveWallVector()).normalized;
+        transform.position += (direction * manager.randomWalkSpeed) * Time.deltaTime;
     }
 
-    Vector3 GetRepulsiveVector()
+    Vector3 GetRepulsiveWallVector()
     {
         Vector3 velocity = Vector3.zero;
         Vector3 pos = transform.position;
@@ -334,10 +338,10 @@ public class Block : MonoBehaviour
         float halfLengthX = bossController.lengthX / 2;
         float halfLengthZ = bossController.lengthZ / 2;
 
-        if (posX > 0) velocity.x -= bossController.wallStrength / ((halfLengthX - posX) / halfLengthX);
-        if (posX < 0) velocity.x -= bossController.wallStrength / ((-halfLengthX - posX) / halfLengthX);
-        if (posZ > 0) velocity.z -= bossController.wallStrength / ((halfLengthZ - posZ) / halfLengthZ);
-        if (posZ < 0) velocity.z -= bossController.wallStrength / ((-halfLengthZ - posZ) / halfLengthZ);
+        if (posX > 0) velocity.x -= manager.repulsiveWallStrength / ((halfLengthX - posX) / halfLengthX);
+        if (posX < 0) velocity.x -= manager.repulsiveWallStrength / ((-halfLengthX - posX) / halfLengthX);
+        if (posZ > 0) velocity.z -= manager.repulsiveWallStrength / ((halfLengthZ - posZ) / halfLengthZ);
+        if (posZ < 0) velocity.z -= manager.repulsiveWallStrength / ((-halfLengthZ - posZ) / halfLengthZ);
 
         return velocity;
     }
