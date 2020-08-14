@@ -11,7 +11,6 @@ public class PlayerPickup : MonoBehaviour
     private PickupController pickup_script;
     public List<PickupController> pickup_list;
     public int[] Powerup_ranks;
-
     public CinemachineImpulseSource Lose_pickup_impluse;
     // Start is called before the first frame update
     void Start()

@@ -32,12 +32,17 @@ public class SpammerController : MonoBehaviour
     public float Expand_duration;
     private Transform parent;
     private Tween shootTween;
+
+    void Awake()
+    {
+        Target = GameObject.Find("Player").transform;
+    }
+
     // Start is called before the first frame update
     void  Start()
     {
 
         StartCoroutine(StartDelay());
-        Target=GameObject.Find("Player").transform;
         if(Rapidfire)
         {           
             rapidfire_coroutine = RapidFire();

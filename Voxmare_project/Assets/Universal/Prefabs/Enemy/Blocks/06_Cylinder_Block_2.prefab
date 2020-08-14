@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3821579251355043488}
+  - component: {fileID: 8003469720885662518}
   m_Layer: 0
   m_Name: Block_Mesh_Root
   m_TagString: Untagged
@@ -31,6 +32,28 @@ Transform:
   m_Father: {fileID: 5841314703671143126}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8003469720885662518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3743452929324871143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c60190321bddc47b5ce2c03f536928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  s_animation: 0
+  s_duration: 0
+  s_scale: {x: 0, y: 0, z: 0}
+  s_ease: 0
+  s_syncrosynchronized: 0
+  m_animation: 0
+  m_duration: 0
+  m_distance: {x: 0, y: 0, z: 0}
+  m_ease: 0
+  m_syncrosynchronized: 0
 --- !u!1 &4242523283256836271
 GameObject:
   m_ObjectHideFlags: 0
