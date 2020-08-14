@@ -283,6 +283,7 @@ public class Block : MonoBehaviour
         deathParticle.transform.position = transform.position;
         deathParticle.SetActive(true);
         manager.DeathBlock(this);
+        Destroy(this.gameObject);
     }
 
     /*--------------------------------------- 

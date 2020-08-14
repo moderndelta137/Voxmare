@@ -19,6 +19,18 @@ PrefabInstance:
       propertyPath: Bullet_speed
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+      propertyPath: Bullet_force
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+      propertyPath: Cluster_prefab
+      value: 
+      objectReference: {fileID: 3940093444654790021, guid: 2e4f86e95f6b8f14fadf0e676a0c2971, type: 3}
+    - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+      propertyPath: Damage
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7947023357074736547, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
       propertyPath: m_Center.y
       value: 0.5

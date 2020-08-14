@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerPickup : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class PlayerPickup : MonoBehaviour
     private PickupController pickup_script;
     public List<PickupController> pickup_list;
     public int[] Powerup_ranks;
+
+    public CinemachineImpulseSource Lose_pickup_impluse;
     // Start is called before the first frame update
     void Start()
     {
@@ -62,6 +65,7 @@ public class PlayerPickup : MonoBehaviour
     public void RemovePickup(PickupController pickup)
     {
         //Remove Pickup
+        Lose_pickup_impluse.GenerateImpulse();
         pickup_list.Remove(pickup);
         Powerup_ranks[pickup.Type] -= 1;
         deflect_script.UpdatePowerRank(pickup.Type,Powerup_ranks[pickup.Type]);

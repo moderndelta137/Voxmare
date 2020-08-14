@@ -15,7 +15,9 @@ public class ChangeFiler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        filter_index = 0;
+        
+        filter_index = PlayerPrefs.GetInt("Filter");
+        UpdateFilter(0);
     }
 
     // Update is called once per frame
@@ -24,8 +26,8 @@ public class ChangeFiler : MonoBehaviour
         
     }
 
-    public void ChangeIndex(int delta)
-    {
+    public void UpdateFilter(int delta)
+    {   
         filter_index += delta;
         if(filter_index < 0)
         {
@@ -36,6 +38,7 @@ public class ChangeFiler : MonoBehaviour
             filter_index = 0;//Min
         }
         Filter_script.filterIndex = filter_index;
+        PlayerPrefs.SetInt("Filter",filter_index);
         switch(filter_index)
         {
             case 0:

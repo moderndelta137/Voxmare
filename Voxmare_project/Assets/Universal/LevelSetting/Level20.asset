@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df99a3c18e70d624b9fea77cac1f09b5, type: 3}
+  m_Name: Level20
+  m_EditorClassIdentifier: 
+  block:
+  - blockPrefab: {fileID: 5841314703671143113, guid: 9e75519e4895b1b4892b91539086970b, type: 3}
+    count: 15
+    coreCount: 15
+  - blockPrefab: {fileID: 5841314703671143113, guid: 37ad6084035b2f54fb68df13e8ae7f39, type: 3}
+    count: 15
+    coreCount: 0
+  - blockPrefab: {fileID: 5841314703671143113, guid: 461611afe74b9244ea5e978673bf2b9d, type: 3}
+    count: 15
+    coreCount: 0
+  - blockPrefab: {fileID: 5841314703671143113, guid: c9db727781404474d8a074efbfb425e8, type: 3}
+    count: 15
+    coreCount: 0
+  - blockPrefab: {fileID: 5841314703671143113, guid: 82af492e66797354183fa4c700dbdc23, type: 3}
+    count: 15
+    coreCount: 0
+  - blockPrefab: {fileID: 5841314703671143113, guid: 4a7f9cedc2c31f140b15c70515f59fea, type: 3}
+    count: 10
+    coreCount: 0
+  - blockPrefab: {fileID: 5841314703671143113, guid: ef6c244cb58d4d744b449d462c52a75e, type: 3}
+    count: 10
+    coreCount: 0
+  - blockPrefab: {fileID: 5841314703671143113, guid: 5665cafb358446941bd94d451b648378, type: 3}
+    count: 10
+    coreCount: 0
+  - blockPrefab: {fileID: 5841314703671143113, guid: 3666b7b40e56bc643a105e0bb667bfee, type: 3}
+    count: 10
+    coreCount: 0
+  npc:
+  - NPCPrefab: {fileID: 3333903626859217123, guid: 7f78736195c49ec449b7287f16a62d3e, type: 3}
+    count: 1
+  obstacle: []

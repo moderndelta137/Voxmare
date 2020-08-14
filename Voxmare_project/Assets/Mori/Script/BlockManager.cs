@@ -15,7 +15,8 @@ public class BlockManager : MonoBehaviour
     [SerializeField, Range(0f, 10f)] public float randomWalkCurveStrength;
     public float repulsiveWallStrength;
 
-    [HideInInspector] public List<Block> blocks;
+    //[HideInInspector] 
+    public List<Block> blocks;
     [HideInInspector] public GameObject boss;
     private bool isLinking;
     private ClearChecker clearChecker;
@@ -32,7 +33,7 @@ public class BlockManager : MonoBehaviour
     {
         boss = GameObject.Find("Boss");
         clearChecker = GameObject.Find("ClearChecker").GetComponent<ClearChecker>();
-        blocks = new List<Block>();
+        //blocks = new List<Block>();
         aloneBlocks = new List<Block>();
         bossBlocks = new List<Block>();
         visited = new List<int>();
@@ -259,7 +260,7 @@ public class BlockManager : MonoBehaviour
         }
 
         CutLink(block);
-        if (block.isCore) clearChecker.decrementCount();
+        if (block.isCore) clearChecker.CoreDestroyed();
         blocks.Remove(block);
 
         // Find biggest block group

@@ -68,8 +68,9 @@ public class Main_Menu_Controller : MonoBehaviour
         Current_menu = Menu_status.Level_select;
     }
 
-    public void StartGame()
+    public void StartNewGame()
     {
+        LevelData.Selected_level = 1;
         SceneManager.LoadScene(1);
     }
 

@@ -41,6 +41,7 @@ public class PickupController : MonoBehaviour
     private NavMeshAgent agent;
     private Vector3 flee_direction;
     private RaycastHit flee_hit;
+    private int flee_layMask;
     public float Flee_speed;
     public enum Crowd_status
     {
@@ -70,6 +71,7 @@ public class PickupController : MonoBehaviour
         AI_coroutine = FleeOver(think_duration);
         StartCoroutine(AI_coroutine);
         pickup_collider = this.GetComponent<Collider>();
+        flee_layMask = (1 << 9) + (1 << 11)+ (1 << 13);//Check Enemy Layer and Terrian Layer for shooting
 
     }
 
@@ -89,8 +91,9 @@ public class PickupController : MonoBehaviour
                 break;
             case Crowd_status.Flee:
                 this.transform.rotation=Quaternion.LookRotation(flee_direction);
-                if(Physics.Raycast(this.transform.position,this.transform.forward,out flee_hit, 2f))
+                if(Physics.Raycast(this.transform.position+Vector3.up*1f,this.transform.forward,out flee_hit, 2f,flee_layMask))
                 {
+                    //Debug.Log(flee_hit.transform.name);
                     flee_direction = Vector3.Reflect(this.transform.forward,flee_hit.normal);
                     flee_direction.y=0;
                     flee_direction.Normalize();
@@ -133,7 +136,7 @@ public class PickupController : MonoBehaviour
             myTween = this.transform.DOMove(this.transform.position + Incoming.normalized * DEBUG_knockback_distance, DEBUG_knockback_duration);
             yield return new WaitForSeconds(DEBUG_hit_reaction_duration);
             rend.material = original_mat;   
-            yield return new WaitForSeconds(DEBUG_knockback_duration * 3);
+            yield return new WaitForSeconds(DEBUG_knockback_duration * 5);
             hit_reacting -= 1;
             AI_status = Crowd_status.Flee;
             ResetY();
@@ -188,8 +191,9 @@ public class PickupController : MonoBehaviour
         flee_direction.Normalize();
     }
 
-    public void DeflectAnimation()
+    public void DeflectAnimation(Vector3 target)
     {
+        this.transform.rotation = Quaternion.LookRotation(target-this.transform.position);
         pickup_animator.SetTrigger("Deflect");
     }
     public void ResetY()

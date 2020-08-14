@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class BlockGenerator : MonoBehaviour
 {
-    [SerializeField] int currentStage;
+    //private int currentStage;
     [SerializeField] List<Stage> stages;
 
     [Header("Position")]
@@ -31,6 +31,7 @@ public class BlockGenerator : MonoBehaviour
 
     void Start()
     {
+        //currentStage = LevelData.Selected_level;
         waitGenerate = new WaitForSeconds(generateInterval);
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
         clearChecker = GameObject.Find("ClearChecker").GetComponent<ClearChecker>();
@@ -48,7 +49,8 @@ public class BlockGenerator : MonoBehaviour
 
     IEnumerator GenerateBlockAndNpc()
     {
-        Stage stage = stages[currentStage - 1];
+        manager.blocks = new List<Block>();
+        Stage stage = stages[LevelData.Selected_level - 1];
         int coreCount = 0;
         emptyObject = new GameObject("EmptyObjectForLand").transform;
         emptyObject.position = generateCenter;
@@ -63,6 +65,7 @@ public class BlockGenerator : MonoBehaviour
             for (int i = 0; i < blockSetting.count; i++)
             {
                 block = GameObject.Instantiate(blockSetting.blockPrefab);
+
                 // Position
                 block.transform.position = generateCenter + new Vector3(Random.Range(-lengthX/2, lengthX/2), 0, Random.Range(-lengthZ/2, lengthZ/2));
 
@@ -132,6 +135,14 @@ public class BlockGenerator : MonoBehaviour
             if (navmesh != null) navmesh.enabled = true;
         }
         manager.StartLink();
+    }
+
+    public void DestroyAllBlocks()
+    {
+        foreach(Block block_left in manager.blocks)
+        {
+            block_left.GetComponent<EnemyController>().SendMessage("ApplyDamage",Vector3.up*999);
+        }
     }
 
     void Update()

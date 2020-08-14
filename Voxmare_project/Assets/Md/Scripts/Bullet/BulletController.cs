@@ -13,7 +13,7 @@ public class BulletController : MonoBehaviour
     public bool Damage_player;
     public MeshRenderer Bullet_render;
     public Material[] Bullet_materials;//0:Enemy Bullet, 1:Entered Boundry, 2:Deflected Bullet
-    //public CollisionEvent onHit;
+    public float Bullet_force;
 
     [Header("Bonus Effect")]
     public bool Penetrate;
@@ -26,8 +26,10 @@ public class BulletController : MonoBehaviour
     public bool Reflect;
     public float Reflect_lifespan;
     public float DEBUG_reflect_cooldown;
-    private WaitForSeconds deflect_wait;
+    private WaitForSeconds reflect_wait;
     private RaycastHit reflect_hit;
+    private int reflect_enemy_layMask;
+    private int reflect_terrian_layMask;
     public bool Cluster;
     public GameObject Cluster_prefab;
     private ClusterBulletController cluster_controller;
@@ -43,7 +45,10 @@ public class BulletController : MonoBehaviour
             Homing_target = GameObject.Find("Player");
         }
         cd = this.GetComponent<Collider>();
-        deflect_wait = new WaitForSeconds(DEBUG_reflect_cooldown);
+        reflect_wait = new WaitForSeconds(DEBUG_reflect_cooldown);
+        reflect_enemy_layMask = (1 << 9);
+        reflect_terrian_layMask = (1 << 11);
+        Destroy(this.gameObject,30);
     }
 
     // Update is called once per frame
@@ -70,63 +75,77 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        
+        switch(other.tag)
         {
-            if(Damage_player)
-            {
-                other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                Destroy(this.gameObject);
-            }
-        }   
-        if(other.CompareTag("Pickup"))
-        {
-            if(Damage_player)
-            {
-                other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                Destroy(this.gameObject);
-            }
-        }   
-        else if(other.CompareTag("Enemy"))
-        {            
-            if(!Damage_player)
-            {      
-                if(Penetrate)//Penetrate effect has higher priority over Reflect effect
+            case "Player":
+                if(Damage_player)
                 {
                     other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                    Destroy(this.gameObject,Penetrate_lifespan);
-                }     
-                else
+                    Destroy(this.gameObject);
+                }
+            break;
+            case "Pickup":
+                if(Damage_player)
                 {
-                    if(Reflect)
+                    other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                    Destroy(this.gameObject);
+                }
+            break;         
+            case "Enemy":
+                if(!Damage_player)
+                {      
+                    if(Penetrate)//Penetrate effect has higher priority over Reflect effect
                     {
-                        Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f);
-                        this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward,reflect_hit.normal));
                         other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                        Destroy(this.gameObject,Reflect_lifespan);
-                    }
+                        Destroy(this.gameObject,Penetrate_lifespan);
+                    }     
                     else
                     {
-                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                        Destroy(this.gameObject);
-                    }  
-                }      
-            }
+                        if(Reflect)
+                        {
+                            Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f,reflect_enemy_layMask);
+                            this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
+                            other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                            if(Cluster)
+                            {
+                                cluster_controller = Instantiate(Cluster_prefab, this.transform.position, Quaternion.identity).GetComponent<ClusterBulletController>();
+                                cluster_controller.Damage_player = Damage_player;
+                            }
+                            Destroy(this.gameObject,Reflect_lifespan);
+                        }
+                        else
+                        {
+                            other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                            Destroy(this.gameObject);
+                        }  
+                    }      
+                }
+            break;    
+            case "Terrian":
+                other.attachedRigidbody.AddForce(this.transform.forward*Bullet_force,ForceMode.VelocityChange);
+                if(!Reflect)
+                {   
+                    Destroy(this.gameObject);
+                }
+                else
+                {
+                    Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f, reflect_terrian_layMask);
+                    this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
+                    StartCoroutine(ReflectCooldown());
+                    if(Cluster)
+                    {
+                        cluster_controller = Instantiate(Cluster_prefab, this.transform.position, Quaternion.identity).GetComponent<ClusterBulletController>();
+                        cluster_controller.Damage_player = Damage_player;
+                    }
+                    Destroy(this.gameObject,Reflect_lifespan);
+                }
+            break;  
+            case "Wall":
+                Destroy(this.gameObject,5f);
+            break;  
         }
-        else if(other.CompareTag("Terrian"))
-        {
-            if(!Reflect)
-            {
-                Destroy(this.gameObject);
-            }
-            else
-            {
-                Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f);
-                //Debug.DrawRay(this.transform.position-this.transform.forward*0.2f, this.transform.forward*1f, Color.yellow,1);
-                this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
-                StartCoroutine(ReflectCooldown());
-                Destroy(this.gameObject,Reflect_lifespan);
-            }
-        }
+
     }
 
     void OnApplicationQuit()
@@ -154,7 +173,7 @@ public class BulletController : MonoBehaviour
     private IEnumerator ReflectCooldown()
     {
         cd.enabled =false;
-        yield return deflect_wait;
+        yield return reflect_wait;
         cd.enabled =true;
     }
 }

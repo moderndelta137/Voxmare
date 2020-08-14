@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class HUD_Controller : MonoBehaviour
 {
-    [Header("HP")]
-    public Slider HP_bar;
+    public GameObject HUD;
     [Header("Power Rank")]
     public Material Rank_Unlit_Material;
     [Space]
@@ -28,26 +27,19 @@ public class HUD_Controller : MonoBehaviour
     public Image[] Rank6_Dot_image;
     [Space]
     public Text[] Rank_Texts;
-
+    [Header("Current Level")]
+    public Text Level_text;
+    public Text Core_text;
     // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
         
-    }
-
-    public void SetMaxHP(int HP)
-    {
-        HP_bar.maxValue = HP;
-    }
-    public void UpdateHPBar(int HP)
-    {
-        HP_bar.value = HP;
     }
 
     public void UpdateRank(int Type, int Rank)
@@ -131,5 +123,24 @@ public class HUD_Controller : MonoBehaviour
             }
             break;
         }
+    }
+
+    public void DisplayHUD()
+    {
+        UpdateLevelText();
+        UpdateCoreText();
+        HUD.SetActive(true);
+    }
+    public void HideHUD()
+    {
+        HUD.SetActive(false);
+    }
+    public void UpdateLevelText()
+    {
+        Level_text.text = "Level "  + LevelData.Selected_level;
+    }
+    public void UpdateCoreText()
+    {
+        Core_text.text = "ｘ"  + LevelData.Remain_core;
     }
 }

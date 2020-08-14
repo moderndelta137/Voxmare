@@ -7,7 +7,8 @@ public class EnemyController : MonoBehaviour
 {
     public int HP;
     public int Damage;
-    public bool Damage_player;
+    public float Push_force;
+    //public bool Damage_player;
     [Header("Hit Reaction")]
     public Material Hit_reaction_mat;
     private Material original_mat;
@@ -29,7 +30,7 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         rend = GetComponentInChildren<MeshRenderer>();
-        original_mat = rend.material;
+        original_mat = rend.sharedMaterial;
         health_bar_script = Instantiate(Health_bar_prefab, Vector3.zero, Quaternion.identity,this.transform).GetComponent<Health_Bar>();
         health_bar_script.transform.localPosition=Health_bar_offset;
         health_bar_script.SetMaxHealth(HP);
@@ -70,18 +71,28 @@ public class EnemyController : MonoBehaviour
     void Death()
     {
         block.Death();
-        Destroy(this.gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (Damage_player)
+        //if (Damage_player)
+        switch(other.tag)
+        {
+            case "Player":
+                other.gameObject.SendMessage("Knockback", (other.transform.position - this.transform.position).normalized * Damage);
+            break;
+            case "Terrian":
+                other.attachedRigidbody.AddForce(other.transform.position-this.transform.position*Push_force, ForceMode.VelocityChange);
+            break;
+        }
+        /*
         {
             if (other.gameObject.CompareTag("Player"))
             {
                 other.gameObject.SendMessage("Knockback", (other.transform.position - this.transform.position).normalized * Damage);
             }
         }
+        */
     }
 
     public void ResetY()
