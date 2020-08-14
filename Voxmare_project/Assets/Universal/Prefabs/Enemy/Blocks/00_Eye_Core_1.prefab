@@ -272,9 +272,9 @@ MonoBehaviour:
   blockType: 3
   linkableBlockType: 00000000010000000200000003000000
   deathParticlePrefab: {fileID: 180128, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  isCore: 1
   maxPairs: 0
   pairs: 
-  isCore: 0
   isMoving: 0
 --- !u!114 &6408053986441740093
 MonoBehaviour:

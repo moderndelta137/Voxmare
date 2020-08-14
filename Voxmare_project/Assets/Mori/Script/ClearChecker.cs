@@ -72,7 +72,6 @@ public class ClearChecker : MonoBehaviour
     {
         LevelData.Remain_core = num;
         UpdateCoreCount.Invoke();
-        //count = num;
     }
 
     private IEnumerator LevelClear()

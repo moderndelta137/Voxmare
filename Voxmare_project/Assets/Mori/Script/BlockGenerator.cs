@@ -23,11 +23,15 @@ public class BlockGenerator : MonoBehaviour
     [SerializeField] float generateDuration;
     [SerializeField] Ease generateEase;
     [SerializeField] float generateInterval;
+    [SerializeField] float deleteDuration;
+    [SerializeField] Ease deleteEase;
+    [SerializeField] float deleteInterval;
 
     private BlockManager manager;
     private ClearChecker clearChecker;
     private WaitForSeconds waitGenerate;
     private Transform emptyObject;
+    private List<GameObject> objects;
 
     void Start()
     {
@@ -35,10 +39,20 @@ public class BlockGenerator : MonoBehaviour
         waitGenerate = new WaitForSeconds(generateInterval);
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
         clearChecker = GameObject.Find("ClearChecker").GetComponent<ClearChecker>();
-        StartCoroutine(SetupStage());
+        objects = new List<GameObject>();
     }
 
-    IEnumerator SetupStage()
+    public void StartGenerate()
+    {
+        StartCoroutine(Generate());
+    }
+
+    public void Reset()
+    {
+        StartCoroutine(ResetBlockAndNpc());
+    }
+
+    IEnumerator Generate()
     {
         var coroutine = StartCoroutine(GenerateBlockAndNpc());
         yield return coroutine;
@@ -49,6 +63,7 @@ public class BlockGenerator : MonoBehaviour
 
     IEnumerator GenerateBlockAndNpc()
     {
+        objects.Clear();
         manager.blocks = new List<Block>();
         Stage stage = stages[LevelData.Selected_level - 1];
         int coreCount = 0;
@@ -59,13 +74,10 @@ public class BlockGenerator : MonoBehaviour
         GameObject block;
         foreach (var blockSetting in stage.block)
         {
-            coreCount += blockSetting.coreCount;
-
-            int coreRemain = blockSetting.coreCount;
             for (int i = 0; i < blockSetting.count; i++)
             {
                 block = GameObject.Instantiate(blockSetting.blockPrefab);
-
+                objects.Add(block);
                 // Position
                 block.transform.position = generateCenter + new Vector3(Random.Range(-lengthX/2, lengthX/2), 0, Random.Range(-lengthZ/2, lengthZ/2));
 
@@ -75,10 +87,9 @@ public class BlockGenerator : MonoBehaviour
                 block.transform.DOScale(scale, generateDuration).SetEase(generateEase);
 
                 // Core
-                if(coreRemain > 0)
+                if(block.GetComponent<Block>().isCore)
                 {
-                    block.GetComponent<Block>().isCore = true;
-                    coreRemain--;
+                    coreCount++;
                 }
 
                 // Store
@@ -97,6 +108,7 @@ public class BlockGenerator : MonoBehaviour
             for (int i = 0; i < npcSetting.count; i++)
             {
                 npc = GameObject.Instantiate(npcSetting.NPCPrefab);
+                objects.Add(npc);
                 // Position
                 npc.transform.position = generateCenter + new Vector3(Random.Range(-lengthX / 2, lengthX / 2), 0, Random.Range(-lengthZ / 2, lengthZ / 2));
                 
@@ -135,6 +147,19 @@ public class BlockGenerator : MonoBehaviour
             if (navmesh != null) navmesh.enabled = true;
         }
         manager.StartLink();
+    }
+
+    IEnumerator ResetBlockAndNpc()
+    {
+        foreach (var obj in objects)
+        {
+            if (obj == null) continue;
+            // Delete Animation
+            obj.transform.DOScale(Vector3.zero, deleteDuration).SetEase(deleteEase);
+            Destroy(obj, deleteDuration);
+        }
+        objects.Clear();
+        yield return null;
     }
 
     public void DestroyAllBlocks()

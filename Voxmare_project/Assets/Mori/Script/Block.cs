@@ -24,9 +24,9 @@ public class Block : MonoBehaviour
     [SerializeField] private GameObject deathParticlePrefab;
     private GameObject deathParticle;
     public int id { get; private set; }         // id is set automatically in Start(). Readonly. (Note: id starts from 0)
+    public bool isCore;                         // core or not (related to clear check)
     [HideInInspector] public int maxPairs;
     public List<int> pairs;                     // store pairs by block's id
-    [HideInInspector] public bool isCore;       // core or not (related to clear check)
     [HideInInspector] public bool isMoving;     // animating now
     // alone or linking boss
     private bool isAlone;
@@ -66,7 +66,7 @@ public class Block : MonoBehaviour
     bool DEBUG_MODE = false;
 
     // Method
-    void Start()
+    void Awake()
     {
         // Initialize variables
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();

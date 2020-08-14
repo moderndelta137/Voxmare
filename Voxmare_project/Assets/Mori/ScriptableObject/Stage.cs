@@ -14,7 +14,6 @@ public class Stage : ScriptableObject
 	{
 		public GameObject blockPrefab;
 		public int count;
-		public int coreCount;
 	}
 
 	[System.Serializable]
