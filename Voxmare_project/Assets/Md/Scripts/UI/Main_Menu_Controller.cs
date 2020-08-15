@@ -16,6 +16,9 @@ public class Main_Menu_Controller : MonoBehaviour
         Level_select
     }
     public Menu_status Current_menu;
+
+    public AudioSource Click_SE;
+    public AudioSource Cancel_SE;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,9 +37,11 @@ public class Main_Menu_Controller : MonoBehaviour
                 break;
                 case Menu_status.Option_menu:
                 OpenMainMenu();
+                PlayCancelSE();
                 break;
                 case Menu_status.Level_select:
                 OpenMainMenu();
+                PlayCancelSE();
                 break;
             }
         }
@@ -77,5 +82,14 @@ public class Main_Menu_Controller : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void PlayClickSE()
+    {
+        Click_SE.Play();
+    }
+    public void PlayCancelSE()
+    {
+        Cancel_SE.Play();
     }
 }

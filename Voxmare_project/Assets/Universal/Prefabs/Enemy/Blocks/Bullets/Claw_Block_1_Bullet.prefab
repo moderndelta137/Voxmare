@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8744414330229420989, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 30d528da3f99b5d4f960dbb7334f5096, type: 3}
+    - target: {fileID: -8744414330229420989, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7947023357074736545, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
       propertyPath: m_Name
       value: Claw_Block_1_Bullet
@@ -95,5 +103,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1502476566429286541, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}

@@ -9,6 +9,9 @@ public class Pause_Menu_Controller : MonoBehaviour
     public GameObject Option_menu;
     //public bool Paused;
     public bool Option_menu_opened;
+
+    public AudioSource Click_SE;
+    public AudioSource Cancel_SE;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +23,7 @@ public class Pause_Menu_Controller : MonoBehaviour
     {
     if(Input.GetButtonDown("Escape"))
         {
+            PlayCancelSE();
             if(!LevelData.isPaused)
             {
                 LevelData.isPaused = true;
@@ -37,6 +41,7 @@ public class Pause_Menu_Controller : MonoBehaviour
         {
             if(LevelData.isPaused)
             {
+                PlayCancelSE();
                 if(Option_menu_opened)
                 {
                     CloseOptionMenu();
@@ -79,5 +84,14 @@ public class Pause_Menu_Controller : MonoBehaviour
         Time.timeScale = 1;
         LevelData.isPaused = false;
         SceneManager.LoadScene(0);
+    }
+
+    public void PlayClickSE()
+    {
+        Click_SE.Play();
+    }
+    public void PlayCancelSE()
+    {
+        Cancel_SE.Play();
     }
 }

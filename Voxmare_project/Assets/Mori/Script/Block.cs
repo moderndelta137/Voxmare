@@ -65,6 +65,10 @@ public class Block : MonoBehaviour
     // DEBUG
     bool DEBUG_MODE = false;
 
+    //SE
+    private AudioSource SE_source;
+    public AudioClip[] Link_SE_clips;
+
     // Method
     void Awake()
     {
@@ -92,6 +96,8 @@ public class Block : MonoBehaviour
         isMoving = false;
         isAlone = true;
         direction = new Vector3(Mathf.Cos(Random.value * 2 * Mathf.PI), 0, Mathf.Sin(Random.value * 2 * Mathf.PI)).normalized;
+    
+        SE_source = GetComponent<AudioSource>();
     }
 
     /// <summary>
@@ -382,6 +388,10 @@ public class Block : MonoBehaviour
             else
             {
                 IsAlone = false;
+
+                //Play Link SE
+                SE_source.clip = Link_SE_clips[Random.Range(0,Link_SE_clips.Length)];
+                SE_source.Play();
             }
         }
     }

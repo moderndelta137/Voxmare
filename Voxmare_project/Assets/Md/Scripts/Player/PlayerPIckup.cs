@@ -12,6 +12,9 @@ public class PlayerPickup : MonoBehaviour
     public List<PickupController> pickup_list;
     public int[] Powerup_ranks;
     public CinemachineImpulseSource Lose_pickup_impluse;
+
+    private AudioSource SE_source;
+    public AudioClip[] Pickup_clips;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +23,8 @@ public class PlayerPickup : MonoBehaviour
         movement_script=GetComponentInParent<PlayerMovement>();
         Powerup_ranks=new int[7];
         GetPlayerPowerRank();
+
+        SE_source= this.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -56,6 +61,8 @@ public class PlayerPickup : MonoBehaviour
                     Powerup_ranks[pickup_script.Type] += 1;
                     deflect_script.UpdatePowerRank(pickup_script.Type,Powerup_ranks[pickup_script.Type]);
                     deflect_script.RankupAnimation();
+                    SE_source.clip = Pickup_clips[Random.Range(0,Pickup_clips.Length)];
+                    SE_source.Play();
                 }
             }
         }

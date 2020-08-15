@@ -63,6 +63,11 @@ public class PlayerMovement : MonoBehaviour
 
 
     private Rigidbody rb;
+
+    [Header("SE")]
+    public AudioClip[] Knockback_clips;
+    public AudioClip Hit_clip;
+    private AudioSource SE_source;
     // Start is called before the first frame update
     void Start()
     {
@@ -80,6 +85,8 @@ public class PlayerMovement : MonoBehaviour
         health_bar_script.transform.localPosition = Health_bar_offset;
         health_bar_script.SetMaxHealth(MaxHP);
         
+        SE_source = GetComponent<AudioSource>();
+
         can_move = false;
     }
 
@@ -189,6 +196,8 @@ public class PlayerMovement : MonoBehaviour
             Hit_impulse.GenerateImpulse();
             //Update animation
             player_animator.SetTrigger("Hit");
+            SE_source.clip =  Hit_clip;
+            SE_source.Play();
             myTween = this.transform.DOMove(this.transform.position + damage_incoming * DEBUG_hit_reaction_flinch, DEBUG_hit_reaction_duration);
             yield return myTween.WaitForCompletion();
             myTween = this.transform.DOMove(hit_reaction_original_position, DEBUG_hit_reaction_duration);
@@ -218,6 +227,8 @@ public class PlayerMovement : MonoBehaviour
             damage_incoming.y = 0;
             Knockback_impulse.GenerateImpulse();
             player_animator.SetTrigger("Hit");
+            SE_source.clip = Knockback_clips[Random.Range(0,Knockback_clips.Length)];
+            SE_source.Play();
             if(Physics.CapsuleCast(this.transform.position,this.transform.position,0.5f,damage_incoming, out knockback_hit, Knockback_cast_distance,knockback_layerMask))
             {
                 myTween = this.transform.DOMove(this.transform.position+damage_incoming*knockback_hit.distance,DEBUG_knockback_duration);

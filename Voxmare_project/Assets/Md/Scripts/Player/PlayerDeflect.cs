@@ -71,6 +71,10 @@ public class PlayerDeflect : MonoBehaviour
 
     [Header("HUD")]
     public HUD_Controller HUD_script;
+
+    public AudioSource Deflect_SE_source;
+    public AudioSource Baby_SE_source;
+    public AudioClip[] Baby_SE_clips;
     // Start is called before the first frame update
     void Start()
     {
@@ -90,6 +94,7 @@ public class PlayerDeflect : MonoBehaviour
         Boundary_light.transform.DOMoveY(Boundary_light_height.x,Deflect_cooldown_scale_duration);
         UpdateBoundryRadius();
 
+        
     }
 
     // Update is called once per frame
@@ -189,6 +194,10 @@ public class PlayerDeflect : MonoBehaviour
     public IEnumerator DeflectCooldown()
     {
         Can_deflect=false;
+        Deflect_SE_source.pitch = Random.Range(0.9f,1.3f);
+        Deflect_SE_source.Play();
+        Baby_SE_source.clip = Baby_SE_clips[Random.Range(0,Baby_SE_clips.Length)];
+        Baby_SE_source.Play();
         this.transform.DOScale(Vector3.zero, Deflect_cooldown_scale_duration);
         Boundary_light.transform.DOMoveY(Boundary_light_height.y, Deflect_cooldown_scale_duration);
         Boundary_light.DOIntensity(0f, Deflect_cooldown_scale_duration);

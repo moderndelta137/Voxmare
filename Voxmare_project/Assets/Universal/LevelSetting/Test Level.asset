@@ -15,7 +15,6 @@ MonoBehaviour:
   block:
   - blockPrefab: {fileID: 5841314703671143113, guid: 37ad6084035b2f54fb68df13e8ae7f39, type: 3}
     count: 20
-    coreCount: 20
   npc:
   - NPCPrefab: {fileID: 2540976299578149253, guid: 19585934dc81c5d409c8626e8e1a46e5, type: 3}
     count: 3
