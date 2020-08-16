@@ -37,9 +37,4 @@ public class LevelSelect : MonoBehaviour
         LevelData.Selected_level = Selected_level;
     }
 
-    public void StartSelectedLevel()
-    {
-
-        SceneManager.LoadScene(1);
-    }
 }

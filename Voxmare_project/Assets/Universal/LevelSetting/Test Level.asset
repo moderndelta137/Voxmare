@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Test Level
   m_EditorClassIdentifier: 
   block:
-  - blockPrefab: {fileID: 5841314703671143113, guid: 37ad6084035b2f54fb68df13e8ae7f39, type: 3}
-    count: 20
+  - blockPrefab: {fileID: 5841314703671143113, guid: 9e75519e4895b1b4892b91539086970b, type: 3}
+    count: 1
   npc:
   - NPCPrefab: {fileID: 2540976299578149253, guid: 19585934dc81c5d409c8626e8e1a46e5, type: 3}
     count: 3

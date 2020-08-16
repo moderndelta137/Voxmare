@@ -12,10 +12,13 @@ public class Pause_Menu_Controller : MonoBehaviour
 
     public AudioSource Click_SE;
     public AudioSource Cancel_SE;
+    
+    public Eyelid_Controller Eyelid_script;
+    private WaitForSecondsRealtime blink_wait;
     // Start is called before the first frame update
     void Start()
     {
-        
+        blink_wait = new WaitForSecondsRealtime(Eyelid_script.Blink_duration);
     }
 
     // Update is called once per frame
@@ -26,10 +29,7 @@ public class Pause_Menu_Controller : MonoBehaviour
             PlayCancelSE();
             if(!LevelData.isPaused)
             {
-                LevelData.isPaused = true;
-                Time.timeScale = 0;
-                LevelData.isPaused = true;
-                Pause_menu.SetActive(true);
+                PauseGame();
             }
             else
             {
@@ -54,6 +54,21 @@ public class Pause_Menu_Controller : MonoBehaviour
         }
     }
 
+    public void PauseGame()
+    {
+        StartCoroutine(PauseGameDelay());
+    }
+    private IEnumerator PauseGameDelay()
+    {
+        LevelData.isPaused = true;
+        Time.timeScale = 0;
+        Eyelid_script.EyeClose();
+        yield return blink_wait;
+        Pause_menu.SetActive(true);
+        Eyelid_script.EyeOpen();
+        yield return blink_wait;
+    }
+
     public void ResumeGame()
     {
         LevelData.isPaused = false;
@@ -66,23 +81,44 @@ public class Pause_Menu_Controller : MonoBehaviour
 
     public void OpenOptionMenu()
     {
+        StartCoroutine(OpenOptionMenuDelay());
+    }
+    private IEnumerator OpenOptionMenuDelay()
+    {
+        Eyelid_script.EyeClose();
+        yield return blink_wait;
         Option_menu_opened = true;
         Option_menu.SetActive(true);
         Pause_menu.SetActive(false);
+        Eyelid_script.EyeOpen();
+        yield return blink_wait;
     }
-
     public void CloseOptionMenu()
     {
+        StartCoroutine(CloseOptionMenuDelay());
+    }
+    private IEnumerator CloseOptionMenuDelay()
+    {
+        Eyelid_script.EyeClose();
+        yield return blink_wait;
         Option_menu_opened = false;
         Option_menu.SetActive(false);
         Pause_menu.SetActive(true);
+        Eyelid_script.EyeOpen();
+        yield return blink_wait;
     }
+
 
     public void ReturnToMenu()
     {
-        //TODO Resume game timescale
+        StartCoroutine(ReturnToMenuDelay());        
+    }
+    private IEnumerator ReturnToMenuDelay()
+    {
         Time.timeScale = 1;
         LevelData.isPaused = false;
+        Eyelid_script.EyeClose();
+        yield return blink_wait;
         SceneManager.LoadScene(0);
     }
 
