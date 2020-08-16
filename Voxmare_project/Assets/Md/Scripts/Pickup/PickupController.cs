@@ -58,6 +58,11 @@ public class PickupController : MonoBehaviour
     [Header("Animation")]
     private Animator pickup_animator;
 
+    [Header("SE")]
+    public AudioClip[] Pickup_clips;
+    public AudioClip[] Damage_clips;
+    public AudioClip[] Deflect_clips;
+    private AudioSource SE_source;
     // Start is called before the first frame update
     void Start()
     {
@@ -72,7 +77,7 @@ public class PickupController : MonoBehaviour
         StartCoroutine(AI_coroutine);
         pickup_collider = this.GetComponent<Collider>();
         flee_layMask = (1 << 9) + (1 << 11)+ (1 << 13);//Check Enemy Layer and Terrian Layer for shooting
-
+        SE_source = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -133,6 +138,8 @@ public class PickupController : MonoBehaviour
             agent.isStopped=true;
             pickup_animator.SetTrigger("Knockback");
             pickup_animator.SetBool("Pickedup", false);
+            SE_source.clip = Damage_clips[Random.Range(0,Damage_clips.Length)];
+            SE_source.Play();
             myTween = this.transform.DOMove(this.transform.position + Incoming.normalized * DEBUG_knockback_distance, DEBUG_knockback_duration);
             yield return new WaitForSeconds(DEBUG_hit_reaction_duration);
             rend.material = original_mat;   
@@ -158,6 +165,8 @@ public class PickupController : MonoBehaviour
         AI_status = Crowd_status.Follow;
         pickup_animator.SetBool("Pickedup", true);
         pickup_animator.SetTrigger("Picking up");
+        SE_source.clip = Pickup_clips[Random.Range(0,Pickup_clips.Length)];
+        SE_source.Play();
         agent.isStopped=false;
         StopCoroutine(AI_coroutine);
     }
@@ -195,6 +204,8 @@ public class PickupController : MonoBehaviour
     {
         this.transform.rotation = Quaternion.LookRotation(target-this.transform.position);
         pickup_animator.SetTrigger("Deflect");
+        SE_source.clip = Deflect_clips[Random.Range(0,Deflect_clips.Length)];
+        SE_source.Play();
     }
     public void ResetY()
     {

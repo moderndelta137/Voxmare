@@ -10,6 +10,9 @@ public class Banner_Controller : MonoBehaviour
     public GameObject Prepare_ready;
     public GameObject Clear_screen;
     public GameObject Clear_ready;
+
+    public AudioSource Prepare_SE_source;
+    public AudioSource Clear_SE_source;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +35,7 @@ public class Banner_Controller : MonoBehaviour
     public void PrepareReady()
     {
         Prepare_ready.SetActive(true);
+        Prepare_SE_source.Play();
     }
     public void DisplayClearScreen()
     {
@@ -39,6 +43,7 @@ public class Banner_Controller : MonoBehaviour
         Prepare_screen.SetActive(false);
         Clear_screen.SetActive(true);
         Clear_ready.SetActive(false);
+        Clear_SE_source.Play();
     }
     public void ClearReady()
     {

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1137754768}
   - component: {fileID: 1293267466}
   - component: {fileID: 3598975855745787477}
+  - component: {fileID: 1210771424339806051}
   m_Layer: 8
   m_Name: NPC
   m_TagString: Pickup
@@ -111,6 +112,120 @@ MonoBehaviour:
   Flee_speed: 10
   AI_status: 0
   Think_duration_range: {x: 3, y: 8}
+  Pickup_clips:
+  - {fileID: 8300000, guid: eaa51dc8eb864fc46a4d6bab53eb81b5, type: 3}
+  - {fileID: 8300000, guid: d5ab5cf86af9f8a459574041011bd4c4, type: 3}
+  - {fileID: 8300000, guid: cbd931790aba24642be46e935aa6f947, type: 3}
+  - {fileID: 8300000, guid: 9a768c55f1304a649a3df2bb73f82430, type: 3}
+  - {fileID: 8300000, guid: 5942b695edad3dc4db74bf604659820b, type: 3}
+  Damage_clips:
+  - {fileID: 8300000, guid: a4a3a2a99c0674040a758c697ba05947, type: 3}
+  - {fileID: 8300000, guid: b90c2593cfffc494b81cc7de2b3ff98a, type: 3}
+  - {fileID: 8300000, guid: 3709a2b15a467d649852bc1e2a00f96f, type: 3}
+  - {fileID: 8300000, guid: ed12e2363d737cf44805f98a055994a9, type: 3}
+  - {fileID: 8300000, guid: 4e018ac322ad64042853f06336e8eef5, type: 3}
+  - {fileID: 8300000, guid: e8b7373590aa6a945a9aa790d95cffba, type: 3}
+  Deflect_clips:
+  - {fileID: 8300000, guid: d8c1c2a1825e98c4ca137c5c24433e26, type: 3}
+  - {fileID: 8300000, guid: 54475b67014573b45be1996178af6715, type: 3}
+  - {fileID: 8300000, guid: 0b0d0f2512042af4fb65d2f6080169bc, type: 3}
+  - {fileID: 8300000, guid: ba7744107b7bbfa49aa86ddc2817afd6, type: 3}
+--- !u!82 &1210771424339806051
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3598975855745787472}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.8
+  m_Pitch: 0.8
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 100
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1514974568770963328
 PrefabInstance:
   m_ObjectHideFlags: 0

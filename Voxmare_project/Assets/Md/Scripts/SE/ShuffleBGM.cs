@@ -29,4 +29,14 @@ public class ShuffleBGM : MonoBehaviour
     {
         source.clip = clips[Random.Range(0,clips.Length)];
     }
+
+    public void PauseVolume()
+    {
+        source.volume *= 0.5f;
+    }
+
+    public void ResumeVolume()
+    {
+        source.volume *= 2f;
+    }
 }

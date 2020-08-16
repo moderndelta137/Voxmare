@@ -129,7 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Pickup_radius: 3.5
   pickup_list: []
-  Powerup_ranks: 00000000000000000000000000000000000000000000000000000000
+  Powerup_ranks: 00000000000000000000000000000000030000000000000000000000
   Lose_pickup_impluse: {fileID: 29583296}
   Pickup_clips:
   - {fileID: 8300000, guid: ad3ea8b4fe3bb8942bbc82dbb049d9c2, type: 3}
@@ -188,8 +188,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.9
-  m_Pitch: 0.8
+  m_Volume: 0.6
+  m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -509,6 +509,7 @@ GameObject:
   - component: {fileID: 1243344264}
   - component: {fileID: 1243344265}
   - component: {fileID: 6460658071950863543}
+  - component: {fileID: 1746632507}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -620,7 +621,7 @@ MonoBehaviour:
   Mouse_cursor: {fileID: 0}
   Mouse_cursor_prefab: {fileID: 5603157369960796485, guid: e53eab0852e64c64a894e85c126b7ccd, type: 3}
   MaxHP: 20
-  HP: 20
+  HP: 17
   PushForce: 15
   Invencible_duration: 1.5
   Hit_reaction_mat: {fileID: 2100000, guid: 14ff9e6e57d5bee4682ee74e146fccf2, type: 2}
@@ -732,7 +733,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.6
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -816,6 +817,14 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!81 &1746632507
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337455001469542342}
+  m_Enabled: 1
 --- !u!1 &337455001839405431
 GameObject:
   m_ObjectHideFlags: 0
@@ -1002,7 +1011,7 @@ MonoBehaviour:
   - 1.5
   - 3
   - 5
-  Cluster_bonus: 0
+  Cluster_bonus: 1
   Cluster_radius_scale:
   - 1
   - 1
@@ -1012,7 +1021,7 @@ MonoBehaviour:
   Velocity_rank: 0
   Reflect_rank: 0
   Penetrate_rank: 0
-  Cluster_rank: 0
+  Cluster_rank: 3
   Homing_rank: 0
   Spray_rank: 0
   HUD_script: {fileID: 0}
@@ -1117,8 +1126,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 8488f4715b7f03544bb29e6c23fe1510, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.6
-  m_Pitch: 0.8
+  m_Volume: 0.3
+  m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
