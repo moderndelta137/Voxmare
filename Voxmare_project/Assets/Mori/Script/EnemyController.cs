@@ -45,7 +45,7 @@ public class EnemyController : MonoBehaviour
 
     public IEnumerator ApplyDamage(Vector3 Incoming)
     {
-
+        Debug.Log("damage");
         HP -= (int)Incoming.magnitude;
         health_bar_script.gameObject.SetActive(true);
         health_bar_script.SetHealth(HP);

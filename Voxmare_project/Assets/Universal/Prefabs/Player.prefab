@@ -617,7 +617,7 @@ MonoBehaviour:
   Main_camera: {fileID: 0}
   Move_speed: 20
   Rotate_speed: 7
-  can_move: 1
+  can_move: 0
   Mouse_cursor: {fileID: 0}
   Mouse_cursor_prefab: {fileID: 5603157369960796485, guid: e53eab0852e64c64a894e85c126b7ccd, type: 3}
   MaxHP: 20
@@ -1011,7 +1011,7 @@ MonoBehaviour:
   - 1.5
   - 3
   - 5
-  Cluster_bonus: 1
+  Cluster_bonus: 0
   Cluster_radius_scale:
   - 1
   - 1
@@ -1021,7 +1021,7 @@ MonoBehaviour:
   Velocity_rank: 0
   Reflect_rank: 0
   Penetrate_rank: 0
-  Cluster_rank: 3
+  Cluster_rank: 0
   Homing_rank: 0
   Spray_rank: 0
   HUD_script: {fileID: 0}

@@ -83,8 +83,8 @@ public class BulletController : MonoBehaviour
         {
             case "Player":
                 if(Damage_player)
-                {
-                    other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                {   if(!Cluster)
+                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                     ShowHitFX();//TODO change it to a hit enemy effect
                     Destroy(this.gameObject);
                 }
@@ -92,7 +92,8 @@ public class BulletController : MonoBehaviour
             case "Pickup":
                 if(Damage_player)
                 {
-                    other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                    if(!Cluster)
+                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                     ShowHitFX();//TODO change it to a hit enemy effect
                     Destroy(this.gameObject);
                 }
@@ -104,7 +105,6 @@ public class BulletController : MonoBehaviour
                     {
                         Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f,reflect_enemy_layMask);
                         this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
-                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                         if(Cluster)
                         {
                             cluster_controller = Instantiate(Cluster_prefab, this.transform.position, Quaternion.identity).GetComponent<ClusterBulletController>();
@@ -112,19 +112,23 @@ public class BulletController : MonoBehaviour
                             cluster_controller.transform.localScale*=Cluster_radius_scale;
                             cluster_controller.Damage_player = Damage_player;
                         }
+                        else
+                            other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                         ShowHitFX();//TODO change it to a hit enemy effect
                         Destroy(this.gameObject,Reflect_lifespan);
                     }
                     else if(Penetrate)//Penetrate effect has higher priority over Reflect effect
                     {
                         ShowHitFX();//TODO change it to a hit enemy effect
-                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                        if(!Cluster)
+                            other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                         Destroy(this.gameObject,Penetrate_lifespan);
                     }     
                     else
                     {
                         ShowHitFX();//TODO change it to a hit enemy effect
-                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                        if(!Cluster)
+                            other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                         Destroy(this.gameObject);
                     }     
                 }
@@ -149,7 +153,6 @@ public class BulletController : MonoBehaviour
                 }
                 else if (Penetrate)
                 {
-                    other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                     Destroy(this.gameObject,Penetrate_lifespan);
                 }
                 else

@@ -113,7 +113,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1613158718328055453}
   m_LocalRotation: {x: 0.42261827, y: -0, z: -0, w: 0.9063079}
-  m_LocalPosition: {x: 1.8506746, y: 9.488262, z: -28.253338}
+  m_LocalPosition: {x: -8.110041, y: 10.188202, z: -52.052406}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1634080230181497678}
@@ -146,7 +146,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 15
+  orthographic size: 27.116028
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -216,7 +216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1e20b1465bf764b99239e2a0c36192, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useCanvas: 0
   snapshotCanvasPrefab: {fileID: 0}
   filterIndex: 0
 --- !u!1 &1613158718518176974
@@ -246,7 +245,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1613158718518176974}
   m_LocalRotation: {x: 0.42261827, y: -0, z: -0, w: 0.9063079}
-  m_LocalPosition: {x: 1.8506746, y: 9.488262, z: -28.253338}
+  m_LocalPosition: {x: 1.8506746, y: 4.12595, z: -23.753824}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1613158717921528493}

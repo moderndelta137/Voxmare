@@ -95,7 +95,7 @@ public class BlockGenerator : MonoBehaviour
                 }
 
                 // Store
-                manager.blocks.Add(block.GetComponent<Block>());
+                manager.blocks.Insert(Random.Range(0,manager.blocks.Count),block.GetComponent<Block>());
                 block.transform.parent = emptyObject;
                 block.GetComponent<Block>().enabled = false;
 

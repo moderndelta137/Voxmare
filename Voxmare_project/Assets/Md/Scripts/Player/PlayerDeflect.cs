@@ -238,7 +238,6 @@ public class PlayerDeflect : MonoBehaviour
         {
             if(Physics.SphereCast(this.transform.position, Homing_cast_radius, this.transform.forward, out homing_hit, 100f, homing_layerMask))
             {
-                Debug.Log(homing_hit.transform.gameObject);
                 bullet_instance.Homing_target = homing_hit.transform.gameObject;
                 bullet_instance.Homing = true;
             }
