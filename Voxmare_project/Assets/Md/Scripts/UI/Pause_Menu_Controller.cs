@@ -119,7 +119,7 @@ public class Pause_Menu_Controller : MonoBehaviour
         LevelData.isPaused = false;
         Eyelid_script.EyeClose();
         yield return blink_wait;
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     public void PlayClickSE()

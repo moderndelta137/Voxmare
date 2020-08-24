@@ -280,7 +280,7 @@ public class PlayerMovement : MonoBehaviour
     public void GameOver()
     {
         Destroy(this.gameObject);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit) {

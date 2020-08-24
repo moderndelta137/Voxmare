@@ -142,7 +142,7 @@ public class Main_Menu_Controller : MonoBehaviour
         BGM_source.volume = 0.6f;
         BGM_source.Play();
         yield return newgame_wait;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 
     public void StartSelectedLevel()
