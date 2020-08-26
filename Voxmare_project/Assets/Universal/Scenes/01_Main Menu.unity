@@ -4113,7 +4113,7 @@ MonoBehaviour:
   Click_SE: {fileID: 574447565}
   Cancel_SE: {fileID: 574447564}
   Eyelid_script: {fileID: 1967117609}
-  NewGame_wait_duration: 3.5
+  NewGame_wait_duration: 4.5
   Day_Model: {fileID: 1888176596}
   Night_Model: {fileID: 653352725}
   BGM_source: {fileID: 228710808}

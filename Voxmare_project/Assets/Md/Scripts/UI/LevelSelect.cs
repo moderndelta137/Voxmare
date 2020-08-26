@@ -13,12 +13,15 @@ public class LevelSelect : MonoBehaviour
     void Start()
     {
         UpdateMaxLevel();
+        
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //ONLY FOR DEBUG
+        //PlayerPrefs.SetInt("MaxLevel",1);
     }
 
     public void UpdateMaxLevel()

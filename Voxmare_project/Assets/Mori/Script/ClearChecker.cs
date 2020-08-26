@@ -13,15 +13,21 @@ public class ClearChecker : MonoBehaviour
     public UnityEvent LevelStarted;
     public UnityEvent LevelPrepared;
     public UnityEvent GameOvered;
+
     public float Clear_wait_duration;
     public float Prepare_wait_duration;
+    public float Gameover_wait_duration;
     public float Fisrt_time_wait_duration;
+    private bool first_time;
+    private IEnumerator Fisrt_time_wait;
     private IEnumerator Clear_wait;
     private IEnumerator Prepare_wait;
-    private IEnumerator Fisrt_time_wait;
-    private bool first_time;
+    private IEnumerator Gameover_wait;
+
     public UnityEvent LevelPrepareReady;
     public UnityEvent LevelClearReady;
+    public UnityEvent GameOverReady;
+    public UnityEvent Restart;
     public enum LevelStatus
     {
         Ready,
@@ -35,6 +41,7 @@ public class ClearChecker : MonoBehaviour
     {
         Clear_wait = new WaitForSecondsRealtime(Clear_wait_duration);
         Prepare_wait = new WaitForSecondsRealtime(Prepare_wait_duration);
+        Gameover_wait = new WaitForSecondsRealtime(Gameover_wait_duration);
         Fisrt_time_wait = new WaitForSecondsRealtime(Fisrt_time_wait_duration);
         first_time = true;
         StartCoroutine(LevelPrepare());
@@ -58,7 +65,7 @@ public class ClearChecker : MonoBehaviour
                 break;
                 case LevelStatus.GameOver:
                     StopAllCoroutines();
-                    StartCoroutine(ReturnToMainMenu());
+                    Restart.Invoke();
                 break;
             }
         }
@@ -104,13 +111,6 @@ public class ClearChecker : MonoBehaviour
         LevelClearReady.Invoke();
         Time.timeScale = 0;
         LevelData.isPaused = true;
-        /*
-        Call:
-            UI to hide HUD   -Done
-            UI to display level clear banner;   -Done
-            Player to disable control;   -Done
-            BlockManager to Destroy all blocks;   -Done
-        */
     }
 
     // Start is called before the first frame update
@@ -120,15 +120,7 @@ public class ClearChecker : MonoBehaviour
         Current_status = LevelStatus.Start;
         Time.timeScale = 1;
         LevelData.isPaused = false;     
-        //
         LevelStarted.Invoke();
-        /*
-        Call:
-            UI to display HUD;   -Done
-            UI to update current level and core count;   -Done
-            Player to enable control;   -Done
-            BlockGenerator to GenerateBlockAndNpc;   -Done
-        */
     }
 
     private IEnumerator LevelPrepare()
@@ -151,15 +143,15 @@ public class ClearChecker : MonoBehaviour
     {
         Time.timeScale = 0;
         LevelData.isPaused = true;
-        Current_status = LevelStatus.GameOver;
         GameOvered.Invoke();
+        StartCoroutine(GameOverPrepare());
+    }
+    private IEnumerator GameOverPrepare()
+    {
+        yield return Gameover_wait;
+        GameOverReady.Invoke();
+        Current_status = LevelStatus.GameOver;
     }
 
-    private IEnumerator ReturnToMainMenu()
-    {
-       yield return Prepare_wait;
-        Time.timeScale = 1;
-        LevelData.isPaused = false;
-       SceneManager.LoadScene(1);
-    }
+
 }
