@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.SceneManagement;
+//using UnityEngine.SceneManagement;
 using Cinemachine;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -62,12 +63,14 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 Health_bar_offset;
 
 
-    private Rigidbody rb;
+    //private Rigidbody rb;
 
     [Header("SE")]
     public AudioClip[] Knockback_clips;
     public AudioClip Hit_clip;
     private AudioSource SE_source;
+
+    public UnityEvent Gameover;
     // Start is called before the first frame update
     void Start()
     {
@@ -279,8 +282,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void GameOver()
     {
-        Destroy(this.gameObject);
-        SceneManager.LoadScene(1);
+        //Destroy(this.gameObject);
+        player_animator.SetTrigger("Death");
+        player_animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        //SceneManager.LoadScene(1);
+        Gameover.Invoke();
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit) {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class ClearChecker : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class ClearChecker : MonoBehaviour
     public UnityEvent LevelCleared;
     public UnityEvent LevelStarted;
     public UnityEvent LevelPrepared;
+    public UnityEvent GameOvered;
     public float Clear_wait_duration;
     public float Prepare_wait_duration;
     public float Fisrt_time_wait_duration;
@@ -24,7 +26,8 @@ public class ClearChecker : MonoBehaviour
     {
         Ready,
         Start,
-        Result
+        Result,
+        GameOver
     }
     public LevelStatus Current_status;
 
@@ -52,6 +55,10 @@ public class ClearChecker : MonoBehaviour
                 case LevelStatus.Result:
                     StopAllCoroutines();
                     StartCoroutine(LevelPrepare());
+                break;
+                case LevelStatus.GameOver:
+                    StopAllCoroutines();
+                    StartCoroutine(ReturnToMainMenu());
                 break;
             }
         }
@@ -140,5 +147,19 @@ public class ClearChecker : MonoBehaviour
         LevelData.isPaused = true;
     }
 
-   
+    public void GameOver()
+    {
+        Time.timeScale = 0;
+        LevelData.isPaused = true;
+        Current_status = LevelStatus.GameOver;
+        GameOvered.Invoke();
+    }
+
+    private IEnumerator ReturnToMainMenu()
+    {
+       yield return Prepare_wait;
+        Time.timeScale = 1;
+        LevelData.isPaused = false;
+       SceneManager.LoadScene(1);
+    }
 }
