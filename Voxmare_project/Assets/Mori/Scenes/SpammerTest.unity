@@ -787,7 +787,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5841314703671143113, guid: c9db727781404474d8a074efbfb425e8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5841314703671143126, guid: c9db727781404474d8a074efbfb425e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3540,7 +3540,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1613158718328055454, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.246441
+      value: -9.246443
       objectReference: {fileID: 0}
     - target: {fileID: 1613158718328055455, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
       propertyPath: orthographic size
@@ -3584,7 +3584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1613158718518176968, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.24644
+      value: -9.246441
       objectReference: {fileID: 0}
     - target: {fileID: 1613158718518176969, guid: d2c0e49d29198e34d879ecdd06a5d9e4, type: 3}
       propertyPath: m_Transitions.m_OnCameraLive.m_PersistentCalls.m_Calls.Array.size
@@ -6595,7 +6595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5841314703671143113, guid: 4a7f9cedc2c31f140b15c70515f59fea, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5841314703671143126, guid: 4a7f9cedc2c31f140b15c70515f59fea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11698,8 +11698,11 @@ MonoBehaviour:
   Prepare_ready: {fileID: 955495926}
   Clear_screen: {fileID: 1476158316}
   Clear_ready: {fileID: 1606964570}
+  GameOver_screen: {fileID: 0}
+  GameOver_ready: {fileID: 0}
   Prepare_SE_source: {fileID: 8289530346009656546}
   Clear_SE_source: {fileID: 8289530346009656545}
+  Gameover_SE_source: {fileID: 0}
   Eyelid_script: {fileID: 572729242}
 --- !u!114 &8289530346009656542
 MonoBehaviour:
