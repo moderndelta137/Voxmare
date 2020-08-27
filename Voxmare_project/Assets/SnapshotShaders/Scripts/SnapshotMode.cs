@@ -14,15 +14,15 @@ public class SnapshotMode : MonoBehaviour
 
     private SnapshotCanvas snapshotCanvas;
 
-    private Shader noneShader;
+    public Shader noneShader;
     private Shader greyscaleShader;
     private Shader sepiaShader;
     private Shader gaussianShader;
     private Shader edgeBlurShader;
     private Shader silhouetteShader;
-    private Shader outlineShader;
-    private Shader neonShader;
-    private Shader bloomShader;
+    public Shader outlineShader;
+    public Shader neonShader;
+    public Shader bloomShader;
     private Shader crtShader;
     private Shader nesShader;
     private Shader snesShader;
@@ -45,15 +45,15 @@ public class SnapshotMode : MonoBehaviour
         */
         filterIndex = 0;
         // Find all shader files.
-        noneShader = Shader.Find("Snapshot/Base");
+        //noneShader = Shader.Find("Snapshot/Base");
         greyscaleShader = Shader.Find("Snapshot/Greyscale");
         sepiaShader = Shader.Find("Snapshot/Sepia");
         gaussianShader = Shader.Find("Snapshot/GaussianBlur");
         edgeBlurShader = Shader.Find("Snapshot/EdgeBlur");
         silhouetteShader = Shader.Find("Snapshot/Silhouette");
-        outlineShader = Shader.Find("Snapshot/EdgeDetect");
-        neonShader = Shader.Find("Snapshot/Neon");
-        bloomShader = Shader.Find("Snapshot/Bloom");
+        //outlineShader = Shader.Find("Snapshot/EdgeDetect");
+        //neonShader = Shader.Find("Snapshot/Neon");
+        //bloomShader = Shader.Find("Snapshot/Bloom");
         crtShader = Shader.Find("Snapshot/CRTScreen");
         nesShader = Shader.Find("Snapshot/PixelNES");
         snesShader = Shader.Find("Snapshot/PixelSNES");
@@ -69,7 +69,7 @@ public class SnapshotMode : MonoBehaviour
         //filters.Add(new BaseFilter("Greyscale", Color.white, greyscaleShader));
         //filters.Add(new BaseFilter("Sepia Tone", new Color(1.00f, 1.00f, 0.79f), 
         //    sepiaShader));
-        filters.Add(new BlurFilter("Blur (Full)", Color.white, gaussianShader));
+        //filters.Add(new BlurFilter("Blur (Full)", Color.white, gaussianShader));
         //filters.Add(new BlurFilter("Blur (Edge)", Color.white, edgeBlurShader));
         //filters.Add(new BaseFilter("Silhouette", new Color(0.89f, 0.71f, 0.56f), 
         //    silhouetteShader));

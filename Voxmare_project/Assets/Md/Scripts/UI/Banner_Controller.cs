@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Banner_Controller : MonoBehaviour
 {
@@ -10,9 +11,12 @@ public class Banner_Controller : MonoBehaviour
     public GameObject Prepare_ready;
     public GameObject Clear_screen;
     public GameObject Clear_ready;
+    public GameObject GameOver_screen;
+    public GameObject GameOver_ready;
 
     public AudioSource Prepare_SE_source;
     public AudioSource Clear_SE_source;
+    public AudioSource Gameover_SE_source;
 
     public Eyelid_Controller Eyelid_script;
     private WaitForSecondsRealtime blink_wait;
@@ -71,5 +75,29 @@ public class Banner_Controller : MonoBehaviour
     public void LevelStart()
     {
         Prepare_screen.SetActive(false);
+    }
+
+    public void DispalyGameOverScreen()
+    {
+        GameOver_screen.SetActive(true);
+        Gameover_SE_source.PlayDelayed(2);
+        Camera.main.cullingMask = 1 << 8;
+    }
+    public void GameoverRestartReady()
+    {
+        GameOver_ready.SetActive(true);
+    }
+
+    public void ReturnToMenu()
+    {
+        StartCoroutine(ReturnToMenuDelay());        
+    }
+    private IEnumerator ReturnToMenuDelay()
+    {
+        Time.timeScale = 1;
+        LevelData.isPaused = false;
+        Eyelid_script.EyeClose();
+        yield return blink_wait;
+        SceneManager.LoadScene(1);
     }
 }

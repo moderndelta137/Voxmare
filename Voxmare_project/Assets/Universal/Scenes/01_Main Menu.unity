@@ -1739,7 +1739,7 @@ AudioSource:
   m_GameObject: {fileID: 228710807}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 92656310400872f4cbeb6538ff3809c9, type: 2}
   m_audioClip: {fileID: 8300000, guid: 2ad078bb11b720d46927973ddef03743, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -4000,6 +4000,8 @@ GameObject:
   - component: {fileID: 574447563}
   - component: {fileID: 574447565}
   - component: {fileID: 574447564}
+  - component: {fileID: 574447567}
+  - component: {fileID: 574447566}
   m_Layer: 5
   m_Name: UI Canvas
   m_TagString: Untagged
@@ -4111,7 +4113,7 @@ MonoBehaviour:
   Click_SE: {fileID: 574447565}
   Cancel_SE: {fileID: 574447564}
   Eyelid_script: {fileID: 1967117609}
-  NewGame_wait_duration: 3.5
+  NewGame_wait_duration: 4.5
   Day_Model: {fileID: 1888176596}
   Night_Model: {fileID: 653352725}
   BGM_source: {fileID: 228710808}
@@ -4194,7 +4196,7 @@ AudioSource:
   m_GameObject: {fileID: 574447555}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 95c7bdf16febb9c47a5279ea47b2de12, type: 2}
   m_audioClip: {fileID: 8300000, guid: 7cdd6dad624e72d41bcf3d1d475d48d3, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.7
@@ -4290,7 +4292,7 @@ AudioSource:
   m_GameObject: {fileID: 574447555}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 95c7bdf16febb9c47a5279ea47b2de12, type: 2}
   m_audioClip: {fileID: 8300000, guid: e0a09c80c0359d7438c7ad013793f00f, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.7
@@ -4377,6 +4379,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &574447566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574447555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77d77b618c1b77c48be2943c1b025a5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SE_mixer: {fileID: 24100000, guid: 95c7bdf16febb9c47a5279ea47b2de12, type: 2}
+  PlyaerPrefs_Key: SE_Volume
+  SE_slider: {fileID: 1634995142}
+--- !u!114 &574447567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574447555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b2fb0f5a3395f4fa7865634d49a0ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SE_mixer: {fileID: 24100000, guid: 92656310400872f4cbeb6538ff3809c9, type: 2}
+  PlyaerPrefs_Key: BGM_Volume
+  SE_slider: {fileID: 2135566579}
 --- !u!1 &574742245
 GameObject:
   m_ObjectHideFlags: 0
@@ -10465,13 +10497,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 962369730}
   m_HandleRect: {fileID: 182853122}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -80
+  m_MaxValue: 0
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 574447566}
+        m_TargetAssemblyTypeName: ChangeAudioVolume, Assembly-CSharp
+        m_MethodName: SetVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1664699962
 GameObject:
   m_ObjectHideFlags: 0
@@ -13272,13 +13316,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 1552941010}
   m_HandleRect: {fileID: 955400763}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -80
+  m_MaxValue: 0
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 574447567}
+        m_TargetAssemblyTypeName: ChangeAudioVolume, Assembly-CSharp
+        m_MethodName: SetVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2145436348
 GameObject:
   m_ObjectHideFlags: 0
@@ -13322,6 +13378,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 653352727, guid: 3ef9b8bbe825a4545b58bd3ce972f99b, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 24300002, guid: 95c7bdf16febb9c47a5279ea47b2de12, type: 2}
     - target: {fileID: 158549493261136694, guid: 3ef9b8bbe825a4545b58bd3ce972f99b, type: 3}
       propertyPath: m_Name
       value: Night
@@ -13512,6 +13572,22 @@ PrefabInstance:
       propertyPath: SobelResolution
       value: 1.06
       objectReference: {fileID: 0}
+    - target: {fileID: 1913872119189864329, guid: c07554f44627b464b9086fd998b8a2a4, type: 3}
+      propertyPath: noneShader
+      value: 
+      objectReference: {fileID: 4800000, guid: b2ebce0537a30e4479be43bf9356d883, type: 3}
+    - target: {fileID: 1913872119189864329, guid: c07554f44627b464b9086fd998b8a2a4, type: 3}
+      propertyPath: outlineShader
+      value: 
+      objectReference: {fileID: 4800000, guid: 1b95ce79bcee5ed42b2f950cd7b7310b, type: 3}
+    - target: {fileID: 1913872119189864329, guid: c07554f44627b464b9086fd998b8a2a4, type: 3}
+      propertyPath: neonShader
+      value: 
+      objectReference: {fileID: 4800000, guid: c965c0188009658429bb161a8022cba3, type: 3}
+    - target: {fileID: 1913872119189864329, guid: c07554f44627b464b9086fd998b8a2a4, type: 3}
+      propertyPath: bloomShader
+      value: 
+      objectReference: {fileID: 4800000, guid: 64ce0c6ff22e2254195a4d821e608722, type: 3}
     m_RemovedComponents:
     - {fileID: 1913872119189864326, guid: c07554f44627b464b9086fd998b8a2a4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c07554f44627b464b9086fd998b8a2a4, type: 3}
