@@ -554,6 +554,10 @@ PrefabInstance:
       propertyPath: Temporal_divergence
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2052504839816471393, guid: ed810fdaaed25ec40ae39e7c6a45b91e, type: 3}
+      propertyPath: Bullet
+      value: 
+      objectReference: {fileID: 889475045401196407, guid: a019367a5c452f347ab58fc997bea779, type: 3}
     - target: {fileID: 2052504839816471396, guid: ed810fdaaed25ec40ae39e7c6a45b91e, type: 3}
       propertyPath: m_Enabled
       value: 0
