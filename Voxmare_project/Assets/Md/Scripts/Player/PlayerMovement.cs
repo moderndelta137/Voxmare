@@ -90,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
         health_bar_script.SetMaxHealth(MaxHP);
         
         SE_source = GetComponent<AudioSource>();
-
+        BecomeInvencible();
         can_move = false;
     }
 

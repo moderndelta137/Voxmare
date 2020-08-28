@@ -27,6 +27,7 @@ public class Main_Menu_Controller : MonoBehaviour
     private WaitForSeconds newgame_wait;
     public GameObject Day_Model;
     public GameObject Night_Model;
+    public Animator Block_animator;
     public AudioSource BGM_source;
     public AudioClip StartGame_clip;
 
@@ -134,6 +135,7 @@ public class Main_Menu_Controller : MonoBehaviour
         Title_text.SetActive(true);
         Day_Model.SetActive(false);
         Night_Model.SetActive(true);
+        Block_animator.enabled=true;
         Main_menu_page.SetActive(false);
         Level_select_page.SetActive(false);
         Eyelid_script.EyeOpen();
