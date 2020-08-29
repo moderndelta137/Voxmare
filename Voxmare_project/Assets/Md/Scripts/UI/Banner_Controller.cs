@@ -43,6 +43,7 @@ public class Banner_Controller : MonoBehaviour
         Prepare_level_text.text = "Level " + LevelData.Selected_level;
         Prepare_screen.SetActive(true);
         Clear_screen.SetActive(false);
+        Clear_ready.SetActive(false);
         Prepare_ready.SetActive(false);
         Eyelid_script.EyeOpen();
         yield return blink_wait;
@@ -61,8 +62,9 @@ public class Banner_Controller : MonoBehaviour
         Eyelid_script.EyeClose();
         yield return blink_wait;
         Prepare_screen.SetActive(false);
-        Clear_screen.SetActive(true);
+        Prepare_ready.SetActive(false);
         Clear_ready.SetActive(false);
+        Clear_screen.SetActive(true);
         Clear_SE_source.Play();
         Eyelid_script.EyeOpen();
         yield return blink_wait;
@@ -75,6 +77,7 @@ public class Banner_Controller : MonoBehaviour
     public void LevelStart()
     {
         Prepare_screen.SetActive(false);
+        Prepare_ready.SetActive(false);
     }
 
     public void DispalyGameOverScreen()
