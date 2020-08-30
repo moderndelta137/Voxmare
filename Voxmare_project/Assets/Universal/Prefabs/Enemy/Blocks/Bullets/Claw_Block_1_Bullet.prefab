@@ -9743,6 +9743,10 @@ PrefabInstance:
       value: Claw_Block_1_Bullet
       objectReference: {fileID: 0}
     - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+      propertyPath: Bullet_renderers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
       propertyPath: Cluster
       value: 1
       objectReference: {fileID: 0}
@@ -9766,6 +9770,22 @@ PrefabInstance:
       propertyPath: Cluster_radius_scale
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+      propertyPath: Bullet_renderers.Array.data[0]
+      value: 
+      objectReference: {fileID: 1328536161819573451}
+    - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+      propertyPath: Bullet_materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 033bc9d0f6d0f5c4e8a9eb28ea01f4ee, type: 2}
+    - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+      propertyPath: Bullet_materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2d9afbafefca28c4caec09bc482a9471, type: 2}
+    - target: {fileID: 7947023357074736546, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+      propertyPath: Bullet_materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6950961b755c4984bbb7b10aa8d0f3fe, type: 2}
     - target: {fileID: 7947023357074736547, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
       propertyPath: m_Center.y
       value: 0.5
@@ -9836,6 +9856,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1502476566429286541, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+    - {fileID: 7947023357074736549, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
+    - {fileID: 7947023357074736548, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 990b3f4a0a55d3b4d9e8a864044eb27c, type: 3}
 --- !u!4 &3679638080657345268 stripped
 Transform:

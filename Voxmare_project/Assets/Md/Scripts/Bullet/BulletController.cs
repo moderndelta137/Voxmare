@@ -11,7 +11,7 @@ public class BulletController : MonoBehaviour
     public float Bullet_speed;
     public bool Deflectable;
     public bool Damage_player;
-    public MeshRenderer Bullet_render;
+    public List<Renderer> Bullet_renderers;
     public Material[] Bullet_materials;//0:Enemy Bullet, 1:Entered Boundry, 2:Deflected Bullet
     public float Bullet_force;
 
@@ -42,7 +42,6 @@ public class BulletController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Bullet_render=this.GetComponent<MeshRenderer>();
         if(Homing)
         {
             Homing_target = GameObject.Find("Player");
@@ -189,7 +188,10 @@ public class BulletController : MonoBehaviour
 
     public void ChangeMaterial(int index)
     {
-        Bullet_render.material = Bullet_materials[index];
+        foreach (var renderer in Bullet_renderers)
+        {
+            renderer.material = Bullet_materials[index];
+        }
     }
 
     private IEnumerator ReflectCooldown()
