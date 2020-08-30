@@ -193,7 +193,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u039B\u0394  &  Atsu30"
+  m_Text: "\u039B\u0394  &  Atsu"
 --- !u!222 &673707969
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -570,7 +570,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u039B\u0394  &  Atsu30"
+  m_Text: "\u039B\u0394  &  Atsu"
 --- !u!222 &1812401885
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -649,7 +649,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u039B\u0394  &  Atsu30"
+  m_Text: "\u039B\u0394  &  Atsu"
 --- !u!222 &2026511772
 CanvasRenderer:
   m_ObjectHideFlags: 0
