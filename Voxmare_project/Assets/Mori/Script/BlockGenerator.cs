@@ -31,10 +31,13 @@ public class BlockGenerator : MonoBehaviour
     private ClearChecker clearChecker;
     private WaitForSeconds waitGenerate;
     private Transform emptyObject;
+
+    private bool first_time;
     //private List<GameObject> objects;
 
     void Start()
     {
+        first_time = true;
         //currentStage = LevelData.Selected_level;
         waitGenerate = new WaitForSeconds(generateInterval);
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
@@ -105,27 +108,54 @@ public class BlockGenerator : MonoBehaviour
 
         // Generate NPC
         GameObject npc;
-        foreach (var npcSetting in stage.npc)
+        if(first_time)
         {
-            for (int i = 0; i < npcSetting.count; i++)
+            for (int i = 0; i < LevelData.Selected_level; i++)
+            foreach (var npcSetting in stages[i].npc)
             {
-                npc = GameObject.Instantiate(npcSetting.NPCPrefab);
-                //objects.Add(npc);
-                // Position
-                npc.transform.position = generateCenter + new Vector3(Random.Range(-lengthX / 2, lengthX / 2), 0, Random.Range(-lengthZ / 2, lengthZ / 2));
-                
-                // Generate Animation
-                Vector3 scale = npc.transform.localScale;
-                npc.transform.localScale = Vector3.zero;
-                npc.transform.DOScale(scale, generateDuration).SetEase(generateEase);
+                for (int j = 0; j < npcSetting.count; j++)
+                {
+                    npc = GameObject.Instantiate(npcSetting.NPCPrefab);
+                    //objects.Add(npc);
+                    // Position
+                    npc.transform.position = generateCenter + new Vector3(Random.Range(-lengthX / 2, lengthX / 2), 0, Random.Range(-lengthZ / 2, lengthZ / 2));
+                    
+                    // Generate Animation
+                    Vector3 scale = npc.transform.localScale;
+                    npc.transform.localScale = Vector3.zero;
+                    npc.transform.DOScale(scale, generateDuration).SetEase(generateEase);
 
-                npc.transform.parent = emptyObject;
-                npc.GetComponent<PickupController>().enabled = false;
-                npc.GetComponent<NavMeshAgent>().enabled = false;
-                yield return waitGenerate;
+                    npc.transform.parent = emptyObject;
+                    npc.GetComponent<PickupController>().enabled = false;
+                    npc.GetComponent<NavMeshAgent>().enabled = false;
+                    yield return waitGenerate;
+                }
+            }
+            first_time=false;
+        }
+        else
+        {            
+            foreach (var npcSetting in stage.npc)
+            {
+                for (int i = 0; i < npcSetting.count; i++)
+                {
+                    npc = GameObject.Instantiate(npcSetting.NPCPrefab);
+                    //objects.Add(npc);
+                    // Position
+                    npc.transform.position = generateCenter + new Vector3(Random.Range(-lengthX / 2, lengthX / 2), 0, Random.Range(-lengthZ / 2, lengthZ / 2));
+                    
+                    // Generate Animation
+                    Vector3 scale = npc.transform.localScale;
+                    npc.transform.localScale = Vector3.zero;
+                    npc.transform.DOScale(scale, generateDuration).SetEase(generateEase);
+
+                    npc.transform.parent = emptyObject;
+                    npc.GetComponent<PickupController>().enabled = false;
+                    npc.GetComponent<NavMeshAgent>().enabled = false;
+                    yield return waitGenerate;
+                }
             }
         }
-
         clearChecker.setCount(coreCount);
     }
 

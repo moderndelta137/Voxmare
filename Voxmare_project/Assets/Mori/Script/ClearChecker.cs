@@ -81,7 +81,7 @@ public class ClearChecker : MonoBehaviour
 
     public void CoreDestroyed()
     {
-        Debug.Log(LevelData.Remain_core);
+        //Debug.Log(LevelData.Remain_core);
         LevelData.Remain_core--;
         UpdateCoreCount.Invoke();
         if(LevelData.Remain_core <= 0)
