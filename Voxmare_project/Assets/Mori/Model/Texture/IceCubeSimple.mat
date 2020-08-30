@@ -8,12 +8,12 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: IceCubeSimple
-  m_Shader: {fileID: 10755, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: TEXTUREMODULE_ON _AOUV_UV0 _GRADIENTSPACE_WORLD_SPACE _GRADSETTINGS_B_USE_GLOBAL
-    _GRADSETTINGS_D_USE_GLOBAL _GRADSETTINGS_F_USE_GLOBAL _GRADSETTINGS_L_USE_GLOBAL
-    _GRADSETTINGS_R_USE_GLOBAL _GRADSETTINGS_T_USE_GLOBAL _LMAPBLENDINGMODE_ADD _MODE_OPAQUE
-    _SHADING_B_VERTEX_COLOR _SHADING_D_VERTEX_COLOR _SHADING_F_VERTEXCOLOR _SHADING_L_VERTEX_COLOR
-    _SHADING_R_VERTEX_COLOR _SHADING_T_VERTEX_COLOR
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: TEXTUREMODULE_ON _AOUV_UV0 _EMISSION _GRADIENTSPACE_WORLD_SPACE
+    _GRADSETTINGS_B_USE_GLOBAL _GRADSETTINGS_D_USE_GLOBAL _GRADSETTINGS_F_USE_GLOBAL
+    _GRADSETTINGS_L_USE_GLOBAL _GRADSETTINGS_R_USE_GLOBAL _GRADSETTINGS_T_USE_GLOBAL
+    _LMAPBLENDINGMODE_ADD _MODE_OPAQUE _SHADING_B_VERTEX_COLOR _SHADING_D_VERTEX_COLOR
+    _SHADING_F_VERTEXCOLOR _SHADING_L_VERTEX_COLOR _SHADING_R_VERTEX_COLOR _SHADING_T_VERTEX_COLOR
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -48,7 +48,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 1d97e240eb18eec498937b69328b2210, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
@@ -169,7 +169,7 @@ Material:
     - _AOColor: {r: 0, g: 0, b: 0, a: 1}
     - _AmbientColor: {r: 0, g: 0, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 0, g: 0.8579509, b: 0.9716981, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _Color1_B: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_F: {r: 1, g: 1, b: 1, a: 1}
@@ -184,7 +184,7 @@ Material:
     - _Color2_T: {r: 1, g: 1, b: 1, a: 1}
     - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _Color_Fog: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 1.6627452, g: 0.30588233, b: 0.30588233, a: 1}
     - _GizmoPosition_B: {r: 0, g: 0, b: 10, a: 10}
     - _GizmoPosition_D: {r: 0, g: 0, b: 10, a: 10}
     - _GizmoPosition_F: {r: 0, g: 0, b: 10, a: 10}

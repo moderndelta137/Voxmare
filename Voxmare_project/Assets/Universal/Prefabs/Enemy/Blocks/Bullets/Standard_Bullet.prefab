@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 626917623455283928}
   - component: {fileID: 629263200325721318}
   - component: {fileID: 7426481251817333337}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SubEmitterDeath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4836,7 +4836,7 @@ GameObject:
   - component: {fileID: 2948585548043697345}
   - component: {fileID: 7116058232591937063}
   - component: {fileID: 7020481380425687750}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BubbleParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4855,7 +4855,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8216575774701320950}
-  m_Father: {fileID: 889475045401196400}
+  m_Father: {fileID: 8476446312899599637}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &7116058232591937063
@@ -9631,7 +9631,7 @@ GameObject:
   - component: {fileID: 8476446312899599637}
   - component: {fileID: 3491256870427696245}
   - component: {fileID: 3107726370475366575}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BubbleBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9650,6 +9650,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 626917623455283928}
+  - {fileID: 2948585548043697345}
   m_Father: {fileID: 889475045401196400}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14484,7 +14485,7 @@ GameObject:
   - component: {fileID: 8216575774701320950}
   - component: {fileID: 186004199334629847}
   - component: {fileID: 4611489496988967168}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SubEmitterDeath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
