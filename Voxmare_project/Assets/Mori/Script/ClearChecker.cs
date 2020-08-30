@@ -126,6 +126,11 @@ public class ClearChecker : MonoBehaviour
     private IEnumerator LevelPrepare()
     {
         Time.timeScale = 1;
+        if(LevelData.Selected_level > 20)
+        {
+            LevelData.isPaused = false;
+            SceneManager.LoadScene(3);
+        }
         Current_status = LevelStatus.Ready;
         if(first_time)
         {

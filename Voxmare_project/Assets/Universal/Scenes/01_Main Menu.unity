@@ -4214,7 +4214,7 @@ MonoBehaviour:
   Night_Model: {fileID: 653352725}
   Block_animator: {fileID: 152517687}
   BGM_source: {fileID: 228710808}
-  StartGame_clip: {fileID: 8300000, guid: fa1ba2803f7d7b544ae1dd34479bce24, type: 3}
+  StartGame_clip: {fileID: 8300000, guid: a39521b73d19b914cb48c7756195b6d9, type: 3}
 --- !u!114 &574447561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14251,6 +14251,10 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 24300002, guid: 95c7bdf16febb9c47a5279ea47b2de12, type: 2}
+    - target: {fileID: 653352727, guid: 3ef9b8bbe825a4545b58bd3ce972f99b, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 158549493261136694, guid: 3ef9b8bbe825a4545b58bd3ce972f99b, type: 3}
       propertyPath: m_Name
       value: Night
