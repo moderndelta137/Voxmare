@@ -2888,6 +2888,7 @@ GameObject:
   - component: {fileID: 574447564}
   - component: {fileID: 574447567}
   - component: {fileID: 574447566}
+  - component: {fileID: 574447568}
   m_Layer: 5
   m_Name: UI Canvas
   m_TagString: Untagged
@@ -3296,6 +3297,19 @@ MonoBehaviour:
   SE_mixer: {fileID: 24100000, guid: 92656310400872f4cbeb6538ff3809c9, type: 2}
   PlyaerPrefs_Key: BGM_Volume
   SE_slider: {fileID: 2135566579}
+--- !u!114 &574447568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574447555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 895b79ef85f01354592e68fe7f70b261, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Controltype_slider: {fileID: 1584919853}
 --- !u!1 &608183875
 GameObject:
   m_ObjectHideFlags: 0
@@ -6511,6 +6525,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1563333618}
   m_CullTransparentMesh: 0
+--- !u!114 &1584919853 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1469082000314297503, guid: e3c70b764770ebf43961508da143d6ad, type: 3}
+  m_PrefabInstance: {fileID: 1469082001450552416}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1634995142 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1469081999851734950, guid: e3c70b764770ebf43961508da143d6ad, type: 3}
@@ -8686,6 +8711,34 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 574447566}
+    - target: {fileID: 1469082000314297503, guid: e3c70b764770ebf43961508da143d6ad, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1469082000314297503, guid: e3c70b764770ebf43961508da143d6ad, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1469082000314297503, guid: e3c70b764770ebf43961508da143d6ad, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1469082000314297503, guid: e3c70b764770ebf43961508da143d6ad, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 574447568}
+    - target: {fileID: 1469082000314297503, guid: e3c70b764770ebf43961508da143d6ad, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ChangeControlType, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1469082000314297503, guid: e3c70b764770ebf43961508da143d6ad, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UpdateControltype
+      objectReference: {fileID: 0}
+    - target: {fileID: 1469082000314297503, guid: e3c70b764770ebf43961508da143d6ad, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1469082000745196964, guid: e3c70b764770ebf43961508da143d6ad, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

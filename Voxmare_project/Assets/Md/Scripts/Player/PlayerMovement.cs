@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("General Control")]
     public bool Mouse_control;
+    public float Joystick_cursor_offset;
     public CharacterController Player_CharacterController;
     public Camera Main_camera;
     public float Move_speed;
@@ -77,8 +78,8 @@ public class PlayerMovement : MonoBehaviour
     {
         Player_CharacterController = GetComponent<CharacterController>();
         Main_camera=Camera.main;
-        if(Mouse_control)
-            InitiateMouseControl();
+        UpdateControlType();
+        InitiateMouseControl();
         
         rend = GetComponentInChildren<SkinnedMeshRenderer>();
         original_mat = rend.material;
@@ -93,11 +94,22 @@ public class PlayerMovement : MonoBehaviour
         BecomeInvencible();
         can_move = false;
     }
-
+    public void UpdateControlType()
+    {
+        if(PlayerPrefs.GetInt("ControlType")==0)
+        {
+            Mouse_control = true;
+        }
+        else
+        {
+            Mouse_control = false;
+        }
+    }
     public void InitiateMouseControl()
     {
         Mouse_cursor=Instantiate(Mouse_cursor_prefab,Vector3.zero,Quaternion.identity);
         mouse_plane = new Plane(this.transform.up, this.transform.position);
+        Mouse_cursor.SetActive(false);
     }
 
     public void LevelStart()
@@ -106,6 +118,7 @@ public class PlayerMovement : MonoBehaviour
         health_bar_script.gameObject.SetActive(true);
         health_bar_script.SetHealth(HP);
         can_move = true;
+        
         Mouse_cursor.SetActive(true);
         StartCoroutine(BecomeInvencible());
     }
@@ -119,6 +132,7 @@ public class PlayerMovement : MonoBehaviour
         player_animator.SetFloat("Move_X", 0);
         player_animator.SetFloat("Move_input",0);
         player_animator.SetFloat("Look_input",0);
+        
         Mouse_cursor.SetActive(false);
         invencible = true;
     }
@@ -167,6 +181,7 @@ public class PlayerMovement : MonoBehaviour
                 look_input_vector.z = Input.GetAxis("Look_Vertical");
                 if(look_input_vector.magnitude>0.1f)
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(look_input_vector), Rotate_speed*Time.deltaTime);
+                Mouse_cursor.transform.position = this.transform.position+this.transform.forward*Joystick_cursor_offset;
             }
 
             //Update Movement animation

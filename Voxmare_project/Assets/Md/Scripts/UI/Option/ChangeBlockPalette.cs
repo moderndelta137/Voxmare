@@ -14,6 +14,10 @@ public class ChangeBlockPalette : MonoBehaviour
     // Start is called before the first frame update
     void Start() 
     {
+        if(!PlayerPrefs.HasKey("ColorPalette"))
+        {
+            PlayerPrefs.SetInt("ColorPalette",0);
+        }
         Palette_index = PlayerPrefs.GetInt("ColorPalette");
         UI_dropdown.value = Palette_index;
         Block_material.SetTexture("_MainTexture", Block_palettes[Palette_index]);

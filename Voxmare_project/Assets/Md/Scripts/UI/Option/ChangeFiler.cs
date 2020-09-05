@@ -15,7 +15,10 @@ public class ChangeFiler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(!PlayerPrefs.HasKey("Filter"))
+        {
+            PlayerPrefs.SetInt("Filter",0);
+        }
         filter_index = PlayerPrefs.GetInt("Filter");
         UpdateFilter(0);
     }
