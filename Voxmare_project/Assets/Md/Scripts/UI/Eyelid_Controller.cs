@@ -14,6 +14,8 @@ public class Eyelid_Controller : MonoBehaviour
     void Start()
     {
         mySequence = DOTween.Sequence();
+        Up_lid.transform.localPosition = Vector3.up*Move_range.y;
+        Down_lid.transform.localPosition = Vector3.up*-Move_range.y;
     }
 
     // Update is called once per frame
@@ -24,11 +26,15 @@ public class Eyelid_Controller : MonoBehaviour
 
     public void EyeClose()
     {
+        Up_lid.transform.localPosition = Vector3.up*Move_range.x;
+        Down_lid.transform.localPosition = Vector3.up*-Move_range.x;
         Up_lid.transform.DOLocalMoveY(Move_range.y,Blink_duration).SetEase(Ease.InOutSine).SetUpdate(true);
         Down_lid.transform.DOLocalMoveY(-Move_range.y,Blink_duration).SetEase(Ease.InOutSine).SetUpdate(true);
     }
     public void EyeOpen()
     {
+        Up_lid.transform.localPosition = Vector3.up*Move_range.y;
+        Down_lid.transform.localPosition = Vector3.up*-Move_range.y;
         Up_lid.transform.DOLocalMoveY(Move_range.x,Blink_duration).SetEase(Ease.InOutSine).SetUpdate(true);
         Down_lid.transform.DOLocalMoveY(-Move_range.x,Blink_duration).SetEase(Ease.InOutSine).SetUpdate(true);
     }

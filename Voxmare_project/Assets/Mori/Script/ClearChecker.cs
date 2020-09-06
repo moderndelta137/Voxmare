@@ -13,6 +13,7 @@ public class ClearChecker : MonoBehaviour
     public UnityEvent LevelStarted;
     public UnityEvent LevelPrepared;
     public UnityEvent GameOvered;
+    public UnityEvent NewGameStart;
 
     public float Clear_wait_duration;
     public float Prepare_wait_duration;
@@ -43,7 +44,10 @@ public class ClearChecker : MonoBehaviour
         Prepare_wait = new WaitForSecondsRealtime(Prepare_wait_duration);
         Gameover_wait = new WaitForSecondsRealtime(Gameover_wait_duration);
         Fisrt_time_wait = new WaitForSecondsRealtime(Fisrt_time_wait_duration);
-        first_time = true;
+        if(LevelData.Selected_level<=1)
+        {
+            first_time = true;
+        }
         StartCoroutine(LevelPrepare());
     }
     // Update is called once per frame
@@ -134,6 +138,8 @@ public class ClearChecker : MonoBehaviour
         Current_status = LevelStatus.Ready;
         if(first_time)
         {
+            yield return new WaitForSecondsRealtime(0.2f);
+            NewGameStart.Invoke();
             yield return Fisrt_time_wait;
             first_time = false;
         }

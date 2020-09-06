@@ -144,6 +144,8 @@ public class Main_Menu_Controller : MonoBehaviour
         BGM_source.volume = 0.6f;
         BGM_source.Play();
         yield return newgame_wait;
+        Eyelid_script.EyeClose();
+        yield return blink_wait;
         SceneManager.LoadScene(2);
     }
 
