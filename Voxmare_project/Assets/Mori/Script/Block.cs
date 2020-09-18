@@ -247,7 +247,7 @@ public class Block : MonoBehaviour
     /// <returns>True : overlap, False : not overlap</returns>
     public bool CheckOverlap()
     {
-        Vector3 castPos = transform.position + new Vector3(0, 3.0f, 0);
+        Vector3 castPos = transform.TransformPoint(mycollider.center) + new Vector3(0, 3.0f, 0);
         RaycastHit[] hits = Physics.BoxCastAll(castPos, (mycollider.size - new Vector3(manager.overlapMargin, manager.overlapMargin, manager.overlapMargin)) * 0.5f, new Vector3(0, -1, 0), transform.rotation, Mathf.Infinity, LayerMask.GetMask("Enemy"));
         foreach (var hit in hits)
         {
@@ -320,12 +320,12 @@ public class Block : MonoBehaviour
     void OnEnable()
     {
         transform.GetComponentInChildren<BlockAnimator>().enabled = true;
-        transform.GetComponentInChildren<SpammerController>().enabled = true;
+        //transform.GetComponentInChildren<SpammerController>().enabled = true;
     }
     void OnDisable()
     {
         transform.GetComponentInChildren<BlockAnimator>().enabled = false;
-        transform.GetComponentInChildren<SpammerController>().enabled = false;
+        //transform.GetComponentInChildren<SpammerController>().enabled = false;
     }
 
     void AloneAnimation()
