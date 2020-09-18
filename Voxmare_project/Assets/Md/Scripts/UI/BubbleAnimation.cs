@@ -41,13 +41,13 @@ public class BubbleAnimation : MonoBehaviour
         move_duration = Random.Range(move_duration_range.x,move_duration_range.y);
         myTween = this.transform.DOLocalMove(origin+move_direction*move_strength,move_duration).SetLoops(2, LoopType.Yoyo).SetEase(Ease.InOutSine).SetUpdate(true);
         yield return myTween.WaitForCompletion();
-         StartCoroutine(StartMoving());
+        StartCoroutine(StartMoving());
     }
 
     private void OnDisable() 
     {
         StopAllCoroutines();
-        DOTween.KillAll();
+        myTween.Kill();
         this.transform.localPosition = origin;     
     }
 
