@@ -75,12 +75,14 @@ public class ClearChecker : MonoBehaviour
         }
 
         //!!!!!!!!!!!FOR DEBUG ONLY!!!!!!! To Be Deleted!!!!!!!!!!!!!!
+        /*
         if(Input.GetKeyDown(KeyCode.V) && Current_status ==LevelStatus.Start)
         {
             Debug.Log("V");
             StopAllCoroutines();
             StartCoroutine(LevelClear());
         }
+        */
     }
 
     public void CoreDestroyed()

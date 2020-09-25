@@ -30,6 +30,10 @@ public class LevelSelect : MonoBehaviour
         {
             PlayerPrefs.SetInt("MaxLevel",1);
         }
+        if(PlayerPrefs.GetInt("MaxLevel")>20)
+        {
+            PlayerPrefs.SetInt("MaxLevel",20);
+        }
         Level_slider.maxValue = PlayerPrefs.GetInt("MaxLevel");
     }
 
