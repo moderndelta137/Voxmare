@@ -93,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
         SE_source = GetComponent<AudioSource>();
         BecomeInvencible();
         can_move = false;
+
     }
     public void UpdateControlType()
     {

@@ -87,13 +87,18 @@ public class ClearChecker : MonoBehaviour
 
     public void CoreDestroyed()
     {
-        //Debug.Log(LevelData.Remain_core);
+        Debug.Log("destroy");
         LevelData.Remain_core--;
-        UpdateCoreCount.Invoke();
-        if(LevelData.Remain_core <= 0)
+        if(Current_status == LevelStatus.Start)
         {
-            StopAllCoroutines();
-            StartCoroutine(LevelClear());
+            UpdateCoreCount.Invoke();
+            if(LevelData.Remain_core <= 0)
+            {
+                Current_status = LevelStatus.Result;
+                StopAllCoroutines();
+                StartCoroutine(LevelClear());
+                Debug.Log("check");
+            }
         }
     }
 
@@ -106,13 +111,14 @@ public class ClearChecker : MonoBehaviour
 
     private IEnumerator LevelClear()
     {
+        Debug.Log("clear");
         if(LevelData.Selected_level>PlayerPrefs.GetInt("MaxLevel"))
         {
             PlayerPrefs.SetInt("MaxLevel",LevelData.Selected_level);
         }
         LevelData.Selected_level++;
         LevelCleared.Invoke();
-        Current_status = LevelStatus.Result;
+        
         yield return Clear_wait;
         LevelClearReady.Invoke();
         Time.timeScale = 0;
