@@ -14,7 +14,7 @@ Shader "Snapshot/Bloom"
         _MainTex ("Texture", 2D) = "white" {}
 		_KernelSize("Kernel Size (N)", Int) = 21
 		_Spread("St. dev. (sigma)", Float) = 5.0
-		_Threshold("Bloom Threshold", Range(0, 1)) = 0.5
+		_Threshold("Bloom Threshold", Range(0, 1)) = 1
     }
     SubShader
     {

@@ -139,7 +139,10 @@ public class PlayerDeflect : MonoBehaviour
                             bullet_instance.transform.position = temp_position;
                             shoot_vector = movement_script.Mouse_cursor.transform.position-bullet.transform.position;
                             shoot_vector.y = 0;
+                            //Debug.Log("Before: "+ bullet_instance.transform.rotation);
                             bullet_instance.transform.rotation = Quaternion.LookRotation(shoot_vector);
+                            //Debug.Log(shoot_vector);
+                            //Debug.Log("After: "+ bullet_instance.transform.rotation);
                             bullet_instance.ChangeMaterial(2);
 
                             //Apply Deflect Bonus

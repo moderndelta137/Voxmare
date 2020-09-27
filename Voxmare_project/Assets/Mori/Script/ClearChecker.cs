@@ -14,6 +14,7 @@ public class ClearChecker : MonoBehaviour
     public UnityEvent LevelPrepared;
     public UnityEvent GameOvered;
     public UnityEvent NewGameStart;
+    public UnityEvent ShowTutorial;
 
     public float Clear_wait_duration;
     public float Prepare_wait_duration;
@@ -31,6 +32,7 @@ public class ClearChecker : MonoBehaviour
     public UnityEvent Restart;
     public enum LevelStatus
     {
+        Turotial,
         Ready,
         Start,
         Result,
@@ -57,6 +59,12 @@ public class ClearChecker : MonoBehaviour
         {
             switch(Current_status)
             {
+                case LevelStatus.Turotial:
+                    //Time.timeScale = 1;
+                    LevelData.isPaused=false;
+                    StopAllCoroutines();
+                    StartCoroutine(LevelPrepare());
+                break;
                 case LevelStatus.Ready:
                     StopAllCoroutines();
                     LevelStart();
@@ -64,6 +72,8 @@ public class ClearChecker : MonoBehaviour
                 case LevelStatus.Start:
                 break;
                 case LevelStatus.Result:
+                    //Time.timeScale = 1;
+                    LevelData.isPaused=false;
                     StopAllCoroutines();
                     StartCoroutine(LevelPrepare());
                 break;
@@ -87,7 +97,7 @@ public class ClearChecker : MonoBehaviour
 
     public void CoreDestroyed()
     {
-        Debug.Log("destroy");
+        //Debug.Log("destroy");
         LevelData.Remain_core--;
         if(Current_status == LevelStatus.Start)
         {
@@ -97,7 +107,7 @@ public class ClearChecker : MonoBehaviour
                 Current_status = LevelStatus.Result;
                 StopAllCoroutines();
                 StartCoroutine(LevelClear());
-                Debug.Log("check");
+                //Debug.Log("check");
             }
         }
     }
@@ -111,7 +121,7 @@ public class ClearChecker : MonoBehaviour
 
     private IEnumerator LevelClear()
     {
-        Debug.Log("clear");
+        //Debug.Log("clear");
         if(LevelData.Selected_level>PlayerPrefs.GetInt("MaxLevel"))
         {
             PlayerPrefs.SetInt("MaxLevel",LevelData.Selected_level);
@@ -143,19 +153,28 @@ public class ClearChecker : MonoBehaviour
             LevelData.isPaused = false;
             SceneManager.LoadScene(3);
         }
-        Current_status = LevelStatus.Ready;
+
         if(first_time)
         {
+            Current_status = LevelStatus.Turotial;
             yield return new WaitForSecondsRealtime(0.2f);
             NewGameStart.Invoke();
             yield return Fisrt_time_wait;
             first_time = false;
+            ShowTutorial.Invoke();
+            Time.timeScale = 0;
+            LevelData.isPaused=true;
+
         }
-        LevelPrepared.Invoke();
-        yield return Prepare_wait;
-        LevelPrepareReady.Invoke();
-        Time.timeScale = 0;
-        LevelData.isPaused = true;
+        else
+        {
+            Current_status = LevelStatus.Ready;
+            LevelPrepared.Invoke();
+            yield return Prepare_wait;
+            LevelPrepareReady.Invoke();
+            Time.timeScale = 0;
+            LevelData.isPaused = true;
+        }
     }
 
     public void GameOver()
