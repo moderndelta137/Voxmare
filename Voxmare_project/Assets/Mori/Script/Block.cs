@@ -356,6 +356,8 @@ public class Block : MonoBehaviour
 
     void LinkAnimation()
     {
+        if (this.transform == null || connectPointThis == null || targetBlockTransform == null ||connectPointTarget == null) return;
+
         // Decide Position
         float distance = Vector3.Distance(transform.position, connectPointThis.position);
         Vector3 p2cTarget = (connectPointTarget.position - targetBlockTransform.position).normalized;
