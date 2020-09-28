@@ -34,7 +34,7 @@ public class LevelSelect : MonoBehaviour
         {
             PlayerPrefs.SetInt("MaxLevel",20);
         }
-        Level_slider.maxValue = PlayerPrefs.GetInt("MaxLevel");
+        Level_slider.maxValue = PlayerPrefs.GetInt("MaxLevel") + 1;
     }
 
     public void UpdateSelectedLevel()
