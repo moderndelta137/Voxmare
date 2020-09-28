@@ -9,16 +9,10 @@ public class EnemyController : MonoBehaviour
     public int Damage;
     public float Push_force;
     //public bool Damage_player;
-    [Header("Hit Reaction")]
-    public Material Hit_reaction_mat;
-    private Material original_mat;
-    private MeshRenderer rend;
-    public float DEBUG_hit_reaction_duration;
-    public float DEBUG_hit_reaction_flinch;
-    private int hit_reacting;
-    private Tween myTween;
-    private Vector3 hit_reaction_original_position;
+    
+    private BlockAnimator blockAnimator;
     private Vector3 temp_position;
+
     [Header("UI")]
     public GameObject Health_bar_prefab;
     //public GameObject health_bar;
@@ -26,11 +20,11 @@ public class EnemyController : MonoBehaviour
     public Vector3 Health_bar_offset;
 
     private Block block;
+
     // Start is called before the first frame update
     void Start()
     {
-        rend = GetComponentInChildren<MeshRenderer>();
-        original_mat = rend.sharedMaterial;
+        blockAnimator = GetComponentInChildren<BlockAnimator>();
         health_bar_script = Instantiate(Health_bar_prefab, Vector3.zero, Quaternion.identity,this.transform).GetComponent<Health_Bar>();
         health_bar_script.transform.localPosition=Health_bar_offset;
         health_bar_script.SetMaxHealth(HP);
@@ -43,23 +37,12 @@ public class EnemyController : MonoBehaviour
 
     }
 
-    public IEnumerator ApplyDamage(Vector3 Incoming)
+    public void ApplyDamage(Vector3 Incoming)
     {
         HP -= (int)Incoming.magnitude;
         health_bar_script.gameObject.SetActive(true);
         health_bar_script.SetHealth(HP);
-        rend.material = Hit_reaction_mat;
-        if (hit_reacting == 0)
-        {
-            hit_reaction_original_position = this.transform.localPosition;
-        }
-        hit_reacting += 1;
-        myTween = this.transform.DOLocalMove(hit_reaction_original_position + Incoming.normalized * DEBUG_hit_reaction_flinch, DEBUG_hit_reaction_duration);
-        yield return myTween.WaitForCompletion();
-        myTween = this.transform.DOLocalMove(hit_reaction_original_position, DEBUG_hit_reaction_duration);
-        yield return myTween.WaitForCompletion();
-        hit_reacting -= 1;
-        rend.material = original_mat;
+        blockAnimator.DamageAnimation(Incoming);
         ResetY();
         if (HP <= 0)
         {

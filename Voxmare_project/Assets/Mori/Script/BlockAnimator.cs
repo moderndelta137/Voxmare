@@ -5,6 +5,16 @@ using DG.Tweening;
 
 public class BlockAnimator : MonoBehaviour
 {
+    [Header("Hit Reaction")]
+    public Material Hit_reaction_mat;
+    private Material original_mat;
+    [SerializeField] float hit_reaction_duration = 0.05f;
+    [SerializeField] float hit_reaction_flinch = 1;
+    private int hit_reacting;
+    private MeshRenderer rend;
+    private Tween myTween;
+    private Vector3 hit_reaction_original_position;
+
     [Header("Scale Animation")]
     [SerializeField] bool s_animation;
     [SerializeField] float s_duration;
@@ -24,7 +34,10 @@ public class BlockAnimator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(s_animation)
+        rend = GetComponentInChildren<MeshRenderer>();
+        original_mat = rend.sharedMaterial;
+
+        if (s_animation)
         {
             if (s_syncrosynchronized)
             {
@@ -49,6 +62,27 @@ public class BlockAnimator : MonoBehaviour
             }
             transform.DOLocalMove(m_distance, m_duration).SetEase(m_ease).SetDelay(delay).SetLoops(-1, LoopType.Yoyo);
         }
+    }
+
+    public void DamageAnimation(Vector3 Incoming)
+    {
+        StartCoroutine(DamageAnimationCoroutine(Incoming));
+    }
+
+    private IEnumerator DamageAnimationCoroutine(Vector3 Incoming)
+    {
+        rend.material = Hit_reaction_mat;
+        if (hit_reacting == 0)
+        {
+            hit_reaction_original_position = this.transform.localPosition;
+        }
+        hit_reacting += 1;
+        myTween = this.transform.DOLocalMove(hit_reaction_original_position + Incoming.normalized * hit_reaction_flinch, hit_reaction_duration);
+        yield return myTween.WaitForCompletion();
+        myTween = this.transform.DOLocalMove(hit_reaction_original_position, hit_reaction_duration);
+        yield return myTween.WaitForCompletion();
+        hit_reacting -= 1;
+        rend.material = original_mat;
     }
 
     // Update is called once per frame

@@ -198,9 +198,10 @@ public class BlockGenerator : MonoBehaviour
 
     public void DestroyAllBlocks()
     {
-        foreach(Block block_left in manager.blocks)
+        var leftBlocks = new List<Block>(manager.blocks);
+        foreach(Block leftBlock in leftBlocks)
         {
-            block_left.GetComponent<EnemyController>().SendMessage("ApplyDamage",Vector3.up*999);
+            leftBlock.GetComponent<EnemyController>().SendMessage("ApplyDamage",Vector3.up*999);
         }
     }
 

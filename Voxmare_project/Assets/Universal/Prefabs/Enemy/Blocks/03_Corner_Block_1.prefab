@@ -44,6 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74c60190321bddc47b5ce2c03f536928, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Hit_reaction_mat: {fileID: 2100000, guid: 14ff9e6e57d5bee4682ee74e146fccf2, type: 2}
+  hit_reaction_duration: 0.05
+  hit_reaction_flinch: 1
   s_animation: 0
   s_duration: 0
   s_scale: {x: 0.8, y: 0.8, z: 0.8}
@@ -205,9 +208,6 @@ MonoBehaviour:
   HP: 5
   Damage: 3
   Push_force: 3
-  Hit_reaction_mat: {fileID: 2100000, guid: 14ff9e6e57d5bee4682ee74e146fccf2, type: 2}
-  DEBUG_hit_reaction_duration: 0.05
-  DEBUG_hit_reaction_flinch: 1
   Health_bar_prefab: {fileID: 1909103199782469627, guid: 36285098073564f4d88e44056c348fa6, type: 3}
   Health_bar_offset: {x: 0, y: 5, z: 0}
 --- !u!82 &6310539508917413445
