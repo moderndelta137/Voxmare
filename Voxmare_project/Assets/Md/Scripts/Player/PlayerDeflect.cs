@@ -226,7 +226,7 @@ public class PlayerDeflect : MonoBehaviour
         if(Penetrate_bonus)
         {
             bullet_instance.Penetrate_lifespan = Penetrate_lifespan[Penetrate_rank];
-            bullet_instance.Damage = (int)(bullet_instance.Damage * Penetrate_damage_bonus[Velocity_rank]);
+            bullet_instance.Damage = (int)(bullet_instance.Damage * Penetrate_damage_bonus[Penetrate_rank]);
             bullet_instance.Penetrate = true;
         }
         if(Cluster_bonus)

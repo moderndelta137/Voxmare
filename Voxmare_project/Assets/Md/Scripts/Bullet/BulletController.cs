@@ -119,8 +119,7 @@ public class BulletController : MonoBehaviour
                     else if(Penetrate)//Penetrate effect has higher priority over Reflect effect
                     {
                         ShowHitFX();//TODO change it to a hit enemy effect
-                        if(!Cluster)
-                            other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                         Destroy(this.gameObject,Penetrate_lifespan);
                     }     
                     else
