@@ -299,11 +299,7 @@ public class Block : MonoBehaviour
 
     void Update()
     {
-        if (!IsAlone && !isMoving)
-        {
-        }
-        // when block is alone
-        else if(IsAlone && !isMoving)
+        if(IsAlone && !isMoving)
         {
             AloneAnimation();
         }
@@ -320,12 +316,12 @@ public class Block : MonoBehaviour
     void OnEnable()
     {
         transform.GetComponentInChildren<BlockAnimator>().enabled = true;
-        //transform.GetComponentInChildren<SpammerController>().enabled = true;
+        transform.GetComponentInChildren<SpammerController>().enabled = true;
     }
     void OnDisable()
     {
         transform.GetComponentInChildren<BlockAnimator>().enabled = false;
-        //transform.GetComponentInChildren<SpammerController>().enabled = false;
+        transform.GetComponentInChildren<SpammerController>().enabled = false;
     }
 
     void AloneAnimation()
@@ -390,7 +386,7 @@ public class Block : MonoBehaviour
             else
             {
                 IsAlone = false;
-
+                transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
                 //Play Link SE
                 SE_source.clip = Link_SE_clips[Random.Range(0,Link_SE_clips.Length)];
                 SE_source.Play();
