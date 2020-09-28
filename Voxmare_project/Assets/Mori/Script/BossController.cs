@@ -23,7 +23,7 @@ public class BossController : MonoBehaviour
     [SerializeField] float tackleInterval;
     [SerializeField] float tackleIntervalDivergence;
     [SerializeField] float tackleDuration;
-    [SerializeField] Ease tackleEase;
+    [SerializeField] AnimationCurve tackleEase;
     [Header("Spin")]
     [SerializeField] float radius;
     [SerializeField] float spinInterval;
