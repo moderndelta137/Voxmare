@@ -16,6 +16,7 @@ public class Eyelid_Controller : MonoBehaviour
         mySequence = DOTween.Sequence();
         Up_lid.transform.localPosition = Vector3.up*Move_range.y;
         Down_lid.transform.localPosition = Vector3.up*-Move_range.y;
+        //EyeOpen();
     }
 
     // Update is called once per frame

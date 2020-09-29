@@ -200,7 +200,7 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator ApplyDamage(Vector3 Incoming)
     {
-        if(!invencible)
+        if(!invencible && HP>0)
         {
             StartCoroutine(BecomeInvencible());
             can_move = false;

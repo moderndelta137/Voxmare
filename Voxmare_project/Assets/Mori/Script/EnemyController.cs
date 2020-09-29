@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
     public int HP;
     public int Damage;
     public float Push_force;
+    //private bool dead;
     //public bool Damage_player;
     
     private BlockAnimator blockAnimator;
@@ -39,14 +40,17 @@ public class EnemyController : MonoBehaviour
 
     public void ApplyDamage(Vector3 Incoming)
     {
-        HP -= (int)Incoming.magnitude;
-        health_bar_script.gameObject.SetActive(true);
-        health_bar_script.SetHealth(HP);
-        blockAnimator.DamageAnimation(Incoming);
-        ResetY();
-        if (HP <= 0)
+        if(HP>0)
         {
-            Death();
+            HP -= (int)Incoming.magnitude;
+            health_bar_script.gameObject.SetActive(true);
+            health_bar_script.SetHealth(HP);
+            blockAnimator.DamageAnimation(Incoming);
+            ResetY();
+            if (HP <= 0)
+            {
+                Death();
+            }
         }
     }
 

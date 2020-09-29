@@ -180,7 +180,6 @@ public class ClearChecker : MonoBehaviour
     public void GameOver()
     {
         Time.timeScale = 0;
-        LevelData.isPaused = true;
         GameOvered.Invoke();
         StartCoroutine(GameOverPrepare());
     }
@@ -189,6 +188,8 @@ public class ClearChecker : MonoBehaviour
         yield return Gameover_wait;
         GameOverReady.Invoke();
         Current_status = LevelStatus.GameOver;
+        LevelData.isPaused = true;
+
     }
 
 

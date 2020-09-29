@@ -34,7 +34,6 @@ public class BulletController : MonoBehaviour
     public float Cluster_radius_scale;
     public GameObject Cluster_prefab;
     private ClusterBulletController cluster_controller;
-    private bool shuttingdown;
 
     private Collider cd;
 
@@ -85,6 +84,7 @@ public class BulletController : MonoBehaviour
                 {   if(!Cluster)
                         other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                     ShowHitFX();//TODO change it to a hit enemy effect
+                    SpawnCluster();
                     Destroy(this.gameObject);
                 }
             break;
@@ -94,6 +94,7 @@ public class BulletController : MonoBehaviour
                     if(!Cluster)
                         other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
                     ShowHitFX();//TODO change it to a hit enemy effect
+                    SpawnCluster();
                     Destroy(this.gameObject);
                 }
             break;         
@@ -113,20 +114,23 @@ public class BulletController : MonoBehaviour
                         }
                         else
                             other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                        ShowHitFX();//TODO change it to a hit enemy effect
+                        ShowHitFX();
+                        SpawnCluster();
                         Destroy(this.gameObject,Reflect_lifespan);
                     }
-                    else if(Penetrate)//Penetrate effect has higher priority over Reflect effect
+                    else if(Penetrate)
                     {
-                        ShowHitFX();//TODO change it to a hit enemy effect
+                        ShowHitFX();
                         other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                        SpawnCluster();
                         Destroy(this.gameObject,Penetrate_lifespan);
                     }     
                     else
                     {
-                        ShowHitFX();//TODO change it to a hit enemy effect
+                        ShowHitFX();
                         if(!Cluster)
                             other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
+                        SpawnCluster();
                         Destroy(this.gameObject);
                     }     
                 }
@@ -146,16 +150,19 @@ public class BulletController : MonoBehaviour
                         cluster_controller.Damage_player = Damage_player;
                     }
                     ShowHitFX();
+                    SpawnCluster();
                     Destroy(this.gameObject,Reflect_lifespan);
                     
                 }
                 else if (Penetrate)
                 {
+                    SpawnCluster();
                     Destroy(this.gameObject,Penetrate_lifespan);
                 }
                 else
                 {
                     ShowHitFX();
+                    SpawnCluster();
                     Destroy(this.gameObject);
                 }
             break;  
@@ -166,22 +173,15 @@ public class BulletController : MonoBehaviour
 
     }
 
-    void OnApplicationQuit()
-    {
-        this.shuttingdown = true;
-    }
 
-    private void OnDestroy() 
+    private void SpawnCluster() 
     {
-        if(!shuttingdown)
+        if(Cluster)
         {
-            if(Cluster)
-            {
-                cluster_controller = Instantiate(Cluster_prefab, this.transform.position, Quaternion.identity).GetComponent<ClusterBulletController>();
-                cluster_controller.Radius *= Cluster_radius_scale;
-                cluster_controller.transform.localScale*=Cluster_radius_scale;
-                cluster_controller.Damage_player = Damage_player;
-            }
+            cluster_controller = Instantiate(Cluster_prefab, this.transform.position, Quaternion.identity).GetComponent<ClusterBulletController>();
+            cluster_controller.Radius *= Cluster_radius_scale;
+            cluster_controller.transform.localScale*=Cluster_radius_scale;
+            cluster_controller.Damage_player = Damage_player;
         }
     }
 

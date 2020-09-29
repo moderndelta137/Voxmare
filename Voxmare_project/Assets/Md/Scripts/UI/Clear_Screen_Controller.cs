@@ -21,6 +21,11 @@ public class Clear_Screen_Controller : MonoBehaviour
         
     }
 
+    public void Openeye()
+    {
+        eye.EyeOpen();
+    }
+
     public void Closeeye()
     {
         eye.EyeClose();
