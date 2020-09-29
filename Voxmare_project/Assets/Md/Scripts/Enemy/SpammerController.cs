@@ -30,7 +30,8 @@ public class SpammerController : MonoBehaviour
     public float Shrink_duration;
     public float Expand_scale;
     public float Expand_duration;
-    private Transform parent;
+    private Transform meshRoot;
+    private Vector3 originalScale;
     private Tween shootTween;
     // Start is called before the first frame update
     void  Start()
@@ -42,7 +43,8 @@ public class SpammerController : MonoBehaviour
             rapidfire_coroutine = RapidFire();
         }
 
-        parent = this.transform.parent;
+        meshRoot = this.transform.parent.GetComponentInChildren<BlockAnimator>().transform;
+        originalScale = meshRoot.localScale;
         rapid_wait = new WaitForSeconds(Rapidfire_Interval);
     }
 
@@ -102,12 +104,12 @@ public class SpammerController : MonoBehaviour
 
     public IEnumerator ShootAnimation()
     {
-        shootTween = parent.DOScale(Vector3.one*Shrink_scale,Shrink_duration);
+        shootTween = meshRoot.DOScale(originalScale * Shrink_scale,Shrink_duration);
         yield return shootTween.WaitForCompletion();
         ShootBullet();
-        shootTween = parent.DOScale(Vector3.one*Expand_scale,Expand_duration);
+        shootTween = meshRoot.DOScale(originalScale * Expand_scale,Expand_duration);
         yield return shootTween.WaitForCompletion();
-        shootTween = parent.DOScale(Vector3.one,Expand_duration);
+        shootTween = meshRoot.DOScale(originalScale, Expand_duration);
 
     }
 
