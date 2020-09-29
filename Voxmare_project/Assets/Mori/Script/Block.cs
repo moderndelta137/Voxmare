@@ -38,15 +38,24 @@ public class Block : MonoBehaviour
             if(value)
             {
                 this.transform.parent = null;
+                foreach (var spammer in spammers)
+                {
+                    spammer.enabled = false;
+                }
             }
             else
             {
                 this.transform.parent = manager.boss.transform;
+                foreach (var spammer in spammers)
+                {
+                    spammer.enabled = true;
+                }
             }
         }
     }
     private BoxCollider mycollider;
     private List<int> emptyIndex;
+    private List<SpammerController> spammers;
 
     // Link Animation
     Block targetBlock;
@@ -76,6 +85,7 @@ public class Block : MonoBehaviour
         manager = GameObject.Find("BlockManager").GetComponent<BlockManager>();
         bossController = GameObject.Find("Boss").GetComponent<BossController>();
         mycollider = GetComponent<BoxCollider>();
+        spammers = new List<SpammerController>(GetComponentsInChildren<SpammerController>());
         randomSeed = Random.value;
         emptyIndex = new List<int>();
         maxPairs = 0;
@@ -316,12 +326,14 @@ public class Block : MonoBehaviour
     void OnEnable()
     {
         transform.GetComponentInChildren<BlockAnimator>().enabled = true;
-        transform.GetComponentInChildren<SpammerController>().enabled = true;
     }
     void OnDisable()
     {
         transform.GetComponentInChildren<BlockAnimator>().enabled = false;
-        transform.GetComponentInChildren<SpammerController>().enabled = false;
+        foreach (var spammer in spammers)
+        {
+            spammer.enabled = false;
+        }
     }
 
     void AloneAnimation()
