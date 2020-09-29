@@ -15,13 +15,12 @@ MonoBehaviour:
   block:
   - blockPrefab: {fileID: 5841314703671143113, guid: 9e75519e4895b1b4892b91539086970b, type: 3}
     count: 1
-    coreCount: 1
   - blockPrefab: {fileID: 5841314703671143113, guid: c9db727781404474d8a074efbfb425e8, type: 3}
-    count: 65
-    coreCount: 0
+    count: 30
   - blockPrefab: {fileID: 5841314703671143113, guid: 82af492e66797354183fa4c700dbdc23, type: 3}
     count: 10
-    coreCount: 0
+  - blockPrefab: {fileID: 5841314703671143113, guid: 37ad6084035b2f54fb68df13e8ae7f39, type: 3}
+    count: 10
   npc:
   - NPCPrefab: {fileID: 2540976299578149253, guid: 10f2b7bbba85f904fb6150f130a39738, type: 3}
     count: 1
