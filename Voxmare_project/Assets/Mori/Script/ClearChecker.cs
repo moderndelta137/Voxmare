@@ -15,6 +15,7 @@ public class ClearChecker : MonoBehaviour
     public UnityEvent GameOvered;
     public UnityEvent NewGameStart;
     public UnityEvent ShowTutorial;
+    public UnityEvent ShowPowerupHelp;
 
     public float Clear_wait_duration;
     public float Prepare_wait_duration;
@@ -32,7 +33,8 @@ public class ClearChecker : MonoBehaviour
     public UnityEvent Restart;
     public enum LevelStatus
     {
-        Turotial,
+        Tutorial,
+        PowerupHelp,
         Ready,
         Start,
         Result,
@@ -59,12 +61,18 @@ public class ClearChecker : MonoBehaviour
         {
             switch(Current_status)
             {
-                case LevelStatus.Turotial:
+                case LevelStatus.Tutorial:
+                    Current_status = LevelStatus.PowerupHelp;
+                    ShowPowerupHelp.Invoke();
+                    Time.timeScale = 0;
+                    LevelData.isPaused = true;
+                    break;
+                case LevelStatus.PowerupHelp:
                     //Time.timeScale = 1;
-                    LevelData.isPaused=false;
+                    LevelData.isPaused = false;
                     StopAllCoroutines();
                     StartCoroutine(LevelPrepare());
-                break;
+                    break;
                 case LevelStatus.Ready:
                     StopAllCoroutines();
                     LevelStart();
@@ -156,7 +164,7 @@ public class ClearChecker : MonoBehaviour
 
         if(first_time)
         {
-            Current_status = LevelStatus.Turotial;
+            Current_status = LevelStatus.Tutorial;
             yield return new WaitForSecondsRealtime(0.2f);
             NewGameStart.Invoke();
             yield return Fisrt_time_wait;
