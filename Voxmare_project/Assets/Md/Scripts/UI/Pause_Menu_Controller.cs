@@ -7,8 +7,10 @@ public class Pause_Menu_Controller : MonoBehaviour
 {
     public GameObject Pause_menu;
     public GameObject Option_menu;
+    public GameObject Hint_menu;
     //public bool Paused;
     public bool Option_menu_opened;
+    public bool Hint_menu_opened;
 
     public AudioSource Click_SE;
     public AudioSource Cancel_SE;
@@ -45,6 +47,10 @@ public class Pause_Menu_Controller : MonoBehaviour
                 if(Option_menu_opened)
                 {
                     CloseOptionMenu();
+                }
+                else if(Hint_menu_opened)
+                {
+                    CloseHintMenu();
                 }
                 else
                 {
@@ -93,6 +99,22 @@ public class Pause_Menu_Controller : MonoBehaviour
         Eyelid_script.EyeOpen();
         yield return blink_wait;
     }
+
+    public void OpenHintMenu()
+    {
+        StartCoroutine(OpenHintMenuDelay());
+    }
+    private IEnumerator OpenHintMenuDelay()
+    {
+        Eyelid_script.EyeClose();
+        yield return blink_wait;
+        Hint_menu_opened = true;
+        Hint_menu.SetActive(true);
+        Pause_menu.SetActive(false);
+        Eyelid_script.EyeOpen();
+        yield return blink_wait;
+    }
+
     public void CloseOptionMenu()
     {
         StartCoroutine(CloseOptionMenuDelay());
@@ -103,6 +125,21 @@ public class Pause_Menu_Controller : MonoBehaviour
         yield return blink_wait;
         Option_menu_opened = false;
         Option_menu.SetActive(false);
+        Pause_menu.SetActive(true);
+        Eyelid_script.EyeOpen();
+        yield return blink_wait;
+    }
+
+    public void CloseHintMenu()
+    {
+        StartCoroutine(CloseHintMenuDelay());
+    }
+    private IEnumerator CloseHintMenuDelay()
+    {
+        Eyelid_script.EyeClose();
+        yield return blink_wait;
+        Hint_menu_opened = false;
+        Hint_menu.SetActive(false);
         Pause_menu.SetActive(true);
         Eyelid_script.EyeOpen();
         yield return blink_wait;
