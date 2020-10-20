@@ -100,8 +100,15 @@ public class BulletController : MonoBehaviour
             break;         
             case "Enemy":
                 if(!Damage_player)
-                {      
-                    if(Reflect)
+                {
+                    if (Penetrate)
+                    {
+                        ShowHitFX();
+                        other.gameObject.SendMessage("ApplyDamage", Damage * this.transform.forward);
+                        SpawnCluster();
+                        Destroy(this.gameObject, Penetrate_lifespan);
+                    }
+                    else if (Reflect)
                     {
                         Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f,reflect_enemy_layMask);
                         this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
@@ -111,13 +118,6 @@ public class BulletController : MonoBehaviour
                         SpawnCluster();
                         Destroy(this.gameObject,Reflect_lifespan);
                     }
-                    else if(Penetrate)
-                    {
-                        ShowHitFX();
-                        other.gameObject.SendMessage("ApplyDamage", Damage* this.transform.forward);
-                        SpawnCluster();
-                        Destroy(this.gameObject,Penetrate_lifespan);
-                    }     
                     else
                     {
                         ShowHitFX();
@@ -130,7 +130,12 @@ public class BulletController : MonoBehaviour
             break;    
             case "Terrian":
                 other.attachedRigidbody.AddForce(this.transform.forward*Bullet_force,ForceMode.VelocityChange);
-                if(Reflect)
+                if (Penetrate)
+                {
+                    SpawnCluster();
+                    Destroy(this.gameObject, Penetrate_lifespan);
+                }
+                else if (Reflect)
                 {   
                     Physics.Raycast(this.transform.position-this.transform.forward*0.7f,this.transform.forward,out reflect_hit, 5f, reflect_terrian_layMask);
                     this.transform.rotation=Quaternion.LookRotation(Vector3.Reflect(this.transform.forward, reflect_hit.normal));
@@ -139,11 +144,6 @@ public class BulletController : MonoBehaviour
                     SpawnCluster();
                     Destroy(this.gameObject,Reflect_lifespan);
                     
-                }
-                else if (Penetrate)
-                {
-                    SpawnCluster();
-                    Destroy(this.gameObject,Penetrate_lifespan);
                 }
                 else
                 {
